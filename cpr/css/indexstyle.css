@@ -1,0 +1,37 @@
+html, body {
+    margin: 0; 
+    height: 100%; 
+    overflow: visible
+    /*overflow: hidden
+    这将HTML和body元素的溢出（overflow）设置为隐藏（hidden）。
+    溢出属性控制元素内容超出其框架时的表现。
+    将其设置为“hidden”意味着任何溢出的内容都将被裁剪或隐藏，而
+    不会显示在元素的外部。*/
+}
+.input_video5{
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+}
+.sidenav {
+    width: 50px;
+    position: fixed;
+    z-index: 1;
+    top: 5px;
+    left: 5px;
+    overflow-x: hidden;
+    padding: 0px 0;
+}
+.sidenav a {
+    padding: 10px 0px 10px 0px;
+    text-decoration: none;
+    font-size: 14px;
+    color: #000000;
+    display: block;
+}
+.sidenav a:hover {
+    color: #9B59B6;
+}

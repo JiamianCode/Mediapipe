@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.1/control_utils.css" crossorigin="anonymous"> -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6/control_utils.css" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" type="text/css" href="demo.css" crossorigin="anonymous"> -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.1/camera_utils.js" crossorigin="anonymous"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.1/control_utils.js" crossorigin="anonymous"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6/control_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.2/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.2/pose.js" crossorigin="anonymous"></script>
+
+    <!-- index style -->
+    <link rel="stylesheet" type="text/css" href="./css/indexstyle.css">
+</head>
+
+<body>
+
+  <!-- CONTENTS --> 
+  <div class="container">
+
+    <div class="columns">
+      
+        <!-- 添加按钮来控制界面的显示隐藏 -->
+        <button id="toggleInput">切换摄像头输入</button>
+        <button id="toggleControl">切换控制面板</button>
+
+        <!-- 摄像头输入界面 -->
+        <video id="inputVideo" class="input_video5" autoplay muted playsinline style="display:none;"></video>
+
+        <!-- 处理后的输出界面（保持不变） -->
+        <canvas class="output5"></canvas>
+
+        <!-- 控制面板 -->
+        <div id="controls" class="control5" style="display:none;"></div>
+    </div>
+    
+    <div class="loading">
+      <div class="spinner"></div>
+    </div>
+    <div style="visibility: visible;" class="control5"></div>
+
+  </div>
+
+  <script type="text/javascript" src="./js/pose.js"></script>
+</body>
+</html>
