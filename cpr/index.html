@@ -17,33 +17,30 @@
 </head>
 
 <body>
-
-  <!-- CONTENTS --> 
-  <div class="container">
-
-    <div class="columns">
-      
-        <!-- 添加按钮来控制界面的显示隐藏 -->
-        <button id="toggleInput">切换摄像头输入</button>
-        <button id="toggleControl">切换控制面板</button>
-
-        <!-- 摄像头输入界面 -->
-        <video id="inputVideo" class="input_video5" autoplay muted playsinline style="display:none;"></video>
-
-        <!-- 处理后的输出界面（保持不变） -->
-        <canvas class="output5"></canvas>
-
-        <!-- 控制面板 -->
-        <div id="controls" class="control5" style="display:none;"></div>
+    <!-- 按钮区域 -->
+    <div class="button-controls">
+      <button id="toggleVideo">Toggle Video Play/Pause</button>
+      <button id="toggleInputVideo">Toggle Input Video</button>
+      <button id="toggleControls">Toggle Controls</button>
     </div>
     
+    <input type="file" id="file" onchange="onInputFileChange()">
+  
+    <!-- 摄像头输入 -->
+    <video class="input_video5" autoplay muted playsinline="true" crossorigin="anonymous" style="display:none;"></video>
+  
+    <!-- MediaPipe处理后的输出 -->
+    <canvas class="output5"></canvas>
+  
+    <!-- 控制面板，初始隐藏 -->
+    <div class="control5" style="display:none;"></div>
+  
+    <!-- 这里是其他已有的HTML代码，例如加载动画等 -->
     <div class="loading">
-      <div class="spinner"></div>
+        <div class="spinner"></div>
     </div>
-    <div style="visibility: visible;" class="control5"></div>
-
-  </div>
-
-  <script type="text/javascript" src="./js/pose.js"></script>
+    <script type="text/javascript" src="./js/pose.js"></script>
+    <script type="text/javascript" src="./js/change.js"></script>
 </body>
+  
 </html>

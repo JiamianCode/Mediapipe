@@ -70,7 +70,8 @@ const pose = new Pose({locateFile: (file) => {
 // 设置处理结果的回调函数
 pose.onResults(onResultsPose);
 
-
+/*
+// 摄像头输入
 // 实例化Camera对象，设置摄像头输入和回调函数
 const camera = new Camera(video5, {
   onFrame: async () => {
@@ -80,6 +81,39 @@ const camera = new Camera(video5, {
   height: video_height // 设置视频高度
 });
 camera.start(); // 启动摄像头
+*/
+
+// 视频输入
+function onInputFileChange() {
+  var file = document.getElementById('file').files[0];
+  var url = URL.createObjectURL(file);
+  console.log(url);
+  
+  video5.addEventListener('loadedmetadata', () => {
+    video5.play(); // 视频加载完元数据后自动播放
+    console.log("begin!!")
+  });
+
+  video5.src = url;
+}
+
+// 更新onFrame回调以适应视频文件
+const camera = {
+  start: () => {
+    // 使用requestAnimationFrame来模拟onFrame回调
+    const updateFrame = () => {
+      pose.send({image: video5});
+      requestAnimationFrame(updateFrame);
+    };
+    updateFrame();
+  },
+  // 停止视频播放和帧更新的方法
+  stop: () => {
+    video5.pause();
+  }
+};
+// 根据需要调用 camera.start() 或 camera.stop() 来控制视频播放
+
 
 // 初始化控制面板，让用户可以调整Pose检测的配置
 new ControlPanel(controlsElement5, {
