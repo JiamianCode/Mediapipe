@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Display</title>
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
     <!-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.1/control_utils.css" crossorigin="anonymous"> -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6/control_utils.css" crossorigin="anonymous">
@@ -14,33 +17,34 @@
 
     <!-- index style -->
     <link rel="stylesheet" type="text/css" href="./css/indexstyle.css">
-</head>
 
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
 <body>
-    <!-- 按钮区域 -->
     <div class="button-controls">
-      <button id="toggleVideo">Toggle Video Play/Pause</button>
-      <button id="toggleInputVideo">Toggle Input Video</button>
-      <button id="toggleControls">Toggle Controls</button>
+        <button id="toggleInputVideo">Toggle Input Video</button>
+        <button id="toggleVideoVisibility">Toggle Video Visibility</button>
+        <button id="toggleControls">Toggle Controls</button>
+        <input type="file" id="file" accept="video/*">
     </div>
     
-    <input type="file" id="file" onchange="onInputFileChange()">
+    <div class="video-container">
+        <video class="input_video5" autoplay muted playsinline="true" crossorigin="anonymous" style="display:none;"></video>
+        <video id="video5" controls style="display:none;"></video>
+        <canvas class="output5"></canvas>
+    </div>
+
+    <div class="video-container">
+        <svg width="400" height="200" id="wristChart"></svg>
+    </div>
   
-    <!-- 摄像头输入 -->
-    <video class="input_video5" autoplay muted playsinline="true" crossorigin="anonymous" style="display:none;"></video>
+    <!-- The control panel -->
+    <div class="control5" style="display:none;">Control panel content here</div>
   
-    <!-- MediaPipe处理后的输出 -->
-    <canvas class="output5"></canvas>
-  
-    <!-- 控制面板，初始隐藏 -->
-    <div class="control5" style="display:none;"></div>
-  
-    <!-- 这里是其他已有的HTML代码，例如加载动画等 -->
     <div class="loading">
         <div class="spinner"></div>
     </div>
     <script type="text/javascript" src="./js/pose.js"></script>
     <script type="text/javascript" src="./js/change.js"></script>
 </body>
-  
 </html>

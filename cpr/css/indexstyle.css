@@ -1,13 +1,38 @@
-html, body {
-    margin: 0; 
-    height: 100%; 
-    overflow: visible
-    /*overflow: hidden
-    这将HTML和body元素的溢出（overflow）设置为隐藏（hidden）。
-    溢出属性控制元素内容超出其框架时的表现。
-    将其设置为“hidden”意味着任何溢出的内容都将被裁剪或隐藏，而
-    不会显示在元素的外部。*/
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 }
+.video-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+}
+video, canvas {
+    flex: 1 1 50%;
+    max-width: 50%;
+    height: auto;
+}
+@media (max-width: 768px) {
+    .video-container {
+        flex-direction: column;
+    }
+    video, canvas {
+        max-width: 100%;
+    }
+}
+.button-controls, .loading, .control5 {
+    width: 100%;
+    text-align: center;
+}
+
+
 .input_video5{
     -moz-transform: scaleX(-1);
     -o-transform: scaleX(-1);
@@ -34,4 +59,28 @@ html, body {
 }
 .sidenav a:hover {
     color: #9B59B6;
+}
+
+/*控制面板*/
+.control5 {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 300px;
+    background: #f9f9f9;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    overflow-y: auto;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000; /* Ensure it's above other content */
+}
+.control5.visible {
+    transform: translateX(0%);
+}
+.button-controls {
+    position: fixed;
+    z-index: 1010; /* Ensure buttons are above the control panel */
+    top: 20px; /* Adjust based on your header/nav size */
+    left: 20px;
 }

@@ -1,5 +1,5 @@
 const video_width = 580;
-const video_height = 520;
+const video_height = 480;
 
 // 获取HTML文档中的摄像头视频输入和图像输出元素
 const video5 = document.getElementsByClassName('input_video5')[0]; // 摄像头视频输入
@@ -22,6 +22,90 @@ function zColor(data) {
   return `rgba(0, ${255 * z}, ${255 * (1 - z)}, 1)`; // 返回根据z值变化的颜色
 }
 
+
+let wristPositions = []; // 存储每一帧右手腕的位置
+//高斯平滑
+function gaussianSmooth(dataY, sigma = 2) {
+  // 此处假设dataY是包含y值的数组
+  const gaussKernel = [];
+  let kernelSize = Math.ceil(sigma * 3) * 2 + 1;
+  let kernelHalf = Math.floor(kernelSize / 2);
+  let sum = 0;
+
+  for (let i = -kernelHalf; i <= kernelHalf; i++) {
+    let value = Math.exp(-(i * i) / (2 * sigma * sigma));
+    gaussKernel.push(value);
+    sum += value;
+  }
+
+  // 归一化高斯核
+  const normalizedKernel = gaussKernel.map(val => val / sum);
+
+  return dataY.map((_, idx) => {
+    let weightedSum = 0;
+    let weightSum = 0;
+    for (let i = -kernelHalf; i <= kernelHalf; i++) {
+      let dataIndex = idx + i;
+      if (dataIndex >= 0 && dataIndex < dataY.length) {
+        weightedSum += dataY[dataIndex] * normalizedKernel[i + kernelHalf];
+        weightSum += normalizedKernel[i + kernelHalf];
+      }
+    }
+    return weightedSum / weightSum;
+  });
+}
+//更新图表
+function updateChart() {
+  const svg = d3.select("#wristChart");
+  const margin = { top: 20, right: 20, bottom: 30, left: 50 };
+  const width = 400 - margin.left - margin.right;
+  const height = 200 - margin.top - margin.bottom;
+
+  svg.selectAll("*").remove();
+
+  const chart = svg.append("g")
+                    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+  // 提取y值数组
+  const yValues = wristPositions.map(pos => pos.y);
+  const smoothedYValues = gaussianSmooth(yValues);
+
+  const xScale = d3.scaleLinear()
+                   .domain([0, smoothedYValues.length - 1])
+                   .range([0, width]);
+
+  const yScale = d3.scaleLinear()
+                   //.domain([Math.min(...smoothedYValues), Math.max(...smoothedYValues)])
+                   .domain([0.5, 1])
+                   .range([height, 0]);
+
+  const line = d3.line()
+                 .x((_, i) => xScale(i))
+                 .y(d => yScale(d));
+
+  chart.append("path")
+       .datum(smoothedYValues)
+       .attr("fill", "none")
+       .attr("stroke", "steelblue")
+       .attr("stroke-width", 1.5)
+       .attr("d", line);
+
+  chart.append("g")
+       .attr("transform", `translate(0,${height})`)
+       .call(d3.axisBottom(xScale));
+
+  chart.append("g")
+       .call(d3.axisLeft(yScale));
+
+  svg.append("text")
+     .attr("x", (width / 2) + margin.left)
+     .attr("y", margin.top / 2)
+     .attr("text-anchor", "middle")
+     .style("font-size", "16px")
+     .text("Wrist Position Over Time");
+}
+
+
 // 处理MediaPipe Pose结果的回调函数
 function onResultsPose(results) {
   document.body.classList.add('loaded'); // 标记页面已加载完成
@@ -31,7 +115,12 @@ function onResultsPose(results) {
   out5.width = video_width;
   out5.height = video_height;
   canvasCtx5.clearRect(0, 0, out5.width, out5.height); // 清除画布内容
+  // 在绘制之前应用水平翻转和平移变换
+  canvasCtx5.scale(-1, 1); // 水平翻转画布
+  canvasCtx5.translate(-out5.width, 0); // 平移画布
+
   canvasCtx5.drawImage(results.image, 0, 0, out5.width, out5.height); // 绘制摄像头图像
+
 
   // 绘制姿态连接线
   drawConnectors(canvasCtx5, results.poseLandmarks, POSE_CONNECTIONS, {
@@ -60,12 +149,62 @@ function onResultsPose(results) {
   // 直接在控制台打印关键点信息
   //console.log('关键点信息：');
   //console.log(results.poseLandmarks);
+
+  // 获取右手腕的关键点（索引为16），并更新wristPositions数组
+  const rightWrist = results.poseLandmarks[16]; // 假设索引16是右手腕
+  if (rightWrist) {
+      wristPositions.push({x: rightWrist.x, y: rightWrist.y}); // 保存x和y坐标
+      if (wristPositions.length > 50) { // 限制数组大小，比如最近的50个数据点
+          wristPositions.shift(); // 移除最旧的数据点
+      }
+  }
+
+  // 绘制所有保存的右手腕位置并计算凸包
+  const points = wristPositions.map(pos => [out5.width * pos.x, out5.height * pos.y]);
+
+  // 使用d3.polygonHull计算凸包
+  const hull = d3.polygonHull(points);
+
+  if (hull) {
+    canvasCtx5.beginPath();
+    hull.forEach((point, i) => {
+      if (i === 0) {
+        canvasCtx5.moveTo(point[0], point[1]);
+      } else {
+        canvasCtx5.lineTo(point[0], point[1]);
+      }
+    });
+    // 将凸包的终点和起点连接起来
+    canvasCtx5.closePath();
+
+    // 设置凸包的样式
+    canvasCtx5.strokeStyle = '#FF0000'; // 设置描边颜色
+    canvasCtx5.stroke();
+    canvasCtx5.fillStyle = 'rgba(255, 255, 0, 1)'; // 设置填充颜色，这里使用半透明的红色
+    canvasCtx5.fill();
+  }
+
+  // 绘制所有保存的右手腕位置
+  wristPositions.forEach(pos => {
+    const x = out5.width * pos.x; // 使用保存的x坐标
+    const y = out5.height * pos.y; // 使用保存的y坐标
+    canvasCtx5.beginPath();
+    canvasCtx5.arc(x, y, 3, 0, 1 * Math.PI); // 绘制半径为3的圆点
+    canvasCtx5.fillStyle = '#FF0000'; // 设置填充颜色
+    canvasCtx5.fill();
+  });
+
+  // 更新图表
+  updateChart();
 }
 
 // 实例化Pose对象，并设置模型文件的路径
-const pose = new Pose({locateFile: (file) => {
-  return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.2/${file}`;
-}});
+const pose = new Pose({
+  locateFile: (file) => {
+    return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.2/${file}`;
+  },
+  modelComplexity: 2, // 用于指定模型复杂度，0代表Lite，1代表Full，2代表Heavy
+});
 
 // 设置处理结果的回调函数
 pose.onResults(onResultsPose);
@@ -84,35 +223,35 @@ camera.start(); // 启动摄像头
 */
 
 // 视频输入
-function onInputFileChange() {
-  var file = document.getElementById('file').files[0];
-  var url = URL.createObjectURL(file);
-  console.log(url);
-  
-  video5.addEventListener('loadedmetadata', () => {
-    video5.play(); // 视频加载完元数据后自动播放
-    console.log("begin!!")
-  });
+// 监听文件输入变化
+document.getElementById('file').addEventListener('change', function(event) {
+  const file = event.target.files[0];
+  const url = URL.createObjectURL(file);
+  const video = document.getElementById('video5');
+  video.src = url;
+  video.style.display = 'block';
 
-  video5.src = url;
-}
+  let frameRequest;
 
-// 更新onFrame回调以适应视频文件
-const camera = {
-  start: () => {
-    // 使用requestAnimationFrame来模拟onFrame回调
-    const updateFrame = () => {
-      pose.send({image: video5});
-      requestAnimationFrame(updateFrame);
-    };
-    updateFrame();
-  },
-  // 停止视频播放和帧更新的方法
-  stop: () => {
-    video5.pause();
-  }
-};
-// 根据需要调用 camera.start() 或 camera.stop() 来控制视频播放
+  const onFrame = () => {
+    if (video.paused || video.ended) {
+      cancelAnimationFrame(frameRequest);
+      return;
+    }
+    pose.send({image: video}).then(() => {
+      frameRequest = requestAnimationFrame(onFrame);
+    }).catch(e => console.error(e));
+  };
+
+  video.onplay = () => {
+    onFrame();
+  };
+
+  video.onpause = video.onended = () => {
+    cancelAnimationFrame(frameRequest);
+  };
+});
+
 
 
 // 初始化控制面板，让用户可以调整Pose检测的配置
