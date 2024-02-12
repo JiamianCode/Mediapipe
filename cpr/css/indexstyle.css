@@ -4,21 +4,26 @@ body, html {
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column; /* Change to support top controls layout */
+    justify-content: flex-start; /* Align content to the top */
     align-items: center;
-    flex-wrap: wrap;
 }
+
+/* Simplified video and canvas container for responsiveness */
 .video-container {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     width: 100%;
+    max-width: 1200px; /* Limit the maximum width */
 }
+
 video, canvas {
-    flex: 1 1 50%;
-    max-width: 50%;
-    height: auto;
+    flex: 1 1 50%; /* Adjusted for equal width */
+    max-width: 49%;
+    height: 100%;
 }
+
 @media (max-width: 768px) {
     .video-container {
         flex-direction: column;
@@ -27,12 +32,54 @@ video, canvas {
         max-width: 100%;
     }
 }
-.button-controls, .loading, .control5 {
+
+/* Adjust button controls for better positioning */
+.button-controls {
     width: 100%;
     text-align: center;
+    padding: 20px 0; /* Add some padding */
 }
 
+/* Adjust file input container for a more suitable size */
+#fileInputContainer .file {
+    justify-content: center; /* Center file input in its container */
+    margin: 0 auto; /* Center align the container */
+    width: auto; /* Allow it to grow as per content */
+}
 
+/* Remove unused styles for simplicity */
+/*.input_video5, .sidenav, .sidenav a, .sidenav a:hover, .control5, .control5.visible, .loading */
+
+/* Adjust control panel styling if needed */
+.control5 {
+    display: none; /* Hide by default, can be shown based on specific logic */
+}
+
+/* Style adjustments for the side navigation if it's used */
+.sidenav {
+    width: 50px;
+    position: fixed;
+    z-index: 1;
+    top: 5px;
+    left: 5px;
+    overflow-x: hidden;
+    padding: 8px 0;
+}
+
+.sidenav a {
+    padding: 10px 0px;
+    text-decoration: none;
+    font-size: 14px;
+    color: #000;
+    display: block;
+}
+
+.sidenav a:hover {
+    color: #9B59B6;
+}
+
+/*原样式*/
+/*
 .input_video5{
     -moz-transform: scaleX(-1);
     -o-transform: scaleX(-1);
@@ -61,7 +108,7 @@ video, canvas {
     color: #9B59B6;
 }
 
-/*控制面板*/
+//控制面板
 .control5 {
     position: fixed;
     left: 0;
@@ -73,14 +120,88 @@ video, canvas {
     overflow-y: auto;
     transform: translateX(-100%);
     transition: transform 0.3s ease-in-out;
-    z-index: 1000; /* Ensure it's above other content */
+    z-index: 1000;
 }
 .control5.visible {
     transform: translateX(0%);
 }
 .button-controls {
     position: fixed;
-    z-index: 1010; /* Ensure buttons are above the control panel */
-    top: 20px; /* Adjust based on your header/nav size */
+    z-index: 1010;
+    top: 20px;
     left: 20px;
+}
+*/
+
+
+/* 选择文件的样式 */
+/* File input container adjustments for consistent sizing */
+#fileInputContainer .file {
+    width: auto; /* Adjust width to content */
+    display: inline-flex; /* Make the file input inline for better control */
+    align-items: center; /* Align items for a cleaner look */
+    margin: 0 10px; /* Consistent spacing with other controls */
+}
+
+#fileInputContainer .file-label {
+    cursor: pointer; /* Enhance user indication for clickable area */
+}
+
+#fileInputContainer .file-input {
+    width: 0.1px; /* Minimize the actual file input to hide it visually */
+    height: 0.1px; /* Minimize the actual file input to hide it visually */
+    opacity: 0; /* Hide the actual file input visually */
+}
+
+#fileInputContainer .file-cta,
+#fileInputContainer .file-name {
+    font-size: 1rem; /* 调整字体大小为合适的尺寸 */
+    line-height: 1.5; /* 设置行高以确保足够的空间，但不过多 */
+    padding: 0.375em 0.75em; /* 调整内边距以适应设计，可根据需要修改 */
+    height: auto; /* 确保高度自动调整以适应内容 */
+    display: inline-block; /* 如果需要块级元素特性（如自定义宽度或高度） */
+}
+
+/* Ensure the file name doesn't overflow its container */
+#fileInputContainer .file-name {
+    max-width: 200px; /* Limit the width of the file name display */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* 居中 */
+/* Center-align the controls container */
+.field.is-grouped {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Ensure the control elements themselves are also centered */
+.control {
+    margin: 8px; /* Adds a little space around each control for better appearance */
+}
+
+/* Adjust the file input container to better fit the centered layout */
+#fileInputContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* 添加此行以在垂直方向上居中对齐 */
+    flex-direction: column; /* 将项目方向设置为垂直堆叠 */
+}
+
+/* Center-align labels for a consistent look and feel */
+.field .label {
+    text-align: center;
+    display: block;
+    width: 100%;
+}
+
+/* Optional: Center the content of the file input for a consistent look */
+.file.has-name .file-cta,
+.file.has-name .file-name {
+    justify-content: center;
+    text-align: center;
 }
