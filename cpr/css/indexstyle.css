@@ -18,7 +18,7 @@ body, html {
     max-width: 1200px; /* Limit the maximum width */
 }
 
-video, canvas {
+#inputVideo, #outputCanvas {
     flex: 1 1 50%; /* Adjusted for equal width */
     max-width: 49%;
     height: 100%;
@@ -28,7 +28,7 @@ video, canvas {
     .video-container {
         flex-direction: column;
     }
-    video, canvas {
+    #inputVideo, #outputCanvas {
         max-width: 100%;
     }
 }

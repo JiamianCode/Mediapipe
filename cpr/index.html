@@ -19,6 +19,7 @@
     <link rel="stylesheet" type="text/css" href="./css/indexstyle.css">
 
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 </head>
 <body>
     <section class="section">
@@ -76,7 +77,7 @@
             <!-- 画面和图表显示 -->
             <div class="columns">
                 <!-- 画面显示 -->
-                <div class="column is-three-quarters">
+                <div class="column is-three-quarters" id="display">
                     <div class="video-container" id="videoContainer" style="display: none;">
                         <video id="inputVideo" autoplay muted playsinline crossorigin="anonymous"></video>
                         <canvas id="outputCanvas"></canvas>
@@ -103,6 +104,7 @@
     <script type="text/javascript" src="js/inputImage.js"></script>
     <script type="text/javascript" src="js/outputImage.js"></script>
     <script type="text/javascript" src="js/landmarkTrack.js"></script>
+    <script type="text/javascript" src="js/landmarkAngle.js"></script>
     <script type="text/javascript" src="js/control.js"></script>
 </body>
 </html>

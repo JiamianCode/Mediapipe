@@ -53,7 +53,16 @@ function onResultsPose(results) {
 
   //更新图表
   if(chart1Visible){
-    updateChart();  // 更新图表
+    updateLandmarkTrackChart();  // 更新图表
+  }
+
+  if(chart2Visible){
+    // pose关键点索引
+    const LA = 14, LB = 12, LC = 24;
+    // 计算角度
+    const angle = calculateAngle(results, LA, LB, LC);
+    // 更新仪表盘
+    updateGauge(angle);
   }
 }
 

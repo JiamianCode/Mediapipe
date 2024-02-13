@@ -111,10 +111,10 @@ document.querySelectorAll('#visualizationModeContainer input[type="checkbox"]').
 
 
 // 根据复选框选择处理图表显示
-const containerChart1 = document.getElementById('containerChart1');
-const containerChart2 = document.getElementById('containerChart2');
-const checkboxChart1 = document.getElementById('checkboxChart1');
-const checkboxChart2 = document.getElementById('checkboxChart2');
+let containerChart1 = document.getElementById('containerChart1');
+let containerChart2 = document.getElementById('containerChart2');
+let checkboxChart1 = document.getElementById('checkboxChart1');
+let checkboxChart2 = document.getElementById('checkboxChart2');
 
 let chart1Visible = false;
 let chart2Visible = false;
@@ -135,8 +135,14 @@ checkboxChart1.addEventListener('change', function() {
 
 // 给 checkboxChart2 添加事件监听器
 checkboxChart2.addEventListener('change', function() {
-    containerChart2.style.display = this.checked ? 'block' : 'none';
+    if (this.checked) {
+        console.log('Chart 2 Selected.');
+        containerChart2.style.display = 'block'; // 显示相关的图表容器
+        initGauge(); // 调用 initGauge() 函数初始化仪表盘
+    } else {
+        console.log('Chart 2 Deselected.');
+        containerChart2.style.display = 'none'; // 若未勾选，隐藏相关的图表容器
+    }
     chart2Visible = this.checked;
-    console.log(`Chart 2 ${this.checked ? 'Selected' : 'Deselected'}.`);
     updateChartContainerVisibility(); // 更新 chartContainer 的可见性
 });

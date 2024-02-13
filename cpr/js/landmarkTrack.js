@@ -31,7 +31,7 @@ function gaussianSmooth(dataY, sigma = 2) {
 }
 
 //更新图表
-function updateChart() {
+function updateLandmarkTrackChart() {
     const svg = d3.select("#chart1");
     const margin = {top: 40, right: 30, bottom: 20, left: 40};
     const width = 400 - margin.left - margin.right;
