@@ -1,4 +1,3 @@
-let wristPositions = []; // 存储每一帧右手腕的位置
 //高斯平滑
 function gaussianSmooth(dataY, sigma = 2) {
     // 此处假设dataY是包含y值的数组
@@ -31,9 +30,9 @@ function gaussianSmooth(dataY, sigma = 2) {
 }
 
 //更新图表
-function updateLandmarkTrackChart() {
+function updateLandmarkTrackChart(targetIndex) {
     const svg = d3.select("#chart1");
-    const margin = {top: 40, right: 30, bottom: 20, left: 40};
+    const margin = { top: 40, right: 30, bottom: 20, left: 40 };
     const width = 400 - margin.left - margin.right;
     const height = 200 - margin.top - margin.bottom;
 
@@ -42,8 +41,13 @@ function updateLandmarkTrackChart() {
     const chart = svg.append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
+    // 从keypointPositions筛选出最新的50个对应targetIndex的数据点
+    const filteredPositions = keypointPositions
+        .filter(pos => pos.index === targetIndex)
+        .slice(-50); // 保留最后50个元素
+
     // 提取y值数组
-    const yValues = wristPositions.map(pos => pos.y);
+    const yValues = filteredPositions.map(pos => pos.y);
     const smoothedYValues = gaussianSmooth(yValues);
 
     const xScale = d3.scaleLinear()

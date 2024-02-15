@@ -1,60 +1,71 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MediaPipe Pose Demo</title>
-    <style>
-        canvas {
-            position: absolute;
-        }
-    </style>
+    <title>D3 Collision Detection</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
 </head>
 <body>
-<video id="video" style="display:none;" playsinline></video>
-<canvas id="output"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose"></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils"></script>
-</body>
+<!-- 创建一个canvas元素用于绘制 -->
+<canvas width="800" height="800"></canvas>
 <script>
-    const videoElement = document.getElementById('video');
-    const canvasElement = document.getElementById('output');
-    const canvasCtx = canvasElement.getContext('2d');
+    // 设置canvas的宽高
+    const width = 800;
+    const height = width; // 使高度等于宽度
 
-    function onResults(results) {
-        canvasCtx.save();
-        canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-        canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
-        if (results.poseLandmarks) {
-            for (const landmark of results.poseLandmarks) {
-                canvasCtx.beginPath();
-                canvasCtx.arc(landmark.x * canvasElement.width, landmark.y * canvasElement.height, 5, 0, 2 * Math.PI);
-                canvasCtx.fill();
-            }
-        }
-        canvasCtx.restore();
+    // 选择canvas元素并获取其2D绘图上下文
+    const canvas = document.querySelector('canvas');
+    const context = canvas.getContext('2d');
+
+    // 生成节点数据
+    // 使用自执行函数立即生成数据
+    const data = (() => {
+        const k = width / 200; // 定义节点大小的基础值
+        const r = d3.randomUniform(k, k * 4); // 定义随机半径的范围
+        const n = 4; // 分组数量
+        // 生成200个节点数据，每个节点带有随机半径和分组信息
+        return Array.from({length: 200}, (_, i) => ({r: r(), group: i && (i % n + 1)}));
+    })();
+
+    const color = d3.scaleOrdinal(d3.schemeTableau10); // 定义一个颜色比例尺
+    const nodes = data.map(Object.create); // 从数据中创建节点
+
+    // 设置力模拟
+    const simulation = d3.forceSimulation(nodes)
+        .alphaTarget(0.3) // 设置冷却率，使得模拟持续进行而不会太快停止
+        .velocityDecay(0.1) // 设置速度衰减率，模拟低摩擦环境
+        .force("x", d3.forceX().strength(0.01)) // x轴向中心的力
+        .force("y", d3.forceY().strength(0.01)) // y轴向中心的力
+        .force("collide", d3.forceCollide().radius(d => d.r + 1).iterations(3)) // 碰撞力，避免节点重叠
+        .force("charge", d3.forceManyBody().strength((d, i) => i ? 0 : -width * 2 / 3)) // 节点间的排斥或吸引力
+        .on("tick", ticked); // 每个“tick”（时间间隔）时执行的函数
+
+    // 添加交互
+    d3.select(canvas)
+        .on("touchmove", event => event.preventDefault()) // 防止触摸滚动
+        .on("pointermove", pointermoved); // 指针移动时的处理函数
+
+    function pointermoved(event) {
+        const [x, y] = d3.pointer(event); // 获取鼠标位置
+        nodes[0].fx = x - width / 2; // 设置第一个节点的固定位置，使其跟随鼠标移动
+        nodes[0].fy = y - height / 2;
     }
 
-    const pose = new Pose({
-        locateFile: (file) => {
-            return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
-        }
-    });
-    pose.setOptions({
-        modelComplexity: 1,
-        smoothLandmarks: true,
-        enableSegmentation: true,
-        smoothSegmentation: true,
-        minDetectionConfidence: 0.5,
-        minTrackingConfidence: 0.5
-    });
-    pose.onResults(onResults);
+    function ticked() {
+        context.clearRect(0, 0, width, height); // 清除画布
+        context.save(); // 保存当前绘图状态
+        context.translate(width / 2, height / 2); // 将绘图原点移到画布中心
 
-    const camera = new Camera(videoElement, {
-        onFrame: async () => {
-            await pose.send({image: videoElement});
-        },
-        width: 1280,
-        height: 720
-    });
-    camera.start();
+        // 绘制每个节点
+        for (let i = 1; i < nodes.length; ++i) {
+            const d = nodes[i];
+            context.beginPath(); // 开始新路径
+            context.moveTo(d.x + d.r, d.y); // 移动到起始点
+            context.arc(d.x, d.y, d.r, 0, 2 * Math.PI); // 绘制圆形
+            context.fillStyle = color(d.group); // 设置填充颜色
+            context.fill(); // 填充路径
+        }
+        context.restore(); // 恢复之前保存的绘图状态
+    }
 </script>
+</body>
 </html>

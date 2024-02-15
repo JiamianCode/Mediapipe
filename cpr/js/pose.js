@@ -11,11 +11,13 @@ spinner.ontransitionend = () => {
   spinner.style.display = 'none';
 };
 */
+/*
+let wristPositions = []; // 存储每一帧右手腕的位置
 
 //更新关键点
 function updateWristPositions(results){
   // 获取右手腕的关键点（索引为16），并更新wristPositions数组
-  const rightWrist = results.poseLandmarks[16]; // 假设索引16是右手腕
+  const rightWrist = results.poseLandmarks[POSE_LANDMARKS.RIGHT_WRIST]; // 假设索引16是右手腕
   if (rightWrist) {
     wristPositions.push({x: rightWrist.x, y: rightWrist.y}); // 保存x和y坐标
     if (wristPositions.length > 50) { // 限制数组大小，比如最近的50个数据点
@@ -23,6 +25,36 @@ function updateWristPositions(results){
     }
   }
 }
+*/
+// 初始化用于存储关键点位置的数组
+// 注意，暂时是不限制其规模增长的，若后续性能受到影响则进行改进
+let keypointPositions = [];
+
+// 定义要记录的关键点索引
+const landmarks = [
+  POSE_LANDMARKS.LEFT_SHOULDER,
+  POSE_LANDMARKS.RIGHT_SHOULDER,
+  POSE_LANDMARKS.LEFT_ELBOW,
+  POSE_LANDMARKS.RIGHT_ELBOW,
+  POSE_LANDMARKS.LEFT_WRIST,
+  POSE_LANDMARKS.RIGHT_WRIST,
+  POSE_LANDMARKS.LEFT_HIP,
+  POSE_LANDMARKS.RIGHT_HIP,
+];
+
+// 更新关键点位置
+function updateKeypointPositions(results) {
+  if(results){
+    // 为每个关键点创建一个新的记录
+    landmarks.forEach(index => {
+      const landmark = results.poseLandmarks[index];
+      if (landmark) {
+        keypointPositions.push({ index: index, x: landmark.x, y: landmark.y });
+      }
+    });
+  }
+}
+
 
 // 处理MediaPipe Pose结果的回调函数
 const skeletonCheckbox = document.getElementById('skeleton');
@@ -44,16 +76,16 @@ function onResultsPose(results) {
   }
 
   if(hullCheckbox.checked || chart1Visible){
-    updateWristPositions(results);//更新关键点
+    updateKeypointPositions(results);//更新关键点
   }
 
   if(hullCheckbox.checked){
-    drawConvexHull(results);// 画凸包
+    drawConvexHull(POSE_LANDMARKS.RIGHT_WRIST);// 画右手掌心的凸包
   }
 
   //更新图表
   if(chart1Visible){
-    updateLandmarkTrackChart();  // 更新图表
+    updateLandmarkTrackChart(POSE_LANDMARKS.RIGHT_WRIST);  // 更新图表
   }
 
   if(chart2Visible){
@@ -64,6 +96,8 @@ function onResultsPose(results) {
     // 更新仪表盘
     updateGauge(angle);
   }
+
+  updateSimulationWithPose(results, POSE_LANDMARKS.RIGHT_SHOULDER); // 使用Pose结果更新仿真
 }
 
 // 实例化Pose对象，并设置模型文件的路径

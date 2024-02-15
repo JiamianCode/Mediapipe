@@ -58,9 +58,14 @@ function drawLandmarksPositions(results) {
     canvas.restore(); // 恢复画布状态
 }
 // 画凸包
-function drawConvexHull(results) {
-    // 绘制所有保存的右手腕位置并计算凸包
-    const points = wristPositions.map(pos => [outputCanvas.width * pos.x, outputCanvas.height * pos.y]);
+function drawConvexHull(targetIndex) {
+    // 从keypointPositions中提取特定关键点的最新50个位置
+    const filteredPositions = keypointPositions
+        .filter(pos => pos.index === targetIndex)
+        .slice(-50); // 保留最后50个元素
+
+    // 将这些位置映射到canvas坐标系
+    const points = filteredPositions.map(pos => [outputCanvas.width * pos.x, outputCanvas.height * pos.y]);
 
     // 使用d3.polygonHull计算凸包
     const hull = d3.polygonHull(points);
@@ -80,12 +85,12 @@ function drawConvexHull(results) {
         // 设置凸包的样式
         canvas.strokeStyle = '#FF0000'; // 设置描边颜色
         canvas.stroke();
-        canvas.fillStyle = 'rgba(255, 255, 0, 1)'; // 设置填充颜色，这里使用半透明的红色
+        canvas.fillStyle = 'rgba(255, 255, 0, 0.5)'; // 设置填充颜色，这里使用半透明的黄色
         canvas.fill();
     }
 
-    // 绘制所有保存的右手腕位置
-    wristPositions.forEach(pos => {
+    // 绘制特定关键点的最新50个位置
+    filteredPositions.forEach(pos => {
         const x = outputCanvas.width * pos.x; // 使用保存的x坐标
         const y = outputCanvas.height * pos.y; // 使用保存的y坐标
         canvas.beginPath();
