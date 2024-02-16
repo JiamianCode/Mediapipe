@@ -8,6 +8,13 @@ const height = 800;
 let nodes = null;
 let color = null;
 
+// 预加载图片
+let nodeImage = new Image();
+nodeImage.src = 'img/hand.png'; // 替换为你的图片路径
+nodeImage.onload = function() {
+    // 图片加载完成后，可以执行相关的绘制操作或初始化
+    // 例如，你可能需要在这里调用 initSimulation() 函数
+};
 
 // 后续添加控制逻辑来初始化
 initSimulation();
@@ -69,16 +76,29 @@ function ticked() {
     context.translate(width / 2, height / 2); // 将绘图原点移到画布中心
 
     // 在nodes[0]的位置绘制方形
+    // if(nodes && nodes.length > 0) {
+    //     const squareSize = 20; // 方形的边长
+    //     const d = nodes[0];
+    //     context.beginPath(); // 开始新路径
+    //     // 计算方形的左上角坐标，以使方形中心与节点位置对齐
+    //     const squareX = d.x - squareSize / 2;
+    //     const squareY = d.y - squareSize / 2;
+    //     context.rect(squareX, squareY, squareSize, squareSize); // 绘制方形
+    //     context.fillStyle = 'red'; // 设置填充颜色，这里使用红色作为示例
+    //     context.fill(); // 填充方形
+    // }
+
+    // 在nodes[0]的位置绘制图片
     if(nodes && nodes.length > 0) {
-        const squareSize = 20; // 方形的边长
         const d = nodes[0];
-        context.beginPath(); // 开始新路径
-        // 计算方形的左上角坐标，以使方形中心与节点位置对齐
-        const squareX = d.x - squareSize / 2;
-        const squareY = d.y - squareSize / 2;
-        context.rect(squareX, squareY, squareSize, squareSize); // 绘制方形
-        context.fillStyle = 'red'; // 设置填充颜色，这里使用红色作为示例
-        context.fill(); // 填充方形
+        // 假设图片的尺寸是固定的，你可以根据需要调整这些值
+        const imgWidth = 40; // 图片的宽度
+        const imgHeight = 40; // 图片的高度
+        // 计算图片的左上角坐标，以使图片中心与节点位置对齐
+        const imgX = d.x - imgWidth / 2;
+        const imgY = d.y - imgHeight / 2;
+        // 绘制图片
+        context.drawImage(nodeImage, imgX, imgY, imgWidth, imgHeight);
     }
 
     // 绘制其余节点

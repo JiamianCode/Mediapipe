@@ -42,40 +42,74 @@ function calculateAngle(results, LA, LB, LC) {
     return thetaDegrees.toFixed(2);
 }
 
+// 仪表盘角度样式
+const angleSeries = [
+    {
+        name: '角度',
+        type: 'gauge',
+        min: 0, // 最小值
+        max: 180, // 最大值
+        //startAngle: 180, // 起始角度
+        //endAngle: 0, // 结束角度
+        detail: {
+            formatter: '{value}°',
+            fontSize: 20  // 调整字体大小
+        },
+        data: [{value: 90, name: '角度'}],
+    }
+]
+
+// 仪表盘频率样式
+const frequencySeries = [
+    {
+        name: '频率',
+        type: 'gauge',
+        min: 0, // 最小值
+        max: 2, // 最大值
+        //startAngle: 180, // 起始角度
+        //endAngle: 0, // 结束角度
+        detail: {
+            formatter: '{value}次/秒',
+            fontSize: 15  // 调整字体大小
+        },
+        data: [{value: 1, name: '频率'}],
+    }
+]
+
+
+let containerChart3 = document.getElementById('containerChart3');
+let containerChart4 = document.getElementById('containerChart4');
+let containerChart5 = document.getElementById('containerChart5');
+
 // 初始化仪表盘
-let gauge = null;
-function initGauge(){
-    // 设置 containerChart2 的宽度和高度
-    containerChart2.style.width = '400px';
-    containerChart2.style.height = '300px';
+let gauge1 = null;
+let gauge2 = initGauge(containerChart3,angleSeries);
+let gauge3 = initGauge(containerChart4,angleSeries);
+let gauge4 = initGauge(containerChart5,frequencySeries);
+
+function initGauge(targetContainer,series) {
+    // 确保容器存在
+    if (!targetContainer) return null;
+
+    // 设置容器的宽度和高度
+    targetContainer.style.width = '400px';
+    targetContainer.style.height = '300px';
 
     // 基于准备好的dom，初始化echarts实例
-    gauge = echarts.init(containerChart2);
+    let gauge = echarts.init(targetContainer);
 
     // 指定图表的配置项和数据
     const option = {
         tooltip : {
             formatter: "{a} <br/>{b} : {c}°"
         },
-        series: [
-            {
-                name: '角度',
-                type: 'gauge',
-                min: 0, // 最小值
-                max: 180, // 最大值
-                //startAngle: 180, // 起始角度
-                //endAngle: 0, // 结束角度
-                detail: {
-                    formatter: '{value}°',
-                    fontSize: 20  // 调整字体大小
-                    },
-                data: [{value: 90, name: '角度'}],
-            }
-        ]
+        series: series
     };
 
     // 使用刚指定的配置项和数据显示图表
     gauge.setOption(option);
+    // 返回echarts实例以供后续使用
+    return gauge;
 }
 
 // 更新图表
@@ -85,17 +119,17 @@ function initGauge(){
 // 新建议：多个角度需要显示的时候，不一定要用这种圆形仪表盘，因为又大又笨重，可以改用横条式的仪表盘
 let frameCount = 0;
 let frameGap = 15;
-function updateGauge(angle) {
-    // 检查角度值是否为null，若为null则不更新
-    if(angle === null)  return;
+function updateGauge(gauge, value) {
+    // 检查echarts实例和角度值是否为null，若为null则不更新
+    if (!gauge || value === null) return;
 
     frameCount++;
-    if(frameCount % frameGap !== 0) return;
+    if (frameCount % frameGap !== 0) return;
 
     // 更新图表数据
     gauge.setOption({
         series: [{
-            data: [{value: angle, name: '角度'}]
+            data: [{value: value}]
         }]
     });
 }

@@ -20,6 +20,9 @@
 
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <!-- 从CDN引入three.js和OrbitControls.js -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.126.1/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.126.1/examples/js/controls/OrbitControls.js"></script>
 </head>
 <body>
     <section class="section">
@@ -97,6 +100,19 @@
                 </div>
             </div>
 
+            <div id="pose-container"></div>
+
+            <div id="containerChart3" class="chart-container">
+                <svg width="400" height="200" id="chart3"></svg>
+            </div>
+
+            <div id="containerChart4" class="chart-container">
+                <svg width="400" height="200" id="chart4"></svg>
+            </div>
+
+            <div id="containerChart5" class="chart-container">
+                <svg width="400" height="200" id="chart5"></svg>
+            </div>
 
             <canvas id="poseCanvas"></canvas>
         </div>
@@ -108,6 +124,7 @@
     <script type="text/javascript" src="js/landmarkTrack.js"></script>
     <script type="text/javascript" src="js/landmarkAngle.js"></script>
     <script type="text/javascript" src="js/collideForce.js"></script>
+    <script type="text/javascript" src="js/skeleton.js"></script>
     <script type="text/javascript" src="js/control.js"></script>
 </body>
 </html>

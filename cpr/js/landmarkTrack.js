@@ -30,8 +30,8 @@ function gaussianSmooth(dataY, sigma = 2) {
 }
 
 //更新图表
-function updateLandmarkTrackChart(targetIndex) {
-    const svg = d3.select("#chart1");
+function updateLandmarkTrackChart(targetIndex, chartName) {
+    const svg = d3.select(chartName);
     const margin = { top: 40, right: 30, bottom: 20, left: 40 };
     const width = 400 - margin.left - margin.right;
     const height = 200 - margin.top - margin.bottom;
@@ -83,4 +83,38 @@ function updateLandmarkTrackChart(targetIndex) {
         .attr("text-anchor", "middle")
         .style("font-size", "16px")
         .text("Wrist Position Over Time");
+}
+
+// 平滑、寻找极大值和计算频率
+function calculateFrequency(index,maxPeaksToConsider = 5) {
+    // 从keypointPositions中筛选指定关键点的数据
+    const filteredPositions = keypointPositions.filter(pos => pos.index === index);
+    // 提取y值和时间戳
+    const yValues = filteredPositions.map(pos => pos.y);
+    const timestamps = filteredPositions.map(pos => pos.time);
+
+    // 应用高斯平滑
+    const smoothedYValues = gaussianSmooth(yValues);
+
+    // 寻找极大值
+    let peaks = [];
+    for (let i = 1; i < smoothedYValues.length - 1; i++) {
+        if (smoothedYValues[i] > smoothedYValues[i - 1] && smoothedYValues[i] > smoothedYValues[i + 1]) {
+            peaks.push({ time: timestamps[i], value: smoothedYValues[i] });
+        }
+    }
+
+    // 仅考虑最新的若干个极大值
+    const recentPeaks = peaks.slice(-maxPeaksToConsider);
+
+    // 计算震动频率
+    if (recentPeaks.length > 1) {
+        const duration = (recentPeaks[recentPeaks.length - 1].time - recentPeaks[0].time) / 1000; // 秒
+        const frequency = (recentPeaks.length - 1) / duration; // 频率（Hz）
+
+        // 保留两位小数并转换为数字类型
+        return Number(frequency.toFixed(2));
+    }
+
+    return 0; // 如果没有足够的极大值来计算频率，返回0
 }

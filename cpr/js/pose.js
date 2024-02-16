@@ -11,21 +11,7 @@ spinner.ontransitionend = () => {
   spinner.style.display = 'none';
 };
 */
-/*
-let wristPositions = []; // 存储每一帧右手腕的位置
 
-//更新关键点
-function updateWristPositions(results){
-  // 获取右手腕的关键点（索引为16），并更新wristPositions数组
-  const rightWrist = results.poseLandmarks[POSE_LANDMARKS.RIGHT_WRIST]; // 假设索引16是右手腕
-  if (rightWrist) {
-    wristPositions.push({x: rightWrist.x, y: rightWrist.y}); // 保存x和y坐标
-    if (wristPositions.length > 50) { // 限制数组大小，比如最近的50个数据点
-      wristPositions.shift(); // 移除最旧的数据点
-    }
-  }
-}
-*/
 // 初始化用于存储关键点位置的数组
 // 注意，暂时是不限制其规模增长的，若后续性能受到影响则进行改进
 let keypointPositions = [];
@@ -44,12 +30,17 @@ const landmarks = [
 
 // 更新关键点位置
 function updateKeypointPositions(results) {
-  if(results){
-    // 为每个关键点创建一个新的记录
+  const timestamp = Date.now(); // 获取当前时间戳
+  if(results && results.poseLandmarks){
+    // 为每个关键点创建一个新的记录，包括时间戳
     landmarks.forEach(index => {
       const landmark = results.poseLandmarks[index];
       if (landmark) {
-        keypointPositions.push({ index: index, x: landmark.x, y: landmark.y });
+        keypointPositions.push({
+          index: index,
+          x: landmark.x,
+          y: landmark.y,
+          time: timestamp });
       }
     });
   }
@@ -75,9 +66,10 @@ function onResultsPose(results) {
     drawLandmarksPositions(results);// 绘制关键点
   }
 
-  if(hullCheckbox.checked || chart1Visible){
-    updateKeypointPositions(results);//更新关键点
-  }
+  // if(hullCheckbox.checked || chart1Visible){
+  //   updateKeypointPositions(results);//更新关键点
+  // }
+  updateKeypointPositions(results);//更新关键点
 
   if(hullCheckbox.checked){
     drawConvexHull(POSE_LANDMARKS.RIGHT_WRIST);// 画右手掌心的凸包
@@ -85,7 +77,7 @@ function onResultsPose(results) {
 
   //更新图表
   if(chart1Visible){
-    updateLandmarkTrackChart(POSE_LANDMARKS.RIGHT_WRIST);  // 更新图表
+    updateLandmarkTrackChart(POSE_LANDMARKS.RIGHT_WRIST, "#chart1");  // 更新图表
   }
 
   if(chart2Visible){
@@ -94,10 +86,20 @@ function onResultsPose(results) {
     // 计算角度
     const angle = calculateAngle(results, LA, LB, LC);
     // 更新仪表盘
-    updateGauge(angle);
+    updateGauge(gauge1,angle);
+
+    updateGauge(gauge2,calculateAngle(results,12,14,16));
+    updateGauge(gauge3,calculateAngle(results,12,24,26));
   }
 
   updateSimulationWithPose(results, POSE_LANDMARKS.RIGHT_SHOULDER); // 使用Pose结果更新仿真
+
+  const frequency = calculateFrequency(POSE_LANDMARKS.RIGHT_WRIST); // 计算频率
+  //console.log("frequency:",frequency);
+  updateGauge(gauge4,frequency);
+
+  // 绘制3d骨骼
+  updateKeypoints(results);
 }
 
 // 实例化Pose对象，并设置模型文件的路径
