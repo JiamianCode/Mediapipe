@@ -18,11 +18,11 @@
     <!-- index style -->
     <link rel="stylesheet" type="text/css" href="./css/indexstyle.css">
 
+    <!-- 引入 d3 文件 -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
-    <!-- 从CDN引入three.js和OrbitControls.js -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.126.1/build/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.126.1/examples/js/controls/OrbitControls.js"></script>
+    <!-- 引入 ECharts 文件和ECharts GL库 -->
+    <script type="text/javascript" src="https://registry.npmmirror.com/echarts/5.4.3/files/dist/echarts.min.js"></script>
+    <script type="text/javascript" src="https://registry.npmmirror.com/echarts-gl/2/files/dist/echarts-gl.min.js"></script>
 </head>
 <body>
     <section class="section">
@@ -100,7 +100,7 @@
                 </div>
             </div>
 
-            <div id="pose-container"></div>
+            <div id="skeletonContainer"></div>
 
             <div id="containerChart3" class="chart-container">
                 <svg width="400" height="200" id="chart3"></svg>

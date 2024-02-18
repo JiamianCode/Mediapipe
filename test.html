@@ -1,62 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html style="height: 100%">
 <head>
     <meta charset="utf-8">
-    <title>D3 Collision Detection</title>
-    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <title>3D散点图示例</title>
+    <!-- 引入 ECharts 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <!-- 确保也加载了ECharts GL库 -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
 </head>
-<body>
-<script>
-    (function() {
-        const width = 800; // 设定画布宽度
-        const height = width; // 画布高度与宽度相同
-        const color = d3.scaleOrdinal(d3.schemeTableau10); // 颜色比例尺
-        const canvas = document.createElement('canvas'); // 创建canvas元素
-        document.body.appendChild(canvas); // 将canvas添加到body中
-        canvas.width = width;
-        canvas.height = height;
-        const context = canvas.getContext('2d'); // 获取2D上下文
+<body style="height: 100%; margin: 0">
+<div id="container" style="width: 100%; height: 100%"></div>
+<script type="text/javascript">
+    var myChart = echarts.init(document.getElementById('container'));
 
-        const data = Array.from({length: 200}, (_, i) => ({
-            r: d3.randomUniform(width / 200, width / 50)(), // 随机半径
-            group: i % 4 + 1 // 分组
-        }));
+    // 随机生成点
+    var data = [];
+    for (var i = 0; i < 33; ++i) {
+        data.push([Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1]);
+    }
 
-        const nodes = data.map(Object.create); // 创建节点数组的浅副本
+    // 配色映射
+    var colorMapping = data.map(function () {
+        return 'rgb(' +
+            Math.round(255 * Math.random()) + ',' +
+            Math.round(255 * Math.random()) + ',' +
+            Math.round(255 * Math.random()) + ')';
+    });
 
-        const simulation = d3.forceSimulation(nodes)
-            .alphaTarget(0.3) // 设置温度，让布局更活跃
-            .velocityDecay(0.1) // 设置速度衰减
-            .force("x", d3.forceX().strength(0.01))
-            .force("y", d3.forceY().strength(0.01))
-            .force("collide", d3.forceCollide().radius(d => d.r + 1).iterations(3))
-            .force("charge", d3.forceManyBody().strength((d, i) => i ? 0 : -width * 2 / 3))
-            .on("tick", ticked); // 每次迭代调用
-
-        canvas.addEventListener("pointermove", pointermoved);
-
-        function pointermoved(event) {
-            const rect = canvas.getBoundingClientRect();
-            const x = event.clientX - rect.left - width / 2;
-            const y = event.clientY - rect.top - height / 2;
-            nodes[0].fx = x;
-            nodes[0].fy = y;
-        }
-
-        function ticked() {
-            context.clearRect(0, 0, width, height);
-            context.save();
-            context.translate(width / 2, height / 2);
-            for (const d of nodes) {
-                context.beginPath();
-                context.moveTo(d.x + d.r, d.y);
-                context.arc(d.x, d.y, d.r, 0, 2 * Math.PI);
-                context.fillStyle = color(d.group);
-                context.fill();
+    var option = {
+        tooltip: {},
+        backgroundColor: '#fff',
+        visualMap: {
+            show: false,
+            min: 0,
+            max: 1,
+            inRange: {
+                symbolSize: [10, 70]
             }
-            context.restore();
-        }
-    })();
+        },
+        xAxis3D: {
+            type: 'value'
+        },
+        yAxis3D: {
+            type: 'value'
+        },
+        zAxis3D: {
+            type: 'value'
+        },
+        grid3D: {
+            viewControl: {
+                // 允许旋转
+                rotateSensitivity: 1,
+                // 允许缩放
+                zoomSensitivity: 1,
+                // 允许平移
+                panSensitivity: 1,
+                // 自动旋转
+                autoRotate: false
+            }
+        },
+        series: [{
+            type: 'scatter3D',
+            data: data,
+            itemStyle: {
+                color: function (params) {
+                    return colorMapping[params.dataIndex];
+                }
+            }
+        }]
+    };
+
+    myChart.setOption(option);
 </script>
 </body>
 </html>

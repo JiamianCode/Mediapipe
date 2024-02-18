@@ -1,105 +1,107 @@
-// 获取包含three.js渲染器的div
-const container = document.getElementById('pose-container');
-container.style.width = '800px';
-container.style.height = '600px';
-// 创建场景
-const scene = new THREE.Scene();
+// 初始化echarts实例
+var skeletonContainer = document.getElementById('skeletonContainer');
+skeletonContainer.style.width = '800px';
+skeletonContainer.style.height = '800px';
+var myChart = echarts.init(skeletonContainer, null, {
+    renderer: 'canvas', // 使用 canvas 渲染器
+    useDirtyRect: false // 关闭脏矩形优化，确保全画布更新
+});
 
-// 创建透视相机
-const camera3d = new THREE.PerspectiveCamera(75, container.offsetWidth / container.offsetHeight, 0.1, 1000);
-// 调整相机位置以匹配Python图像的视角
-camera3d.position.set(0, 0, 5);
-camera3d.lookAt(new THREE.Vector3(0, 0, 0));
+// POSE_CONNECTIONS定义的所有线条
+const lineSeries = POSE_CONNECTIONS.map(() => ({
+    type: 'line3D',
+    lineStyle: {
+        width: 4 // 设置线条的宽度
+    },
+    data: [] // 初始时不包含数据
+}));
 
-// 创建渲染器，并设置透明背景
-const renderer = new THREE.WebGLRenderer({ alpha: true });
-renderer.setSize(container.offsetWidth, container.offsetHeight);
-renderer.setClearColor(0x000000, 0);
-container.appendChild(renderer.domElement);
+// 初始echarts配置
+const option = {
+    tooltip: {},
+    backgroundColor: '#fff',
+    visualMap: { // 视觉映射组件，用于数据的颜色映射
+        show: false, // 不显示视觉映射组件
+        dimension: 2, // 指定映射的维度，这里是 z 轴
+        min: 0, // 数据最小值
+        max: 1, // 数据最大值
+        inRange: { // 数据在选定范围内时的颜色
+            color: [
+                '#313695','#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf',
+                '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026'
+            ]
+        }
+    },
+    xAxis3D: {type: 'value',min: 0,max:1},
+    yAxis3D: {type: 'value',min: 0,max:1},
+    zAxis3D: {type: 'value',min: 0,max:1},
+    // 3D 网格配置
+    grid3D: {
+        // 视图控制组件
+        viewControl: {
+            projection: 'perspective', // 设置为透视投影
+            rotateSensitivity: 1,
+            zoomSensitivity: 1,
+            panSensitivity: 1,
+            autoRotate: true    // 图表会绕着 z 轴自动旋转
+        }
+    },
+    // 系列列表
+    series: [{
+        type: 'scatter3D',
+        data: []
+    }].concat(lineSeries) // 散点图系列加上所有的线条系列
+};
 
-// 初始化OrbitControls
-const controls = new THREE.OrbitControls(camera3d, renderer.domElement);
-controls.enableDamping = true;
-controls.dampingFactor = 0.25;
-controls.enableZoom = true;
-
-// 创建坐标轴帮助对象
-const axesHelper = new THREE.AxesHelper(5);
-axesHelper.material = new THREE.LineBasicMaterial({ color: 0x000000 });
-scene.add(axesHelper);
-
-// 创建一个组来存放关键点的球体和骨骼连线
-const keypointsGroup = new THREE.Group();
-scene.add(keypointsGroup);
-
-// 添加网格辅助对象
-const size = 10;
-const divisions = 10;
-const gridHelper = new THREE.GridHelper(size, divisions);
-scene.add(gridHelper);
-
-// 定义颜色映射
-function generateColorMap(length) {
-    const colors = [];
-    for (let i = 0; i < length; i++) {
-        const hue = (i / length) * 360;
-        colors.push(new THREE.Color(`hsl(${hue}, 100%, 50%)`));
-    }
-    return colors;
+// 应用配置项
+if (option && typeof option === 'object') {
+    myChart.setOption(option);
 }
-const colormap = generateColorMap(33); // 假设有33个关键点
 
-// 更新关键点的函数
-function updateKeypoints(results) {
-    // 清除现有关键点和骨骼
-    while (keypointsGroup.children.length > 0) {
-        const child = keypointsGroup.children[0];
-        keypointsGroup.remove(child);
-        if (child.geometry) child.geometry.dispose();
-        if (child.material) child.material.dispose();
-    }
 
-    // 重新创建关键点的球体和骨骼连线
-    results.poseLandmarks.forEach((keypoint, index) => {
-        const color = colormap[index % colormap.length]; // 使用颜色映射
+function updateData(results) {
+    if(!(results && results.poseLandmarks)) return;
 
-        // 创建球体几何体表示关键点
-        const geometry = new THREE.SphereGeometry(0.05, 32, 32);
-        const material = new THREE.MeshBasicMaterial({ color: color });
-        const sphere = new THREE.Mesh(geometry, material);
+    // 保存当前的视图控制状态
+    var currentOption = myChart.getOption();
+    var viewControl = currentOption.grid3D[0].viewControl;
 
-        // 设置球体的位置
-        sphere.position.x = keypoint.x - 0.5;
-        sphere.position.y = keypoint.y - 0.5;
-        sphere.position.z = keypoint.z - 0.5;
+    var landmarks = results.poseLandmarks;
+    // 关键点数据
+    var scatterData = landmarks.map(lm => [lm.x, lm.z/2+0.5, -lm.y+1]);
+    var seriesUpdate = [{
+        type: 'scatter3D',
+        data: scatterData
+    }];
 
-        // 将球体添加到组中
-        keypointsGroup.add(sphere);
+    // 连线数据：为每个line3D系列更新数据
+    POSE_CONNECTIONS.forEach((connection, index) => {
+        seriesUpdate.push({
+            type: 'line3D',
+            // 指定需要更新的系列索引，跳过第一个散点图系列
+            seriesIndex: index + 1,
+            data: [
+                [landmarks[connection[0]].x, landmarks[connection[0]].z/2+0.5, -landmarks[connection[0]].y+1],
+                [landmarks[connection[1]].x, landmarks[connection[1]].z/2+0.5, -landmarks[connection[1]].y+1]
+            ]
+        });
     });
 
-    // 连接骨骼
-    POSE_CONNECTIONS.forEach(connection => {
-        const [index1, index2] = connection;
-        const point1 = results.poseLandmarks[index1];
-        const point2 = results.poseLandmarks[index2];
+    // 计算z轴的最大值和最小值
+    let zValues = scatterData.map(point => point[2]);
+    let zMin = Math.min(...zValues);
+    let zMax = Math.max(...zValues);
 
-        const lineGeometry = new THREE.BufferGeometry().setFromPoints([
-            new THREE.Vector3(point1.x - 0.5, point1.y - 0.5, point1.z - 0.5),
-            new THREE.Vector3(point2.x - 0.5, point2.y - 0.5, point2.z - 0.5)
-        ]);
-        const lineMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
-        const line = new THREE.Line(lineGeometry, lineMaterial);
-        keypointsGroup.add(line);
+    // 更新echarts实例的配置，设置散点图数据和连接线数据
+    // 同时应用之前保存的视图控制状态
+    myChart.setOption({
+        visualMap: {
+            min: zMin, // 使用计算出的最小值
+            max: zMax, // 使用计算出的最大值
+        },
+        grid3D: {
+            viewControl: viewControl
+        },
+        series: seriesUpdate
     });
-
-    // 更新渲染器
-    renderer.render(scene, camera3d);
 }
-
-// 动画循环渲染函数
-function animate() {
-    requestAnimationFrame(animate);
-    controls.update();
-    renderer.render(scene, camera3d);
-}
-animate();

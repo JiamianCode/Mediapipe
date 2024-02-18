@@ -1,71 +1,105 @@
+<!--
+	此示例下载自 https://echarts.apache.org/examples/zh/editor.html?c=line3d-orthographic&gl=1
+-->
 <!DOCTYPE html>
-<html>
+<html lang="en" style="height: 100%">
 <head>
-    <title>D3 Collision Detection</title>
-    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <meta charset="utf-8">
 </head>
-<body>
-<!-- 创建一个canvas元素用于绘制 -->
-<canvas width="800" height="800"></canvas>
-<script>
-    // 设置canvas的宽高
-    const width = 800;
-    const height = width; // 使高度等于宽度
+<body style="height: 100%; margin: 0">
+<div id="container" style="height: 100%"></div>
 
-    // 选择canvas元素并获取其2D绘图上下文
-    const canvas = document.querySelector('canvas');
-    const context = canvas.getContext('2d');
 
-    // 生成节点数据
-    // 使用自执行函数立即生成数据
-    const data = (() => {
-        const k = width / 200; // 定义节点大小的基础值
-        const r = d3.randomUniform(k, k * 4); // 定义随机半径的范围
-        const n = 4; // 分组数量
-        // 生成200个节点数据，每个节点带有随机半径和分组信息
-        return Array.from({length: 200}, (_, i) => ({r: r(), group: i && (i % n + 1)}));
-    })();
+<script type="text/javascript" src="https://registry.npmmirror.com/echarts/5.4.3/files/dist/echarts.min.js"></script>
+<!-- Uncomment this line if you want to dataTool extension
+<script type="text/javascript" src="https://registry.npmmirror.com/echarts/5.4.3/files/dist/extension/dataTool.min.js"></script>
+-->
+Uncomment this line if you want to use gl extension
+<script type="text/javascript" src="https://registry.npmmirror.com/echarts-gl/2/files/dist/echarts-gl.min.js"></script>
 
-    const color = d3.scaleOrdinal(d3.schemeTableau10); // 定义一个颜色比例尺
-    const nodes = data.map(Object.create); // 从数据中创建节点
+<!-- Uncomment this line if you want to echarts-stat extension
+<script type="text/javascript" src="https://registry.npmmirror.com/echarts-stat/latest/files/dist/ecStat.min.js"></script>
+-->
+<!-- Uncomment this line if you want to use map
+<script type="text/javascript" src="https://registry.npmmirror.com/echarts/4.9.0/files/map/js/china.js"></script>
+<script type="text/javascript" src="https://registry.npmmirror.com/echarts/4.9.0/files/map/js/world.js"></script>
+-->
+<!-- Uncomment these two lines if you want to use bmap extension
+<script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=YOUR_API_KEY"></script>
+<script type="text/javascript" src="https://registry.npmmirror.com/echarts/5.4.3/files/dist/extension/bmap.min.js"></script>
+-->
 
-    // 设置力模拟
-    const simulation = d3.forceSimulation(nodes)
-        .alphaTarget(0.3) // 设置冷却率，使得模拟持续进行而不会太快停止
-        .velocityDecay(0.1) // 设置速度衰减率，模拟低摩擦环境
-        .force("x", d3.forceX().strength(0.01)) // x轴向中心的力
-        .force("y", d3.forceY().strength(0.01)) // y轴向中心的力
-        .force("collide", d3.forceCollide().radius(d => d.r + 1).iterations(3)) // 碰撞力，避免节点重叠
-        .force("charge", d3.forceManyBody().strength((d, i) => i ? 0 : -width * 2 / 3)) // 节点间的排斥或吸引力
-        .on("tick", ticked); // 每个“tick”（时间间隔）时执行的函数
+<script type="text/javascript">
+    // 获取 DOM 元素并初始化 ECharts 实例
+    var dom = document.getElementById('container');
+    var myChart = echarts.init(dom, null, {
+        renderer: 'canvas', // 使用 canvas 渲染器
+        useDirtyRect: false // 关闭脏矩形优化，确保全画布更新
+    });
+    var app = {};
 
-    // 添加交互
-    d3.select(canvas)
-        .on("touchmove", event => event.preventDefault()) // 防止触摸滚动
-        .on("pointermove", pointermoved); // 指针移动时的处理函数
+    var option; // 定义 ECharts 配置项变量
 
-    function pointermoved(event) {
-        const [x, y] = d3.pointer(event); // 获取鼠标位置
-        nodes[0].fx = x - width / 2; // 设置第一个节点的固定位置，使其跟随鼠标移动
-        nodes[0].fy = y - height / 2;
+    var data = []; // 数据数组
+    // // 生成参数化曲线的数据
+    // for (var t = 0; t < 25; t += 0.001) {
+    //     var x = (1 + 0.25 * Math.cos(75 * t)) * Math.cos(t);
+    //     var y = (1 + 0.25 * Math.cos(75 * t)) * Math.sin(t);
+    //     var z = t + 2.0 * Math.sin(75 * t);
+    //     data.push([x, y, z]); // 将计算出的 x, y, z 坐标添加到数据数组中
+    // }
+    data= [[1,2,3],[4,5,6],[7,8,9]]
+    console.log(data.length); // 打印数据长度，用于调试
+
+    // ECharts 配置项
+    option = {
+        tooltip: {}, // 配置提示框组件
+        backgroundColor: '#fff', // 背景色
+        visualMap: { // 视觉映射组件，用于数据的颜色映射
+            show: false, // 不显示视觉映射组件
+            dimension: 2, // 指定映射的维度，这里是 z 轴
+            min: 0, // 数据最小值
+            max: 30, // 数据最大值
+            inRange: { // 数据在选定范围内时的颜色
+                color: [
+                    '#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8',
+                    '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026'
+                ]
+            }
+        },
+        xAxis3D: { // 3D x 轴配置
+            type: 'value'
+        },
+        yAxis3D: { // 3D y 轴配置
+            type: 'value'
+        },
+        zAxis3D: { // 3D z 轴配置
+            type: 'value'
+        },
+        grid3D: { // 3D 网格配置
+            viewControl: { // 视图控制组件
+                projection: 'orthographic' // 设置为正交投影
+            }
+        },
+        series: [ // 系列列表
+            {
+                type: 'line3D', // 类型为 3D 折线图
+                data: data, // 使用上面生成的数据
+                lineStyle: { // 线条样式
+                    width: 4 // 线条宽度
+                }
+            }
+        ]
+    };
+
+    // 应用配置项
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
     }
 
-    function ticked() {
-        context.clearRect(0, 0, width, height); // 清除画布
-        context.save(); // 保存当前绘图状态
-        context.translate(width / 2, height / 2); // 将绘图原点移到画布中心
+    // 监听窗口大小变化，自动调整图表大小
+    window.addEventListener('resize', myChart.resize);
 
-        // 绘制每个节点
-        for (let i = 1; i < nodes.length; ++i) {
-            const d = nodes[i];
-            context.beginPath(); // 开始新路径
-            context.moveTo(d.x + d.r, d.y); // 移动到起始点
-            context.arc(d.x, d.y, d.r, 0, 2 * Math.PI); // 绘制圆形
-            context.fillStyle = color(d.group); // 设置填充颜色
-            context.fill(); // 填充路径
-        }
-        context.restore(); // 恢复之前保存的绘图状态
-    }
 </script>
 </body>
 </html>

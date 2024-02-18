@@ -99,7 +99,8 @@ function onResultsPose(results) {
   updateGauge(gauge4,frequency);
 
   // 绘制3d骨骼
-  updateKeypoints(results);
+  if(results)
+  updateData(results);
 }
 
 // 实例化Pose对象，并设置模型文件的路径
