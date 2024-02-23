@@ -1,0 +1,35 @@
+/* 背景色 */
+.bg-navbar { background-color: #3888c0; } /* 导航栏的背景色 */
+
+.bg-main{ background: #aacfe5; }/* 主体部分背景色 */
+.bg-control-panel { background-color: #aacfe5; } /* 控制面板的背景色 */
+.bg-output-canvas { background-color: #3888c0; } /* 输出画面的背景色 */
+.bg-sub-panel {background-color: #aacfe5; } /* 副面板的背景色 */
+.bg-input-video { background-color: #68acd5; } /* 输入视频的背景色 */
+.bg-chart { background-color: #aacfe5; } /* 图表区的背景色 */
+.bg-chart-1 { background-color: #08336e; } /* 表1背景色 */
+.bg-chart-2 { background-color: #105ca4; } /* 表2背景色 */
+.bg-chart-3 { background-color: #3888c0; } /* 表3背景色 */
+.bg-chart-4 { background-color: #68ACD5; } /* 表4背景色 */
+
+.bg-bottom {background-color: #d2e3f3; }   /* 底部背景颜色 */
+.bg-chart-5 { background-color: #105ca4; } /* 表5背景色 */
+.bg-text { background-color: #aacfe5; } /* 文字提示部分背景色 */
+
+/* 设置边框宽度和颜色 */
+.border {
+    border-width: 10px !important;
+    border-color: #f4f9fe !important;
+}
+
+/* 调整导航栏高度 */
+.navbar-custom {
+    padding-top: 0rem; /* 增加上内边距 */
+    padding-bottom: 0rem; /* 增加下内边距 */
+}
+
+/* 可选：调整导航栏内部元素（如导航链接）的大小和边距，以适应新的高度 */
+.navbar-nav .nav-link {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
