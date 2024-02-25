@@ -24,8 +24,8 @@
 
 /* 调整导航栏高度 */
 .navbar-custom {
-    padding-top: 0rem; /* 增加上内边距 */
-    padding-bottom: 0rem; /* 增加下内边距 */
+    padding-top: 0.4rem; /* 增加上内边距 */
+    padding-bottom: 0.2rem; /* 增加下内边距 */
 }
 
 /* 可选：调整导航栏内部元素（如导航链接）的大小和边距，以适应新的高度 */
