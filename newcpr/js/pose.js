@@ -80,16 +80,20 @@ function onResultsPose(results) {
     updateLandmarkTrackChart(POSE_LANDMARKS.RIGHT_WRIST, "#chart1");  // 更新图表
   }
 
+  var angle1,angle2,angle3;
+
   if(chart2Visible){
     // pose关键点索引
     const LA = 14, LB = 12, LC = 24;
     // 计算角度
-    const angle = calculateAngle(results, LA, LB, LC);
-    // 更新仪表盘
-    updateGauge(gauge1,angle);
+    angle1 = calculateAngle(results, LA, LB, LC);
+    angle2 = calculateAngle(results,12,14,16);
+    angle3 = calculateAngle(results,12,24,26);
 
-    updateGauge(gauge2,calculateAngle(results,12,14,16));
-    updateGauge(gauge3,calculateAngle(results,12,24,26));
+    // 更新仪表盘
+    updateGauge(gauge1,angle1);
+    updateGauge(gauge2,angle2);
+    updateGauge(gauge3,angle3);
   }
 
   updateSimulationWithPose(results, POSE_LANDMARKS.RIGHT_SHOULDER); // 使用Pose结果更新仿真
@@ -101,6 +105,17 @@ function onResultsPose(results) {
   // 绘制3d骨骼
   if(results)
   updateData(results);
+
+  // 绘制堆叠图
+  const scores = [
+    calculateNormalDistributionY(angle1, 35, 55, 25, 0),
+    calculateNormalDistributionY(angle2, 145, 165, 25, 0),
+    calculateNormalDistributionY(angle3, 110, 140, 25, 0),
+    calculateNormalDistributionY(frequency, 1, 1.5, 25, 0),
+  ];
+  //console.log(scores);
+  updateChartData(stackedAreaChart,scores);
+
 }
 
 // 实例化Pose对象，并设置模型文件的路径

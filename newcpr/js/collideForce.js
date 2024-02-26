@@ -44,10 +44,12 @@ function initSimulation(){
     const simulation = d3.forceSimulation(nodes)
         .alphaTarget(0.3) // 设置冷却率，使得模拟持续进行而不会太快停止
         .velocityDecay(0.1) // 设置速度衰减率，模拟低摩擦环境
+        // 向中心靠拢的力的强度
         .force("x", d3.forceX().strength(0.01)) // x轴向中心的力
         .force("y", d3.forceY().strength(0.01)) // y轴向中心的力
         .force("collide", d3.forceCollide().radius(d => d.r + 1).iterations(3)) // 碰撞力，避免节点重叠
-        .force("charge", d3.forceManyBody().strength((d, i) => i ? 0 : -width * 2 / 3)) // 节点间的排斥或吸引力
+        // 中心点对其他点的排斥力，减少-width * 2 / 3这个负值的绝对值
+        .force("charge", d3.forceManyBody().strength((d, i) => i ? 0 : -width / 4)) // 节点间的排斥或吸引力
         .on("tick", ticked); // 每个“tick”（时间间隔）时执行的函数
 }
 

@@ -1,4 +1,3 @@
-
 // 计算三个关键点形成的角度
 function calculateAngle(results, LA, LB, LC) {
     // 确保关键点存在
@@ -43,34 +42,173 @@ function calculateAngle(results, LA, LB, LC) {
 }
 
 // 仪表盘角度样式
-const angleSeries = [
-    {
-        name: '角度',
-        type: 'gauge',
-        min: 0, // 最小值
-        max: 180, // 最大值
-        //startAngle: 180, // 起始角度
-        //endAngle: 0, // 结束角度
-        detail: {
-            formatter: '{value}°',
-            fontSize: 20  // 调整字体大小
-        },
-        data: [{value: 90, name: '角度'}],
-    }
-]
+function setAngleSeries(min,max){
+    return [
+        {
+            name: '角度',
+            title: { // 控制仪表盘名称显示的样式
+                // 显示的文本内容，这里作为示例
+                show: true, // 确保标题显示
+                offsetCenter: [0, '70%'], // 调整名称位置，第一个值是水平偏移，第二个值是垂直偏移
+                textStyle: { // 文本样式
+                    color: '#e0d1cc', // 字体颜色
+                    fontSize: 14, // 字体大小
+                    fontWeight: 'bold', // 字体粗细
+                    fontFamily: 'Arial' // 字体类型
+                }
+            },
+            type: 'gauge',
+            min: 0, // 最小值
+            max: 180, // 最大值
+            //startAngle: 180, // 起始角度
+            //endAngle: 0, // 结束角度
+            axisLine: { // axisLine定义了仪表盘轴线（外圈）的样式
+                lineStyle: {
+                    width: 10, // 轴线的宽度
+                    color: [ // 轴线的颜色分段，每个元素是一个二元组，第一项是分段的结束百分比，第二项是颜色
+                        [min, '#67e0e3'], // 0%到30%是#67e0e3颜色
+                        [max, '#37a2da'], // 30%到70%是#37a2da颜色
+                        [1, '#fd666d'] // 70%到100%是#fd666d颜色
+                    ]
+                }
+            },
+            pointer: { // 指针的样式配置
+                itemStyle: {
+                    color: 'auto' // 指针颜色，'auto'表示自动根据仪表盘的颜色变化（即根据当前值所在的颜色区间）
+                },
+                width: 4
+            },
+            axisTick: { // 刻度线的样式配置
+                distance: -10, // 刻度线与轴线的距离，负值表示向内
+                length: 4, // 刻度线的长度
+                lineStyle: {
+                    color: '#fff', // 刻度线的颜色
+                    width: 1 // 刻度线的宽度
+                }
+            },
+            splitLine: { // 分割线的样式配置（较长的刻度线，通常用于标示主要分割点）
+                distance: -10, // 分割线与轴线的距离，负值表示向内
+                length: 10, // 分割线的长度
+                lineStyle: {
+                    color: '#fff', // 分割线的颜色
+                    width: 2 // 分割线的宽度
+                }
+            },
+            axisLabel: { // 轴标签的样式配置（显示在分割线旁的文本，通常表示数值）
+                color: 'inherit', // 标签颜色，'inherit'表示继承轴线的颜色
+                distance: 15, // 标签与轴线的距离
+                fontSize: 10 // 标签的字体大小
+            },
+            detail: {   // 仪表盘中心的详情显示配置
+                valueAnimation: true, // 数值变化时是否显示动画效果
+                formatter: '{value}°',
+                color: 'inherit', // 文本颜色，'inherit'表示继承轴线的颜色
+                fontSize: 15  // 调整字体大小
+            },
+            data: [{value: 90, name: '角度'}],
+        }
+    ]
+}
 
 // 仪表盘频率样式
 const frequencySeries = [
     {
+        // 第一个仪表盘配置
         name: '频率',
         type: 'gauge',
         min: 0, // 最小值
         max: 2, // 最大值
-        //startAngle: 180, // 起始角度
-        //endAngle: 0, // 结束角度
+        startAngle: 200,// 起始角度
+        endAngle: -20,// 结束角度
+        center: ['50%', '60%'], // 仪表盘的中心位置，相对于容器的百分比定位
+        splitNumber: 5, // 分割段数，即主刻度数量
+        itemStyle: {
+            color: '#FFAB91' // 指针颜色
+        },
+        progress: {
+            show: true, // 是否显示进度条
+            width: 15 // 进度条宽度
+        },
+        pointer: {
+            show: false // 不显示指针
+        },
+        axisLine: {
+            lineStyle: {
+                width: 15, // 轴线（进度条外环）宽度
+            }
+        },
+        axisTick: {
+            distance: -25, // 刻度到轴线的距离
+            splitNumber: 5, // 分割的小刻度数量
+            lineStyle: {
+                width: 2, // 刻度线宽度
+                color: '#999' // 刻度线颜色
+            }
+        },
+        splitLine: {
+            distance: -32, // 分割线到轴线的距离
+            length: 10, // 分割线长度
+            lineStyle: {
+                width: 3, // 分割线宽度
+                color: '#999' // 分割线颜色
+            }
+        },
+        axisLabel: {
+            distance: -20, // 标签到轴线的距离
+            color: '#999', // 标签颜色
+            fontSize: 15 // 标签字体大小
+        },
+        anchor: {
+            show: false // 不显示锚点
+        },
+        title: {
+            show: false // 不显示标题
+        },
         detail: {
-            formatter: '{value}次/秒',
-            fontSize: 15  // 调整字体大小
+            valueAnimation: true, // 值变化时是否显示动画
+            width: '60%', // 详情宽度
+            lineHeight: 40, // 行高
+            borderRadius: 8, // 边框圆角
+            offsetCenter: [0, '-15%'], // 相对中心的偏移
+            fontSize: 15, // 字体大小
+            //fontWeight: 'bolder', // 字体粗细
+            formatter: '{value}次/秒', // 格式化文本，显示值和单位
+            color: 'inherit' // 颜色继承自全局或父级
+        },
+        data: [{value: 1, name: '频率'}],
+    },
+    {
+        // 第二个仪表盘配置（主要用于显示内层的进度条）
+        type: 'gauge',
+        min: 0, // 最小值
+        max: 2, // 最大值
+        startAngle: 200,// 起始角度
+        endAngle: -20,// 结束角度
+        center: ['50%', '60%'], // 仪表盘的中心位置，相对于容器的百分比定位
+        itemStyle: {
+            color: '#FD7347' // 进度条颜色
+        },
+        progress: {
+            show: true, // 显示进度条
+            width: 8 // 进度条宽度较细
+        },
+        pointer: {
+            show: false // 不显示指针
+        },
+        axisLine: {
+            show: false // 不显示轴线
+        },
+        axisTick: {
+            show: false // 不显示刻度
+        },
+        splitLine: {
+            show: false // 不显示分割线
+        },
+        axisLabel: {
+            show: false // 不显示标签
+        },
+        detail: {
+            show: false // 不显示详情
         },
         data: [{value: 1, name: '频率'}],
     }
@@ -85,8 +223,8 @@ const firstChartContainer = document.getElementById('firstChartContainer');
 
 // 初始化仪表盘
 let gauge1 = null;
-let gauge2 = initGauge(containerChart3,angleSeries);
-let gauge3 = initGauge(containerChart4,angleSeries);
+let gauge2 = initGauge(containerChart3,setAngleSeries(145/180,165/180));
+let gauge3 = initGauge(containerChart4,setAngleSeries(110/180,140/180));
 let gauge4 = initGauge(containerChart5,frequencySeries);
 
 function initGauge(targetContainer,series) {
@@ -130,9 +268,10 @@ function updateGauge(gauge, value) {
 
     // 更新图表数据
     gauge.setOption({
-        series: [{
-            data: [{value: value}]
-        }]
+        series: [
+            {data: [{value: value}]},
+            {data: [{value: value}]},// 采用双仪表盘的都要更新
+        ]
     });
 }
 

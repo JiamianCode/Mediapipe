@@ -139,7 +139,7 @@ checkboxChart2.addEventListener('change', function() {
     if (this.checked) {
         console.log('Chart 2 Selected.');
         containerChart2.style.display = 'block'; // 显示相关的图表容器
-        gauge1 = initGauge(containerChart2,angleSeries); // 调用 initGauge() 函数初始化仪表盘
+        gauge1 = initGauge(containerChart2,setAngleSeries(35/180,55/180)); // 调用 initGauge() 函数初始化仪表盘
     } else {
         console.log('Chart 2 Deselected.');
         containerChart2.style.display = 'none'; // 若未勾选，隐藏相关的图表容器

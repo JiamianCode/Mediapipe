@@ -56,7 +56,7 @@ function updateLandmarkTrackChart(targetIndex, chartName) {
 
     const yScale = d3.scaleLinear()
         //.domain([Math.min(...smoothedYValues), Math.max(...smoothedYValues)])
-        .domain([0.5, 1])
+        .domain([0.6, 0.9])
         .range([height, 0]);
 
     const line = d3.line()
