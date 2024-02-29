@@ -7,53 +7,7 @@ const visualizationModeContainer = document.getElementById('visualizationModeCon
 const chartSelectionContainer = document.getElementById('chartSelectionContainer');
 const videoContainer = document.getElementById('videoContainer');
 const chartContainer = document.getElementById('chartContainer');
-/*
-function resetUI() {
-    fileInputContainer.style.display = 'none';
-    visualizationModeContainer.style.display = 'none';
-    chartSelectionContainer.style.display = 'none';
-    videoContainer.style.display = 'none';
-    chartContainer.style.display = 'none';
-    inputVideo.src = '';
-    outputCanvas.getContext('2d').clearRect(0, 0, outputCanvas.width, outputCanvas.height);
-}
 
-// 源选择控制
-imageSourceSelect.addEventListener('change', function() {
-    // 最初隐藏所有容器
-    resetUI();
-
-    switch (this.value){
-        case 'none':// 如果选择了"None"，刷新页面重新开始
-            window.location.reload();
-            break;
-        case 'camera':// 如果选择了"Camera"，显示可视化模式和图表选择
-            visualizationModeContainer.style.display = '';
-            chartSelectionContainer.style.display = '';
-            videoContainer.style.display = '';
-            console.log("camera input");
-
-            //originalImage.checked = true;
-            checkCameraStatus();
-            break;
-        case 'file':// 如果选择了"Local File"，最初只显示文件输入容器
-            fileInputContainer.style.display = '';
-            console.log("file input")
-            // 文件被选择后，添加change事件监听器以显示可视化模式和图表选择
-            fileInput.onchange = () => {
-                if (fileInput.files.length > 0) {
-                    visualizationModeContainer.style.display = '';
-                    chartSelectionContainer.style.display = '';
-                    videoContainer.style.display = '';
-                    console.log("file selected");
-
-                    //originalImage.checked = true;
-                }
-            };
-            break;
-    }
-});
-*/
 
 // 监听文件选择的变化
 fileInput.addEventListener('change', function(event) {
@@ -117,33 +71,66 @@ let containerChart2 = document.getElementById('containerChart2');
 let checkboxChart1 = document.getElementById('checkboxChart1');
 let checkboxChart2 = document.getElementById('checkboxChart2');
 
-let chart1Visible = false;
-let chart2Visible = false;
 
-// 功能函数，用于检查复选框的状态并相应更新 chartContainer 的可见性
-function updateChartContainerVisibility() {
-    // 检查两个复选框是否至少有一个被勾选
-    chartContainer.style.display = checkboxChart1.checked || checkboxChart2.checked ? 'block' : 'none';
-}
+chartContainer.style.display = 'block';
+containerChart1.style.display = 'block';
+containerChart2.style.display = 'block'; // 显示相关的图表容器
 
-// 给 checkboxChart1 添加事件监听器
-checkboxChart1.addEventListener('change', function() {
-    containerChart1.style.display = this.checked ? 'block' : 'none';
-    chart1Visible = this.checked;
-    console.log(`Chart 1 ${this.checked ? 'Selected' : 'Deselected'}.`);
-    updateChartContainerVisibility(); // 更新 chartContainer 的可见性
+
+
+document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(item => {
+    item.addEventListener('click', function() {
+        updateDropdownButton(this.textContent);
+    });
 });
 
-// 给 checkboxChart2 添加事件监听器
-checkboxChart2.addEventListener('change', function() {
-    if (this.checked) {
-        console.log('Chart 2 Selected.');
-        containerChart2.style.display = 'block'; // 显示相关的图表容器
-        gauge1 = initGauge(containerChart2,setAngleSeries(35/180,55/180)); // 调用 initGauge() 函数初始化仪表盘
-    } else {
-        console.log('Chart 2 Deselected.');
-        containerChart2.style.display = 'none'; // 若未勾选，隐藏相关的图表容器
+function updateDropdownButton(selectedItemText) {
+    // 更新按钮文本
+    document.querySelector('.dropdown-toggle').textContent = "Image Source : " + selectedItemText;
+
+    // console.log("选中的操作是：" + selectedItemText);
+
+    // 最初隐藏所有容器
+    // resetUI();
+    fileInputContainer.style.display = 'none';
+    visualizationModeContainer.style.display = 'none';
+    chartSelectionContainer.style.display = 'none';
+    videoContainer.style.display = 'none';
+    // chartContainer.style.display = 'none';
+    inputVideo.src = '';
+    outputCanvas.getContext('2d').clearRect(0, 0, outputCanvas.width, outputCanvas.height);
+
+
+    // 根据选择进行操作
+    switch (selectedItemText){
+        case 'None':// 如果选择了"None"，刷新页面重新开始
+            window.location.reload();
+            break;
+        case 'Camera':// 如果选择了"Camera"，显示可视化模式和图表选择
+            visualizationModeContainer.style.display = '';
+            chartSelectionContainer.style.display = '';
+            videoContainer.style.display = '';
+            console.log("camera input");
+
+            //originalImage.checked = true;
+            checkCameraStatus();
+            break;
+        case 'Local File':// 如果选择了"Local File"，最初只显示文件输入容器
+            fileInputContainer.style.display = '';
+            console.log("file input")
+            // 文件被选择后，添加change事件监听器以显示可视化模式和图表选择
+            fileInput.onchange = () => {
+                if (fileInput.files.length > 0) {
+                    visualizationModeContainer.style.display = '';
+                    chartSelectionContainer.style.display = '';
+                    videoContainer.style.display = '';
+                    console.log("file selected");
+
+                    //originalImage.checked = true;
+                }
+            };
+            break;
+        default:
+            console.log("选中的操作是：" + selectedItemText);
     }
-    chart2Visible = this.checked;
-    updateChartContainerVisibility(); // 更新 chartContainer 的可见性
-});
+}

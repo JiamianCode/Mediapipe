@@ -1,6 +1,4 @@
 // 假设Camera类以及其他必要的类（如Pose等）已经在其他地方被正确定义和引入
-let inputVideoWidth = 400;
-let inputVideoHeight = 400;
 let inputVideo = document.getElementById('inputVideo'); // 摄像头视频输入
 let camera = null; // 用于持有Camera实例的全局变量
 let originalImage = document.getElementById('originalImage');
@@ -17,8 +15,8 @@ function startCamera() {
                 onFrame: async () => {
                     await pose.send({image: inputVideo}); // 将摄像头图像发送给Pose处理
                 },
-                width: inputVideoWidth, // 根据实际需要调整摄像头分辨率
-                height: inputVideoHeight
+                width: inputVideoContainer.offsetWidth, // 根据实际需要调整摄像头分辨率
+                height: inputVideoContainer.offsetHeight
             });
             camera.start(); // 启动摄像头
             console.log("Camera started successfully");
@@ -31,7 +29,7 @@ function startCamera() {
 
 // 检测摄像头的控制选择状态
 function checkCameraStatus() {
-    const isCameraSelected = imageSourceSelect.value === 'camera';
+    const isCameraSelected = true;
     const isOriginalImageChecked = originalImage.checked;
 
     if (isCameraSelected && isOriginalImageChecked) {

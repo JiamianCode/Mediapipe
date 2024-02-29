@@ -12,11 +12,11 @@ function calculateNormalDistributionY(value, minRange, maxRange, maxValue, offse
     return y.toFixed(2);
 }
 
-console.log(calculateNormalDistributionY(45,40,50,25,0))
+// console.log(calculateNormalDistributionY(45,40,50,25,0))
 
 const containerChart6 = document.getElementById('containerChart6');
 containerChart6.style.height = '200px';
-containerChart6.style.width = '400px';
+containerChart6.style.width = '500px';
 const stackedAreaChart = echarts.init(containerChart6);
 const containerChart6option = {
     title: {
@@ -38,10 +38,10 @@ const containerChart6option = {
     },
     legend: {
         data: ['Angle1', 'Angle2', 'Angle3', 'frequency'], // 图例组件，展示图表的不同系列的标记，颜色和名字
-        left: '5%', // 将图例向右调整，距左侧80%
-        top: '10%', // 将图例向下调整，距顶部10%
+        left: '80%', // 将图例向右调整，距左侧80%
+        top: '20%', // 将图例向下调整，距顶部10%
         textStyle: {
-            fontSize: 14
+            fontSize: 12
         }
     },
     toolbox: {
@@ -51,15 +51,17 @@ const containerChart6option = {
     },
     grid: {
         left: '3%', // 网格左侧的距离
-        right: '4%', // 网格右侧的距离
-        bottom: '3%', // 网格底部的距离
+        right: '22%', // 网格右侧的距离
+        bottom: '10%', // 网格底部的距离
+        top:'15%',
         containLabel: true // 网格区域是否包含坐标轴的标签
     },
     xAxis: [
         {
             type: 'category', // x轴类型：类目轴
             boundaryGap: false, // 类目轴两端留白策略
-            data: ['1', '2', '3', '4', '5', '6'] // x轴的数据
+            animation: false, // 取消指针动画
+            //data: ['1', '2', '3', '4', '5', '6'] // x轴的数据
         }
     ],
     yAxis: [
@@ -73,6 +75,19 @@ const containerChart6option = {
             }
         }
     ],
+    // 数据区域缩放组件
+    dataZoom: [
+        {
+            type: 'slider', // 滑动条缩放
+            start: 0, // 数据窗口的起始百分比
+            end: 100, // 数据窗口的结束百分比
+            height:20,  //用于设置滑动条的高度
+            bottom:0,  //距离容器下侧的距离
+        },
+        {
+            type: 'inside' // 内置于坐标系的缩放
+        }
+    ],
     series: [ // 系列列表。每个系列通过 type 决定自己的图表类型
         {
             name: 'Angle1', // 系列名称，用于tooltip的显示
@@ -82,7 +97,8 @@ const containerChart6option = {
             emphasis: {
                 focus: 'series' // 高亮时聚焦的系列
             },
-            data: [0,0,0,0,0,0] // 初始数据
+            data: [0,0,0,0,0,0], // 初始数据
+            animation: false, // 禁用动画效果
         },
         {
             name: 'Angle2',
@@ -92,7 +108,8 @@ const containerChart6option = {
             emphasis: {
                 focus: 'series'
             },
-            data: [0,0,0,0,0,0]
+            data: [0,0,0,0,0,0],
+            animation: false, // 禁用动画效果
         },
         {
             name: 'Angle3',
@@ -102,18 +119,9 @@ const containerChart6option = {
             emphasis: {
                 focus: 'series'
             },
-            data: [0,0,0,0,0,0]
+            data: [0,0,0,0,0,0],
+            animation: false, // 禁用动画效果
         },
-        // {
-        //     name: 'frequency',
-        //     type: 'line',
-        //     stack: 'Total',
-        //     areaStyle: {},
-        //     emphasis: {
-        //         focus: 'series'
-        //     },
-        //     data: [0,0,0,0,0,0]
-        // },
         {
             name: 'frequency',
             type: 'line',
@@ -126,7 +134,14 @@ const containerChart6option = {
             emphasis: {
                 focus: 'series'
             },
-            data: [0,0,0,0,0,0]
+            data: [0,0,0,0,0,0],
+            animation: false, // 禁用动画效果
+            // 显示平均线
+            markLine: {
+                lineStyle:{color:'#333'},
+                data: [{ type: 'average', name: 'Avg' }],
+                animation: false//取消动画效果
+            }
         }
     ]
 };
@@ -134,13 +149,8 @@ stackedAreaChart.setOption(containerChart6option);
 
 let newData = [];
 function updateChartData(chart, scores) {
-    // 添加新scores到newData的开头
-    newData.unshift(scores);
-
-    // 保证newData只保留最新的六组数据
-    if (newData.length > 6) {
-        newData = newData.slice(0, 6);
-    }
+    // 添加新scores到newData
+    newData.push(scores);
 
     // 初始化transposedData数组，长度等于scores数组的长度
     let transposedData = Array.from({length: scores.length}, () => []);
@@ -153,25 +163,43 @@ function updateChartData(chart, scores) {
         });
     });
 
-    // 确保每个系列数据长度为6
-    let seriesData = transposedData.map(column => {
-        while (column.length < 6) {
-            column.unshift(0); // 在数组前面补充0至长度为6
-        }
-        return column;
-    });
-
     // 更新图表系列数据
     let option = chart.getOption();
     option.series.forEach((series, index) => {
-        // 确保不越界
-        if(index < seriesData.length){
-            series.data = seriesData[index];
+        // 更新系列数据为转置后的数据
+        if(index < transposedData.length){
+            series.data = transposedData[index];
         }
     });
 
+    // 设置倒一系列的 label.formatter
+    option.series[option.series.length - 1].label.formatter = function(params) {
+        // params.dataIndex 给出当前数据点在其系列中的索引，即 x 的位置
+        let sum = 0;
+        // 遍历所有系列以计算当前 x 下的总和
+        option.series.forEach(series => {
+            sum += series.data[params.dataIndex] ? +series.data[params.dataIndex] : 0;
+        });
+        // 返回格式化后的总和
+        return sum.toFixed(2);
+    };
+
+    // 动态设置数据区域缩放组件的范围以聚焦最新的10个数据点
+    let totalDataPoints = newData.length; // 总的数据点数量
+    let startValue = totalDataPoints > 10 ? ((totalDataPoints - 10) / totalDataPoints) * 100 : 0;
+    option.dataZoom = [{
+        start: startValue, // 根据总数据点数量动态计算开始值
+        end: 100, // 总是结束于最新的数据点
+    }, {
+        start: startValue,
+        end: 100,
+    }];
+
+    // 更新x轴数据：假设每个数据点对应一个标签
+    option.xAxis.data = newData.map((_, index) => `${index + 1}`).reverse();
+
     // 使用更新后的选项重新设置图表
-    chart.setOption(option, true); // 第二个参数true表示不合并，而是替换之前的配置
+    chart.setOption(option, false); // 第二个参数true表示不合并，而是替换之前的配置
 }
 
 

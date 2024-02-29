@@ -12,21 +12,21 @@ function calculateAngle(results, LA, LB, LC) {
     const lb = results.poseLandmarks[LB];
     const lc = results.poseLandmarks[LC];
 
-    // 提取坐标信息(二维)
-    const pointA = [la.x, la.y];
-    const pointB = [lb.x, lb.y];
-    const pointC = [lc.x, lc.y];
+    // 提取坐标信息(三维)
+    const pointA = [la.x, la.y, la.z];
+    const pointB = [lb.x, lb.y, lb.z];
+    const pointC = [lc.x, lc.y, lc.z];
 
     // 计算向量BA和BC
-    const vectorAB = [pointA[0] - pointB[0], pointA[1] - pointB[1]];
-    const vectorBC = [pointC[0] - pointB[0], pointC[1] - pointB[1]];
+    const vectorAB = [pointA[0] - pointB[0], pointA[1] - pointB[1], pointA[2] - pointB[2]];
+    const vectorBC = [pointC[0] - pointB[0], pointC[1] - pointB[1], pointC[2] - pointB[2]];
 
     // 计算点积
-    const dotProduct = vectorAB[0] * vectorBC[0] + vectorAB[1] * vectorBC[1];
+    const dotProduct = vectorAB[0] * vectorBC[0] + vectorAB[1] * vectorBC[1] + vectorAB[2] * vectorBC[2];
 
     // 计算模长
-    const magnitudeAB = Math.sqrt(vectorAB[0]**2 + vectorAB[1]**2);
-    const magnitudeBC = Math.sqrt(vectorBC[0]**2 + vectorBC[1]**2);
+    const magnitudeAB = Math.sqrt(vectorAB[0]**2 + vectorAB[1]**2 + vectorAB[2]**2);
+    const magnitudeBC = Math.sqrt(vectorBC[0]**2 + vectorBC[1]**2 + vectorBC[2]**2);
 
     // 计算夹角的余弦值
     const cosineTheta = dotProduct / (magnitudeAB * magnitudeBC);
@@ -40,6 +40,7 @@ function calculateAngle(results, LA, LB, LC) {
     // 返回角度值，保留两位小数
     return thetaDegrees.toFixed(2);
 }
+
 
 // 仪表盘角度样式
 function setAngleSeries(min,max){
@@ -76,7 +77,7 @@ function setAngleSeries(min,max){
                 itemStyle: {
                     color: 'auto' // 指针颜色，'auto'表示自动根据仪表盘的颜色变化（即根据当前值所在的颜色区间）
                 },
-                width: 4
+                width: 4,
             },
             axisTick: { // 刻度线的样式配置
                 distance: -10, // 刻度线与轴线的距离，负值表示向内
@@ -106,6 +107,7 @@ function setAngleSeries(min,max){
                 fontSize: 15  // 调整字体大小
             },
             data: [{value: 90, name: '角度'}],
+            animation: false, // 取消指针动画
         }
     ]
 }
@@ -176,6 +178,7 @@ const frequencySeries = [
             color: 'inherit' // 颜色继承自全局或父级
         },
         data: [{value: 1, name: '频率'}],
+        animation: false, // 取消指针动画
     },
     {
         // 第二个仪表盘配置（主要用于显示内层的进度条）
@@ -211,6 +214,7 @@ const frequencySeries = [
             show: false // 不显示详情
         },
         data: [{value: 1, name: '频率'}],
+        animation: false, // 取消指针动画
     }
 ]
 
@@ -222,9 +226,9 @@ let containerChart5 = document.getElementById('containerChart5');
 const firstChartContainer = document.getElementById('firstChartContainer');
 
 // 初始化仪表盘
-let gauge1 = null;
-let gauge2 = initGauge(containerChart3,setAngleSeries(145/180,165/180));
-let gauge3 = initGauge(containerChart4,setAngleSeries(110/180,140/180));
+let gauge1 = initGauge(containerChart2,setAngleSeries(45/180,70/180)); // 调用 initGauge() 函数初始化仪表盘
+let gauge2 = initGauge(containerChart3,setAngleSeries(120/180,165/180));
+let gauge3 = initGauge(containerChart4,setAngleSeries(90/180,125/180));
 let gauge4 = initGauge(containerChart5,frequencySeries);
 
 function initGauge(targetContainer,series) {
@@ -257,14 +261,15 @@ function initGauge(targetContainer,series) {
 // 问题：angle按原始帧率推送时，波动太大太明显，暂时使用计数器来限流
 // 根治方法：在帧更新的时候，记录好关键点坐标（或角度）的变化，要体现出极值的角度波动，体现出范围变化
 // 新建议：多个角度需要显示的时候，不一定要用这种圆形仪表盘，因为又大又笨重，可以改用横条式的仪表盘
-let frameCount = 0;
-let frameGap = 15;
+// let frameCount = 0;
+// let frameGap = 15;
+//取消指针动画之后可以解决这个问题
 function updateGauge(gauge, value) {
     // 检查echarts实例和角度值是否为null，若为null则不更新
     if (!gauge || value === null) return;
 
-    frameCount++;
-    if (frameCount % frameGap !== 0) return;
+    // frameCount++;
+    // if (frameCount % frameGap !== 0) return;
 
     // 更新图表数据
     gauge.setOption({

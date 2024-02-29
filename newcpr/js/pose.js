@@ -61,42 +61,30 @@ function onResultsPose(results) {
   // 处理画面
   updateCanvasContext(results); // 更新画面内容
 
-  if (skeletonCheckbox.checked){
-    drawPoseConnections(results);// 绘制姿态连线
-    drawLandmarksPositions(results);// 绘制关键点
-  }
+  drawPoseConnections(results);// 绘制姿态连线
+  drawLandmarksPositions(results);// 绘制关键点
 
-  // if(hullCheckbox.checked || chart1Visible){
-  //   updateKeypointPositions(results);//更新关键点
-  // }
   updateKeypointPositions(results);//更新关键点
 
-  if(hullCheckbox.checked){
-    drawConvexHull(POSE_LANDMARKS.RIGHT_WRIST);// 画右手掌心的凸包
-  }
+  drawConvexHull(POSE_LANDMARKS.RIGHT_WRIST);// 画右手掌心的凸包
 
   //更新图表
-  if(chart1Visible){
-    updateLandmarkTrackChart(POSE_LANDMARKS.RIGHT_WRIST, "#chart1");  // 更新图表
-  }
+  updateLandmarkTrackChartData(myChart1, POSE_LANDMARKS.RIGHT_WRIST);
 
   var angle1,angle2,angle3;
+  // pose关键点索引
+  const LA = 14, LB = 12, LC = 24;
+  // 计算角度
+  angle1 = calculateAngle(results, LA, LB, LC);
+  angle2 = calculateAngle(results,12,14,16);
+  angle3 = calculateAngle(results,12,24,26);
+  // 更新仪表盘
+  updateGauge(gauge1,angle1);
+  updateGauge(gauge2,angle2);
+  updateGauge(gauge3,angle3);
 
-  if(chart2Visible){
-    // pose关键点索引
-    const LA = 14, LB = 12, LC = 24;
-    // 计算角度
-    angle1 = calculateAngle(results, LA, LB, LC);
-    angle2 = calculateAngle(results,12,14,16);
-    angle3 = calculateAngle(results,12,24,26);
-
-    // 更新仪表盘
-    updateGauge(gauge1,angle1);
-    updateGauge(gauge2,angle2);
-    updateGauge(gauge3,angle3);
-  }
-
-  updateSimulationWithPose(results, POSE_LANDMARKS.RIGHT_SHOULDER); // 使用Pose结果更新仿真
+  // 使用Pose结果更新仿真
+  updateSimulationWithPose(results, POSE_LANDMARKS.RIGHT_SHOULDER);
 
   const frequency = calculateFrequency(POSE_LANDMARKS.RIGHT_WRIST); // 计算频率
   //console.log("frequency:",frequency);
@@ -108,9 +96,9 @@ function onResultsPose(results) {
 
   // 绘制堆叠图
   const scores = [
-    calculateNormalDistributionY(angle1, 35, 55, 25, 0),
-    calculateNormalDistributionY(angle2, 145, 165, 25, 0),
-    calculateNormalDistributionY(angle3, 110, 140, 25, 0),
+    calculateNormalDistributionY(angle1, 45, 70, 25, 0),
+    calculateNormalDistributionY(angle2, 120, 165, 25, 0),
+    calculateNormalDistributionY(angle3, 90, 125, 25, 0),
     calculateNormalDistributionY(frequency, 1, 1.5, 25, 0),
   ];
   //console.log(scores);
