@@ -185,8 +185,9 @@ function updateChartData(chart, scores) {
     };
 
     // 动态设置数据区域缩放组件的范围以聚焦最新的10个数据点
+    let showPointNum = 10;
     let totalDataPoints = newData.length; // 总的数据点数量
-    let startValue = totalDataPoints > 10 ? ((totalDataPoints - 10) / totalDataPoints) * 100 : 0;
+    let startValue = totalDataPoints > showPointNum ? ((totalDataPoints - showPointNum) / totalDataPoints) * 100 : 0;
     option.dataZoom = [{
         start: startValue, // 根据总数据点数量动态计算开始值
         end: 100, // 总是结束于最新的数据点

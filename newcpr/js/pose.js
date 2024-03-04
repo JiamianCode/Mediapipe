@@ -83,6 +83,9 @@ function onResultsPose(results) {
   updateGauge(gauge2,angle2);
   updateGauge(gauge3,angle3);
 
+  addAngles(angle1,angle2,angle3);
+  updateAngleCountChartData(myChart7,angle1Array);
+
   // 使用Pose结果更新仿真
   updateSimulationWithPose(results, POSE_LANDMARKS.RIGHT_SHOULDER);
 

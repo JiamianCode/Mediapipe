@@ -63,10 +63,10 @@ function drawLandmarksPositions(results) {
 }
 // 画凸包
 function drawConvexHull(targetIndex) {
-    // 从keypointPositions中提取特定关键点的最新50个位置
+    // 从keypointPositions中提取特定关键点的最新20个位置
     const filteredPositions = keypointPositions
         .filter(pos => pos.index === targetIndex)
-        .slice(-50); // 保留最后50个元素
+        .slice(-10); // 保留最后10个元素
 
     // 将这些位置映射到canvas坐标系
     const points = filteredPositions.map(pos => [outputCanvas.width * pos.x, outputCanvas.height * pos.y]);
@@ -93,13 +93,14 @@ function drawConvexHull(targetIndex) {
         canvas.fill();
     }
 
-    // 绘制特定关键点的最新50个位置
-    filteredPositions.forEach(pos => {
+    // 绘制特定关键点的最新10个位置
+    filteredPositions.forEach((pos, index) => {
         const x = outputCanvas.width * pos.x; // 使用保存的x坐标
         const y = outputCanvas.height * pos.y; // 使用保存的y坐标
+        const opacity = (index + 1) / filteredPositions.length; // 计算透明度，最旧的点（index=0）透明度最低，最新的点透明度最高
         canvas.beginPath();
-        canvas.arc(x, y, 3, 0, 1.1 * Math.PI); // 绘制半径为3的圆点
-        canvas.fillStyle = '#FF0000'; // 设置填充颜色
+        canvas.arc(x, y, 3, 0, 2 * Math.PI); // 绘制半径为3的圆点
+        canvas.fillStyle = `rgba(255, 0, 0, ${opacity})`; // 设置填充颜色，透明度根据点的新旧程度变化
         canvas.fill();
     });
 }

@@ -27,6 +27,47 @@ function startCamera() {
     }
 }
 
+let mediaRecorder;
+let recordedChunks = [];
+document.getElementById('startButton').addEventListener('click', startRecording);
+document.getElementById('stopButton').addEventListener('click', stopRecording);
+function startRecording() {
+    recordedChunks = [];
+    let stream = inputVideo.srcObject; // 获取当前video标签的媒体流
+    mediaRecorder = new MediaRecorder(stream, {mimeType: 'video/webm'});
+
+    mediaRecorder.ondataavailable = function(event) {
+        if (event.data.size > 0) {
+            recordedChunks.push(event.data);
+        }
+    };
+
+    mediaRecorder.onstop = saveVideo;
+
+    mediaRecorder.start();
+    console.log("Recording started");
+}
+
+function stopRecording() {
+    mediaRecorder.stop();
+    console.log("Recording stopped");
+}
+
+function saveVideo() {
+    const blob = new Blob(recordedChunks, {
+        type: 'video/webm'
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.download = 'recorded_video.webm'; // 可以设置一个更有意义的文件名
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+}
+
+
 // 检测摄像头的控制选择状态
 function checkCameraStatus() {
     const isCameraSelected = true;

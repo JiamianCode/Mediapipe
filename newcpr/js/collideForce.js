@@ -17,10 +17,11 @@ nodeImage.src = 'img/hand.png'; // 替换为你的图片路径
 nodeImage.onload = function() {
     // 图片加载完成后，可以执行相关的绘制操作或初始化
     // 例如，你可能需要在这里调用 initSimulation() 函数
+
+    // 后续添加控制逻辑来初始化
+    initSimulation();
 };
 
-// 后续添加控制逻辑来初始化
-initSimulation();
 
 function initSimulation(){
     poseCanvas.width = width;
@@ -57,22 +58,26 @@ function initSimulation(){
 function updateSimulationWithPose(results,index) {
     if (results.poseLandmarks && results.poseLandmarks[index]) {
         const landmark = results.poseLandmarks[index];
+
+        // 取出目标点的最新50个y的值，即相对坐标
+        const allNewPos = keypointPositions.filter(pos => pos.index === index).slice(-50).map(pos => pos.y)
+
+        const maxPose =  Math.max(...allNewPos);
+        const minPose =  Math.min(...allNewPos);
+
         // 更新交互点位置，传递归一化坐标
-        updateInteractionPoint(landmark.x, landmark.y);
+        // 归一化坐标转换为canvas坐标
+        // 绘图原点在画布中心
+        const x = 0;
+        const y = (landmark.y-minPose)/(maxPose-minPose) * height - height / 2;   // 动态调整y的相对位置
+
+        // 假设我们更新的是仿真中的一个特定节点，例如nodes[0]
+        nodes[0].fx = x;
+        nodes[0].fy = y;
+
+        // 这里不需要调用仿真的tick函数或强制更新，
+        // 因为d3的仿真会在下一个tick自动应用这些变化
     }
-}
-// 根据Pose关键点更新交互点位置
-function updateInteractionPoint(normalizedX, normalizedY) {
-    // 归一化坐标转换为canvas坐标
-    const x = normalizedX * width - width / 2;
-    const y = normalizedY * height - height / 2;
-
-    // 假设我们更新的是仿真中的一个特定节点，例如nodes[0]
-    nodes[0].fx = x*0.8;
-    nodes[0].fy = y*3;
-
-    // 这里不需要调用仿真的tick函数或强制更新，
-    // 因为d3的仿真会在下一个tick自动应用这些变化
 }
 
 function ticked() {
