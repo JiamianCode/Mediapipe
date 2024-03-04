@@ -18,8 +18,8 @@
 
 /* 设置边框宽度和颜色 */
 .border {
-    border-width: 10px !important;
-    border-color: #f4f9fe !important;
+    border-width: 1px !important;
+    border-color: #535353 !important;
 }
 
 /* 调整导航栏高度 */
@@ -32,4 +32,23 @@
 .navbar-nav .nav-link {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
+}
+
+.custom-header {
+    background-color: #007bff; /* 自定义背景色 */
+    font-size: 1rem; /* 自定义字体大小 */
+    padding: 0.2rem;/* 边界 */
+    text-align: center;/*位置居中*/
+    color: white; /* 字体颜色 */
+}
+.custom-card {
+    border-color: #535353; /* 自定义边界线颜色 */
+    border-width: 1px; /* 自定义边界线宽度 */
+}
+.custom-card-body {
+    padding: 0.2rem; /* 自定义内边距 */
+}
+
+body {
+    font-size: 1rem; /* 设置默认的字体大小 */
 }

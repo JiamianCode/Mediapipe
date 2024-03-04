@@ -19,14 +19,6 @@ containerChart6.style.height = '200px';
 containerChart6.style.width = '500px';
 const stackedAreaChart = echarts.init(containerChart6);
 const containerChart6option = {
-    title: {
-        text: 'Stacked Area Chart', // 图表标题
-        left: '30%', // 将标题水平居中对齐
-        top: '0%', // 将标题向下调整，距顶部5%
-        textStyle: {
-            fontSize: 18
-        }
-    },
     tooltip: {
         trigger: 'axis', // 触发类型：坐标轴触发
         axisPointer: {
@@ -39,7 +31,7 @@ const containerChart6option = {
     legend: {
         data: ['Angle1', 'Angle2', 'Angle3', 'frequency'], // 图例组件，展示图表的不同系列的标记，颜色和名字
         left: '80%', // 将图例向右调整，距左侧80%
-        top: '20%', // 将图例向下调整，距顶部10%
+        top: '10%', // 将图例向下调整，距顶部10%
         textStyle: {
             fontSize: 12
         }
@@ -53,7 +45,7 @@ const containerChart6option = {
         left: '3%', // 网格左侧的距离
         right: '22%', // 网格右侧的距离
         bottom: '10%', // 网格底部的距离
-        top:'15%',
+        top:'5%',
         containLabel: true // 网格区域是否包含坐标轴的标签
     },
     xAxis: [

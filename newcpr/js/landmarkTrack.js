@@ -33,11 +33,6 @@ function initLandmarkTrackChart(chart) {
     var myChart = echarts.init(chart);
     // 配置项和数据
     var option = {
-        // 图表标题
-        title: {
-            text: 'Wrist Position Over Time', // 标题文本
-            left: '20%' // 标题位置
-        },
         // 提示框组件，展示数据等信息
         tooltip: {
             trigger: 'axis' // 触发类型：轴触发
@@ -47,7 +42,7 @@ function initLandmarkTrackChart(chart) {
             left: '7%', // 网格左侧的距离
             right: '24%', // 网格右侧的距离
             bottom: '25%', // 网格底部的距离
-            top:'15%',
+            top:'5%',
         },
         // x轴配置
         xAxis: {

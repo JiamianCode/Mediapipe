@@ -23,46 +23,51 @@
     <script type="text/javascript" src="https://registry.npmmirror.com/echarts-gl/2/files/dist/echarts-gl.min.js"></script>
 </head>
 <body>
-<!-- 头部导航栏 -->
-<nav class="navbar navbar-expand-lg navbar-light bg-navbar navbar-custom">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">网页标题</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <!-- 首页 -->
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">首页</a>
-                </li>
-                <!-- 添加Dropdown控件 -->
-                <li class="nav-item dropdown">
-                <li class="nav-item dropdown">
-                    <!-- btn-primary是默认颜色控件，也可以自定义类名并用css实现 -->
-                    <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        Image Source
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-dark">
-                        <li><a class="dropdown-item" href="#">None</a></li>
-                        <li><a class="dropdown-item" href="#">Camera</a></li>
-                        <li><a class="dropdown-item" href="#">Local File</a></li>
-                    </ul>
-                </li>
-                <!-- 更多的导航项 -->
-            </ul>
+<div class="container-fluid mb-2">
+    <div class="row g-2">
+        <!-- 头部导航栏 -->
+        <div class="col-md-12">
+            <div class="border rounded h-100">
+                <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="#">网页标题</a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav">
+                                <!-- 首页 -->
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" href="#">首页</a>
+                                </li>
+                                <!-- 添加Dropdown控件 -->
+                                <li class="nav-item dropdown">
+                                <li class="nav-item dropdown">
+                                    <!-- btn-primary是默认颜色控件，也可以自定义类名并用css实现 -->
+                                    <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Image Source
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-dark">
+                                        <li><a class="dropdown-item" href="#">None</a></li>
+                                        <li><a class="dropdown-item" href="#">Camera</a></li>
+                                        <li><a class="dropdown-item" href="#">Local File</a></li>
+                                    </ul>
+                                </li>
+                                <!-- 更多的导航项 -->
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
         </div>
-    </div>
-</nav>
 
-<!-- 主体部分 -->
-<div class="container-fluid bg-main">
-    <div class="row border">
         <!-- 控制面板 -->
         <div class="col-md-2">
-            <div class="row p-2">
-                <!-- 顶部的控制模块 -->
-                <div class="w-100">
+            <div class="card custom-card h-100">
+                <div class="card-header custom-header">
+                    控制面板
+                </div>
+                <div class="card-body custom-card-body">
                     <div class="d-flex justify-content-center flex-wrap">
                         <!-- 源选择:无、摄像头、本地文件 -->
                         <!-- 移动到导航栏选择 -->
@@ -131,80 +136,164 @@
                 </div>
             </div>
         </div>
-
         <!-- 显示画面 -->
-        <div class="col-md-5 p-2">
-            <div class="row border h-100"><!-- h-100表示占满高度 -->
-                <div class="col-md-8 bg-output-canvas p-2">
-                    <!-- 主画面 -->
-                    <div class="video-container" id="videoContainer" style="display: none;">
-                        <canvas id="outputCanvas"></canvas>
-                    </div>
-                </div>
-                <div class="col-md-4 p-2">
-                    <div class="row g-3">
-                        <div class="col-md-12">
-                            <div class="bg-input-video" id="inputVideoContainer">
-                                <!-- 原画面 -->
-                                <video id="inputVideo" autoplay muted playsinline></video>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div id="skeletonContainer">
-                                <!-- 骨骼动画 -->
-                                <div id="skeleton3D"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 图表区 -->
-        <div class="col-md-5 p-2">
+        <div class="col-md-5">
             <div class="row g-2">
                 <!-- 第一行 -->
-                <div class="col-md-4">
-                    <div class="bg-chart-1 h-100" id="firstChartContainer">
-                        <div id="containerChart2" class="chart-container">
-                            <svg width="400" height="200" id="chart2"></svg>
+                <!-- 主画面 -->
+                <div class="col-md-8">
+                    <div class="card custom-card h-100">
+                    <div class="card-header custom-header">
+                        输出画面
+                    </div>
+                    <div class="card-body custom-card-body">
+                        <div class="video-container" id="videoContainer" style="display: none;">
+                            <canvas id="outputCanvas"></canvas>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="bg-chart-2 h-100">
-                        <div id="containerChart3" class="chart-container">
-                            <svg width="400" height="200" id="chart3"></svg>
-                        </div>
-                    </div>
                 </div>
+                <!-- 原画面与骨骼 -->
                 <div class="col-md-4">
-                    <div class="bg-chart-3 h-100">
-                        <div id="containerChart4" class="chart-container">
-                            <svg width="400" height="200" id="chart4"></svg>
+                    <div class="row g-2">
+                        <!-- 第一行：原画面 -->
+                        <div class="col-md-12">
+                            <div class="card custom-card h-100">
+                                <div class="card-header custom-header">
+                                    输入画面
+                                </div>
+                                <div class="card-body custom-card-body">
+                                    <div id="inputVideoContainer">
+                                        <video id="inputVideo" autoplay muted playsinline></video>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 第二行：骨骼动画 -->
+                        <div class="col-md-12">
+                            <div class="card custom-card h-100">
+                                <div class="card-header custom-header">
+                                    3D 骨骼图
+                                </div>
+                                <div class="card-body custom-card-body">
+                                    <div id="skeletonContainer">
+                                        <div id="skeleton3D"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- 第二行 -->
-                <div class="col-md-12 h-100">
-                    <div class="bg-chart-4 h-100">
-                        <div id="containerChart5" class="chart-container">
-                            <svg width="400" height="200" id="chart5"></svg>
+                <!-- 文字提示区 -->
+                <div class="col-md-12">
+                    <div class="card custom-card h-100">
+                        <div class="card-header custom-header">
+                            文字提示区
+                        </div>
+                        <div class="card-body custom-card-body">
+                            <div>
+                                您做的CPR像一坨
+                            </div>
+                            <div>
+                                您做的CPR娜艾莎~
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+        <!-- 图表区 -->
+        <div class="col-md-5">
+            <div class="row g-2">
+                <!-- 第一行:角度仪表 -->
+                <div class="col-md-4">
+                    <div class="card custom-card h-100">
+                        <div class="card-header custom-header">
+                            Angle1
+                        </div>
+                        <div class="card-body custom-card-body">
+                            <div id="firstChartContainer">
+                                <div id="containerChart2" class="chart-container">
+                                    <svg width="400" height="200" id="chart2"></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card custom-card h-100">
+                        <div class="card-header custom-header">
+                            Angle2
+                        </div>
+                        <div class="card-body custom-card-body">
+                            <div id="containerChart3" class="chart-container">
+                                <svg width="400" height="200" id="chart3"></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card custom-card h-100">
+                        <div class="card-header custom-header">
+                            Angle3
+                        </div>
+                        <div class="card-body custom-card-body">
+                            <div id="containerChart4" class="chart-container">
+                                <svg width="400" height="200" id="chart4"></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-<!-- 底部内容 -->
-<div class="container-fluid bg-bottom">
-    <div class="row border p-2">
-        <div class="row gx-2">
-            <div class="col-md-4">
-                <div class="p-3 bg-chart-5 h-100">
+                <!-- 第二行:角度散点图与频率 -->
+                <div class="col-md-8">
+                    <div class="card custom-card h-100">
+                        <div class="card-header custom-header">
+                            角度散点图
+                        </div>
+                        <div class="card-body custom-card-body">
+                            <div id="containerChart7" class="chart-container">
+                                <svg width="400" height="200" id="chart7"></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card custom-card h-100">
+                        <div class="card-header custom-header">
+                            频率
+                        </div>
+                        <div class="card-body custom-card-body">
+                            <div id="containerChart5" class="chart-container">
+                                <svg width="400" height="200" id="chart5"></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第三行:水平坐标系 -->
+                <div class="col-md-12">
+                    <div class="card custom-card h-100">
+                        <div class="card-header custom-header">
+                            水平坐标轴
+                        </div>
+                        <div class="card-body custom-card-body">
+                            敬请期待...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 按压示意图 -->
+        <div class="col-md-5">
+            <div class="card custom-card h-100">
+                <div class="card-header custom-header">
+                    按压示意图
+                </div>
+                <div class="card-body custom-card-body">
                     <div id="chartContainer" style="display: none;">
                         <div id="containerChart1" class="chart-container">
                             <svg width="400" height="200" id="chart1"></svg>
@@ -212,26 +301,34 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-5">
-                <div class="p-3 bg-text h-100">
-                    <!--分数时间轴-->
+        </div>
+        <!-- 力模拟图-->
+        <div class="col-md-2">
+            <div class="card custom-card h-100">
+                <div class="card-header custom-header">
+                    力模拟图
+                </div>
+                <div class="card-body custom-card-body">
+                    <div id="poseCanvasContainer">
+                        <canvas id="poseCanvas"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 成绩堆叠图 -->
+        <div class="col-md-5">
+            <div class="card custom-card h-100">
+                <div class="card-header custom-header">
+                    成绩堆叠图
+                </div>
+                <div class="card-body custom-card-body">
                     <div id="containerChart6" class="chart-container">
                         <svg width="400" height="200" id="chart6"></svg>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="p-3" id="poseCanvasContainer">
-                    <!-- 按压示意图 -->
-                    <canvas id="poseCanvas"></canvas>
-                </div>
-            </div>
         </div>
     </div>
-</div>
-
-<div id="containerChart7" class="chart-container">
-    <svg width="400" height="200" id="chart7"></svg>
 </div>
 
 <!-- Bootstrap Bundle with Popper -->

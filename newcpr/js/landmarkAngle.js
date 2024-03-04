@@ -237,7 +237,7 @@ function initGauge(targetContainer,series) {
 
     // 设置容器的宽度和高度
     targetContainer.style.width = firstChartContainer.offsetWidth + 'px';
-    targetContainer.style.height = firstChartContainer.offsetHeight + 'px';
+    targetContainer.style.height = firstChartContainer.offsetWidth + 'px';
 
     // 基于准备好的dom，初始化echarts实例
     let gauge = echarts.init(targetContainer);

@@ -13,11 +13,6 @@ function initAngleCount(chart) {
     var myChart = echarts.init(chart);
     // 配置项和数据
     var option = {
-        // 图表标题
-        title: {
-            text: 'unName',
-            left: '20%'
-        },
         // 提示框组件，展示数据等信息
         tooltip: {
             trigger: 'axis'
@@ -27,7 +22,7 @@ function initAngleCount(chart) {
             left: '7%',
             right: '24%',
             bottom: '25%',
-            top: '15%',
+            top: '5%',
         },
         // x轴配置
         xAxis: {
