@@ -99,14 +99,17 @@ function onResultsPose(results) {
 
   // 绘制堆叠图
   const scores = [
-    calculateNormalDistributionY(angle1, 45, 70, 25, 0),
-    calculateNormalDistributionY(angle2, 120, 165, 25, 0),
-    calculateNormalDistributionY(angle3, 90, 125, 25, 0),
+    calculateNormalDistributionY(angle1, minAngleRange1, maxAngleRange1, 25, 0),
+    calculateNormalDistributionY(angle2, minAngleRange2, maxAngleRange2, 25, 0),
+    calculateNormalDistributionY(angle3, minAngleRange3, maxAngleRange3, 25, 0),
     calculateNormalDistributionY(frequency, 1, 1.5, 25, 0),
   ];
   //console.log(scores);
   updateChartData(stackedAreaChart,scores);
 
+  //更新平行坐标系
+  var state = frequency < 1 ? 'Slow' : (frequency > 1.5 ? 'Fast' : 'Good')
+  updateChart8([[angle1, angle2, angle3, state]]);
 }
 
 // 实例化Pose对象，并设置模型文件的路径

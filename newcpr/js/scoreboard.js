@@ -9,7 +9,7 @@ function calculateNormalDistributionY(value, minRange, maxRange, maxValue, offse
     const y = maxValue * Math.exp(-((value - mean) ** 2) / (2 * stdDev ** 2));
 
     // 保留两位小数
-    return y.toFixed(2);
+    return y.toFixed(0);
 }
 
 // console.log(calculateNormalDistributionY(45,40,50,25,0))
@@ -132,6 +132,12 @@ const containerChart6option = {
             markLine: {
                 lineStyle:{color:'#333'},
                 data: [{ type: 'average', name: 'Avg' }],
+                label:{
+                    formatter: function(params) {
+                        // 使用toFixed(0)保留0位小数
+                        return params.name + ': ' + params.value.toFixed(0);
+                    }
+                },
                 animation: false//取消动画效果
             }
         }
@@ -173,7 +179,7 @@ function updateChartData(chart, scores) {
             sum += series.data[params.dataIndex] ? +series.data[params.dataIndex] : 0;
         });
         // 返回格式化后的总和
-        return sum.toFixed(2);
+        return sum.toFixed(0);
     };
 
     // 动态设置数据区域缩放组件的范围以聚焦最新的10个数据点
