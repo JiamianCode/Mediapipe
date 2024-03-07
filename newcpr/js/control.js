@@ -77,21 +77,9 @@ containerChart1.style.display = 'block';
 containerChart2.style.display = 'block'; // 显示相关的图表容器
 
 
-
-document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(item => {
-    item.addEventListener('click', function() {
-        updateDropdownButton(this.textContent);
-    });
-});
-
-function updateDropdownButton(selectedItemText) {
-    // 更新按钮文本
-    document.querySelector('.dropdown-toggle').textContent = "Image Source : " + selectedItemText;
-
-    // console.log("选中的操作是：" + selectedItemText);
-
+// 源选择控制
+imageSourceSelect.addEventListener('change', function() {
     // 最初隐藏所有容器
-    // resetUI();
     fileInputContainer.style.display = 'none';
     visualizationModeContainer.style.display = 'none';
     chartSelectionContainer.style.display = 'none';
@@ -100,13 +88,11 @@ function updateDropdownButton(selectedItemText) {
     inputVideo.src = '';
     outputCanvas.getContext('2d').clearRect(0, 0, outputCanvas.width, outputCanvas.height);
 
-
-    // 根据选择进行操作
-    switch (selectedItemText){
-        case 'None':// 如果选择了"None"，刷新页面重新开始
+    switch (this.value){
+        case 'none':// 如果选择了"None"，刷新页面重新开始
             window.location.reload();
             break;
-        case 'Camera':// 如果选择了"Camera"，显示可视化模式和图表选择
+        case 'camera':// 如果选择了"Camera"，显示可视化模式和图表选择
             visualizationModeContainer.style.display = '';
             chartSelectionContainer.style.display = '';
             videoContainer.style.display = '';
@@ -115,7 +101,7 @@ function updateDropdownButton(selectedItemText) {
             //originalImage.checked = true;
             checkCameraStatus();
             break;
-        case 'Local File':// 如果选择了"Local File"，最初只显示文件输入容器
+        case 'file':// 如果选择了"Local File"，最初只显示文件输入容器
             fileInputContainer.style.display = '';
             console.log("file input")
             // 文件被选择后，添加change事件监听器以显示可视化模式和图表选择
@@ -131,6 +117,6 @@ function updateDropdownButton(selectedItemText) {
             };
             break;
         default:
-            console.log("选中的操作是：" + selectedItemText);
+            console.log("选中的操作是：" + this.value);
     }
-}
+});

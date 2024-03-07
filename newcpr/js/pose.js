@@ -110,6 +110,9 @@ function onResultsPose(results) {
   //更新平行坐标系
   var state = frequency < 1 ? 'Slow' : (frequency > 1.5 ? 'Fast' : 'Good')
   updateChart8([[angle1, angle2, angle3, state]]);
+
+  //更新模型识别结果
+  updateModel(results).catch(console.error);
 }
 
 // 实例化Pose对象，并设置模型文件的路径
