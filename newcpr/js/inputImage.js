@@ -27,6 +27,7 @@ function startCamera() {
     }
 }
 
+//camera模式下录制、保存视频
 let mediaRecorder;
 let recordedChunks = [];
 document.getElementById('startButton').addEventListener('click', startRecording);
@@ -70,17 +71,20 @@ function saveVideo() {
 
 // 检测摄像头的控制选择状态
 function checkCameraStatus() {
-    const isCameraSelected = true;
-    const isOriginalImageChecked = originalImage.checked;
+    // 假设originalImage是一个已经定义好的变量，这里没有提供其定义
+    const isCameraSelected = selectCamera.classList.contains('btn-custom-selected');
+    const isOriginalImageChecked = originalImage.checked; // 确保originalImage是你的一个有效元素
 
     if (isCameraSelected && isOriginalImageChecked) {
         inputVideo.style.display = 'block'; // 显示视频元素
         inputVideo.controls = false; // 摄像头流通常不需要控件
-        startCamera();// 启动摄像头
-        console.log("originalImage mode selected");
+        startCamera(); // 启动摄像头
+        console.log("Camera mode selected and originalImage checked");
+    } else if(isOriginalImageChecked){
+        inputVideo.style.display = 'block'; // 显示视频元素
     } else {
         inputVideo.style.display = 'none';
-        console.log("originalImage mode deselected");
+        console.log("Camera mode deselected or originalImage unchecked");
     }
 }
 

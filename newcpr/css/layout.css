@@ -32,7 +32,7 @@
     font-size: 1rem; /* 自定义字体大小 */
 }
 
-
+/* 卡片 */
 .custom-header {
     background-color: #007bff; /* 自定义背景色 */
     font-size: 1rem; /* 自定义字体大小 */
@@ -48,6 +48,48 @@
     padding: 0.2rem; /* 自定义内边距 */
 }
 
+/* 默认字体大小 */
 body {
     font-size: 1rem; /* 设置默认的字体大小 */
+}
+
+/* 控制模块，源选择，自定义按钮颜色和去除阴影 */
+.btn-custom-selected, .btn-custom-unselected {
+    box-shadow: none !important; /* 去除阴影 */
+}
+.btn-custom-selected {
+    background-color: #4CAF50; /* 亮绿色 */
+    color: white;
+}
+.btn-custom-unselected {
+    background-color: #f8f9fa; /* 浅灰色 */
+    color: black;
+}
+.btn-group-custom {
+    border-radius: 0.5rem; /* 圆角边框 */
+    border: 1px solid #cccccc; /* 边框线 */
+    overflow: hidden; /* 隐藏溢出的子元素 */
+}
+/* 居中对齐的label */
+.text-center-label {
+    display: block;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+/*文件选择按钮*/
+.btn-custom-file-select {
+    background-color: #4CAF50; /* 深蓝色背景 */
+    color: white; /* 白色文字 */
+    border: none; /* 无边框 */
+}
+.btn-custom-file-select:hover {
+    background-color: #4CAF50; /* 鼠标悬停时的颜色 */
+}
+.btn-custom-file-select:active {
+    box-shadow: none !important; /* 取消点击时的阴影 */
+}
+/* 如果使用Bootstrap Icons，确保图标与文字颜色一致 */
+.btn-custom-file-select .bi {
+    color: white;
 }

@@ -2,10 +2,10 @@
 const imageSourceSelect = document.getElementById('imageSource');
 const fileInput = document.getElementById('file');
 
-const fileInputContainer = document.getElementById('fileInputContainer');
+//const fileInputContainer = document.getElementById('fileInputContainer');
 const visualizationModeContainer = document.getElementById('visualizationModeContainer');
 const chartSelectionContainer = document.getElementById('chartSelectionContainer');
-const videoContainer = document.getElementById('videoContainer');
+//const videoContainer = document.getElementById('videoContainer');
 const chartContainer = document.getElementById('chartContainer');
 
 
@@ -24,7 +24,7 @@ fileInput.addEventListener('change', function(event) {
         videoInput();
     }
 });
-
+/*
 // 监听视觉化模式的复选框变化
 document.querySelectorAll('#visualizationModeContainer input[type="checkbox"]').forEach(input => {
     input.addEventListener('change', function() {
@@ -63,7 +63,7 @@ document.querySelectorAll('#visualizationModeContainer input[type="checkbox"]').
         }
     });
 });
-
+*/
 
 // 根据复选框选择处理图表显示
 let containerChart1 = document.getElementById('containerChart1');
@@ -76,7 +76,7 @@ chartContainer.style.display = 'block';
 containerChart1.style.display = 'block';
 containerChart2.style.display = 'block'; // 显示相关的图表容器
 
-
+/*
 // 源选择控制
 imageSourceSelect.addEventListener('change', function() {
     // 最初隐藏所有容器
@@ -120,3 +120,90 @@ imageSourceSelect.addEventListener('change', function() {
             console.log("选中的操作是：" + this.value);
     }
 });
+*/
+
+
+// 源选择控制:默认选择File，可切Camera。Camera切回File则刷新网页。
+const selectCamera = document.getElementById('selectCamera');
+const selectFile = document.getElementById('selectFile');
+const fileInputContainer = document.getElementById('fileInputContainer');
+
+selectCamera.addEventListener('click', function() {
+    if (!this.classList.contains('btn-custom-selected')) {
+        this.classList.replace('btn-custom-unselected', 'btn-custom-selected');
+        selectFile.classList.replace('btn-custom-selected', 'btn-custom-unselected');
+
+        // 禁用文件输入
+        fileInput.disabled = true;
+        fileInputContainer.querySelector('button').disabled = true;
+        //fileInputContainer.querySelector('.form-text').textContent = 'File selection disabled';   //文字过长会导致按钮标签左移
+
+        //启用录制和暂停按钮
+        document.getElementById('startButton').disabled = false;
+        document.getElementById('stopButton').disabled = false;
+
+        checkCameraStatus(); // 更新状态
+    }
+});
+
+selectFile.addEventListener('click', function() {
+    // 始终刷新页面以确保File按钮点击时的行为一致性
+    location.reload();
+});
+
+document.getElementById('fileSelectButton').addEventListener('click', function() {
+    document.getElementById('file').click();
+});
+
+document.getElementById('file').addEventListener('change', function() {
+    const fileInput = document.getElementById('file');
+    const fileNameDisplay = document.getElementById('fileName');
+    fileNameDisplay.textContent = fileInput.files.length > 0 ? fileInput.files[0].name : 'No file selected';
+});
+
+
+// 角度选择控制
+const angle11 = document.getElementById('angle11');
+const angle22 = document.getElementById('angle22');
+const angle33 = document.getElementById('angle33');
+const angle44 = document.getElementById('angle44');
+const angle55 = document.getElementById('angle55');
+const angle66 = document.getElementById('angle66');
+
+// 初始化时只显示 Angle1 的卡片
+angle11.style.display = 'block';
+angle22.style.display = 'none';
+angle33.style.display = 'none';
+angle44.style.display = 'block';
+angle55.style.display = 'none';
+angle66.style.display = 'none';
+
+// 为每个单选按钮添加更改监听器
+document.getElementById('angle1').addEventListener('change', function() {
+    angle11.style.display = 'block';
+    angle22.style.display = 'none';
+    angle33.style.display = 'none';
+    angle44.style.display = 'block';
+    angle55.style.display = 'none';
+    angle66.style.display = 'none';
+});
+
+document.getElementById('angle2').addEventListener('change', function() {
+    angle11.style.display = 'none';
+    angle22.style.display = 'block';
+    angle33.style.display = 'none';
+    angle44.style.display = 'none';
+    angle55.style.display = 'block';
+    angle66.style.display = 'none';
+});
+
+document.getElementById('angle3').addEventListener('change', function() {
+    angle11.style.display = 'none';
+    angle22.style.display = 'none';
+    angle33.style.display = 'block';
+    angle44.style.display = 'none';
+    angle55.style.display = 'none';
+    angle66.style.display = 'block';
+});
+
+

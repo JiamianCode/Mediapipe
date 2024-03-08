@@ -4,7 +4,7 @@ const context = poseCanvas.getContext('2d');
 
 // 设置canvas的宽高为容器宽高
 const width = poseCanvasContainer.offsetWidth;
-const height = poseCanvasContainer.offsetHeight;
+const height = poseCanvasContainer.offsetWidth-40;
 
 // 注意修改的时候要对应修改生成的data
 

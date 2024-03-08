@@ -16,7 +16,7 @@ function calculateNormalDistributionY(value, minRange, maxRange, maxValue, offse
 
 const containerChart6 = document.getElementById('containerChart6');
 containerChart6.style.height = '200px';
-containerChart6.style.width = '500px';
+containerChart6.style.width = '480px';
 const stackedAreaChart = echarts.init(containerChart6);
 const containerChart6option = {
     tooltip: {
@@ -200,6 +200,4 @@ function updateChartData(chart, scores) {
     // 使用更新后的选项重新设置图表
     chart.setOption(option, false); // 第二个参数true表示不合并，而是替换之前的配置
 }
-
-
 

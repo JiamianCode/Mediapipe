@@ -51,6 +51,15 @@ function updateKeypointPositions(results) {
 const skeletonCheckbox = document.getElementById('skeleton');
 const hullCheckbox = document.getElementById('hull');
 function onResultsPose(results) {
+  //更新模型识别结果
+  var isCPR= updateModel(results).catch(console.error);
+  if(!isCPR){
+    updateTeachText('正在检测CPR姿势！');
+    return;
+  }
+  else{
+    updateTeachText('CPR姿势已测到！请继续！');
+  }
   // 直接在控制台打印关键点信息
   //console.log('关键点信息：');
   //console.log(results.poseLandmarks);
@@ -60,13 +69,19 @@ function onResultsPose(results) {
 
   // 处理画面
   updateCanvasContext(results); // 更新画面内容
+  if(visualizationModes.skeleton){
+    drawPoseConnections(results);// 绘制姿态连线
+    drawLandmarksPositions(results);// 绘制关键点
 
-  drawPoseConnections(results);// 绘制姿态连线
-  drawLandmarksPositions(results);// 绘制关键点
+    // 画目标角，使用特殊的颜色和粗细
+    drawAngle(results);
+  }
 
   updateKeypointPositions(results);//更新关键点
 
-  drawConvexHull(POSE_LANDMARKS.RIGHT_WRIST);// 画右手掌心的凸包
+  if(visualizationModes.hull){
+    drawConvexHull(POSE_LANDMARKS.RIGHT_WRIST);// 画右手掌心的凸包
+  }
 
   //更新图表
   updateLandmarkTrackChartData(myChart1, POSE_LANDMARKS.RIGHT_WRIST);
@@ -85,6 +100,8 @@ function onResultsPose(results) {
 
   addAngles(angle1,angle2,angle3);
   updateAngleCountChartData(myChart7,angle1Array);
+  updateAngleCountChartData(myChart9,angle2Array);
+  updateAngleCountChartData(myChart10,angle3Array);
 
   // 使用Pose结果更新仿真
   updateSimulationWithPose(results, POSE_LANDMARKS.RIGHT_SHOULDER);
@@ -110,9 +127,6 @@ function onResultsPose(results) {
   //更新平行坐标系
   var state = frequency < 1 ? 'Slow' : (frequency > 1.5 ? 'Fast' : 'Good')
   updateChart8([[angle1, angle2, angle3, state]]);
-
-  //更新模型识别结果
-  updateModel(results).catch(console.error);
 }
 
 // 实例化Pose对象，并设置模型文件的路径

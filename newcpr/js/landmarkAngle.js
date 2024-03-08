@@ -63,6 +63,8 @@ function setAngleSeries(min,max){
             max: 180, // 最大值
             //startAngle: 180, // 起始角度
             //endAngle: 0, // 结束角度
+            center: ['50%', '55%'], // 仪表盘的中心位置，相对于容器的百分比定位
+            radius:'95%',
             axisLine: { // axisLine定义了仪表盘轴线（外圈）的样式
                 lineStyle: {
                     width: 10, // 轴线的宽度
@@ -123,6 +125,7 @@ const frequencySeries = [
         startAngle: 200,// 起始角度
         endAngle: -20,// 结束角度
         center: ['50%', '60%'], // 仪表盘的中心位置，相对于容器的百分比定位
+        radius:'70%',
         splitNumber: 5, // 分割段数，即主刻度数量
         itemStyle: {
             color: '#FFAB91' // 指针颜色
@@ -188,6 +191,7 @@ const frequencySeries = [
         startAngle: 200,// 起始角度
         endAngle: -20,// 结束角度
         center: ['50%', '60%'], // 仪表盘的中心位置，相对于容器的百分比定位
+        radius:'70%',
         itemStyle: {
             color: '#FD7347' // 进度条颜色
         },

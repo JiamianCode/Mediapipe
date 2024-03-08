@@ -9,7 +9,7 @@ function addAngles(angle1, angle2, angle3) {
     angle3Array.push(angle3);
 }
 
-function initAngleCount(chart) {
+function initAngleCount(chart,min,max) {
     var myChart = echarts.init(chart);
     // 配置项和数据
     var option = {
@@ -32,8 +32,8 @@ function initAngleCount(chart) {
         // y轴配置
         yAxis: {
             type: 'value',
-            min: 25,
-            max: 90,
+            min: min-20,
+            max: max+20,
             splitLine: {
                 show: false
             }
@@ -44,9 +44,9 @@ function initAngleCount(chart) {
             right: 10,
             precision: 1,
             pieces: [
-                {gt: 0, lte: 45, color: '#67e0e3'},
-                {gt: 45, lte: 70, color: '#37a2da'},
-                {gt: 70, color: '#fd666d'},
+                {gt: 0, lte: min, color: '#67e0e3'},
+                {gt: min, lte: max, color: '#37a2da'},
+                {gt: max, color: '#fd666d'},
             ],
             outOfRange: {
                 color: '#999'
@@ -77,8 +77,8 @@ function initAngleCount(chart) {
                     color: '#333'
                 },
                 data: [
-                    {yAxis: 45, label: {show: false}},
-                    {yAxis: 70, label: {show: false}},
+                    {yAxis: min, label: {show: false}},
+                    {yAxis: max, label: {show: false}},
                 ]
             }
         }]
@@ -92,7 +92,19 @@ let containerChart7 = document.getElementById('containerChart7');
 containerChart7.style.height = '200px';
 containerChart7.style.width = '450px';
 // 初始化图表
-let myChart7 = initAngleCount(containerChart7);
+let myChart7 = initAngleCount(containerChart7,minAngleRange1,maxAngleRange1);
+
+let containerChart9 = document.getElementById('containerChart9');
+containerChart9.style.height = '200px';
+containerChart9.style.width = '450px';
+// 初始化图表
+let myChart9 = initAngleCount(containerChart9,minAngleRange2,maxAngleRange2);
+
+let containerChart10 = document.getElementById('containerChart10');
+containerChart10.style.height = '200px';
+containerChart10.style.width = '450px';
+// 初始化图表
+let myChart10 = initAngleCount(containerChart10,minAngleRange3,maxAngleRange3);
 
 
 let updateTimeout; // 用于检测更新停止的计时器
@@ -127,10 +139,12 @@ function updateAngleCountChartData(chart, angleArray) {
 
     chart.setOption(option);
 
-    // 设置延时，如果在1秒后没有新的更新，则转换图表类型
+
+    // 设置延时，如果在1秒后没有新的更新，则执行函数
     updateTimeout = setTimeout(function() {
         //switchToBarChart(chart);
-        switchToPieChart(chart);
+        //switchToPieChart(chart);
+        updateTeach();
     }, 1000); // 延时1秒
 }
 
