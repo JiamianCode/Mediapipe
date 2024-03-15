@@ -65,16 +65,7 @@ document.querySelectorAll('#visualizationModeContainer input[type="checkbox"]').
 });
 */
 
-// 根据复选框选择处理图表显示
-let containerChart1 = document.getElementById('containerChart1');
-let containerChart2 = document.getElementById('containerChart2');
-let checkboxChart1 = document.getElementById('checkboxChart1');
-let checkboxChart2 = document.getElementById('checkboxChart2');
 
-
-chartContainer.style.display = 'block';
-containerChart1.style.display = 'block';
-containerChart2.style.display = 'block'; // 显示相关的图表容器
 
 /*
 // 源选择控制

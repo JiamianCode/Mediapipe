@@ -51,9 +51,30 @@ const option = {
             ]
         }
     },
-    xAxis3D: {type: 'value',min: 0,max:1},
-    yAxis3D: {type: 'value',min: 0,max:1},
-    zAxis3D: {type: 'value',min: 0,max:1},
+    xAxis3D: {
+        type: 'value',
+        min: 0,
+        max: 1,
+        axisLabel: {show: false}, // 不显示坐标轴的标签
+        axisTick: {show: false}, // 不显示坐标轴刻度
+        name: '' // 不显示坐标轴名称
+    },
+    yAxis3D:{
+        type: 'value',
+        min: 0,
+        max: 1,
+        axisLabel: {show: false}, // 不显示坐标轴的标签
+        axisTick: {show: false}, // 不显示坐标轴刻度
+        name: '' // 不显示坐标轴名称
+    },
+    zAxis3D:{
+        type: 'value',
+        min: 0,
+        max: 1,
+        axisLabel: {show: false}, // 不显示坐标轴的标签
+        axisTick: {show: false}, // 不显示坐标轴刻度
+        name: '' // 不显示坐标轴名称
+    },
     // 3D 网格配置
     grid3D: {
         // 视图控制组件
@@ -62,7 +83,7 @@ const option = {
             rotateSensitivity: 1,
             zoomSensitivity: 1,
             panSensitivity: 1,
-            autoRotate: true    // 图表会绕着 z 轴自动旋转
+            autoRotate: false    // 图表会绕着 z 轴自动旋转
         }
     },
     // 系列列表

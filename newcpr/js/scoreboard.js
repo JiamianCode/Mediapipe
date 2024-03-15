@@ -15,8 +15,9 @@ function calculateNormalDistributionY(value, minRange, maxRange, maxValue, offse
 // console.log(calculateNormalDistributionY(45,40,50,25,0))
 
 const containerChart6 = document.getElementById('containerChart6');
-containerChart6.style.height = '200px';
-containerChart6.style.width = '480px';
+containerChart6.style.height = containerChart6.offsetHeight + 'px';
+containerChart6.style.width = containerChart6.offsetWidth + 'px';
+
 const stackedAreaChart = echarts.init(containerChart6);
 const containerChart6option = {
     tooltip: {
@@ -30,22 +31,22 @@ const containerChart6option = {
     },
     legend: {
         data: ['Angle1', 'Angle2', 'Angle3', 'frequency'], // 图例组件，展示图表的不同系列的标记，颜色和名字
-        left: '80%', // 将图例向右调整，距左侧80%
-        top: '10%', // 将图例向下调整，距顶部10%
+        left: '5%', // 将图例向右调整，距左侧80%
+        top: '0%', // 将图例向下调整，距顶部10%
         textStyle: {
             fontSize: 12
         }
     },
     toolbox: {
-        feature: {
-            saveAsImage: {} // 工具箱，提供导出图片功能
-        }
+        // feature: {
+        //     saveAsImage: {} // 工具箱，提供导出图片功能
+        // }
     },
     grid: {
-        left: '3%', // 网格左侧的距离
-        right: '22%', // 网格右侧的距离
+        left: '0%', // 网格左侧的距离
+        right: '15%', // 网格右侧的距离
         bottom: '10%', // 网格底部的距离
-        top:'5%',
+        top:'15%',
         containLabel: true // 网格区域是否包含坐标轴的标签
     },
     xAxis: [
@@ -130,7 +131,12 @@ const containerChart6option = {
             animation: false, // 禁用动画效果
             // 显示平均线
             markLine: {
-                lineStyle:{color:'#333'},
+                silent: true, // 禁用鼠标交互事件
+                symbol: 'none', // 不显示标记（箭头）
+                lineStyle: {
+                    color: '#333', // 可调整为所需的颜色
+                    type: 'dashed' // 设置为虚线，可选值为 'dashed' 或 'dotted'
+                },
                 data: [{ type: 'average', name: 'Avg' }],
                 label:{
                     formatter: function(params) {

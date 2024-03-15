@@ -1,16 +1,19 @@
 /* 背景色 */
 .bg-navbar { background-color: #3888c0; } /* 导航栏的背景色 */
-
-.bg-main{ background: #aacfe5; }/* 主体部分背景色 */
-.bg-control-panel { background-color: #aacfe5; } /* 控制面板的背景色 */
+.bg-control-panel { background-color: #3888c0; } /* 控制面板的背景色 */
 .bg-output-canvas { background-color: #3888c0; } /* 输出画面的背景色 */
-.bg-sub-panel {background-color: #aacfe5; } /* 副面板的背景色 */
-.bg-input-video { background-color: #68acd5; } /* 输入视频的背景色 */
-.bg-chart { background-color: #aacfe5; } /* 图表区的背景色 */
-.bg-chart-1 { background-color: #08336e; } /* 表1背景色 */
-.bg-chart-2 { background-color: #105ca4; } /* 表2背景色 */
-.bg-chart-3 { background-color: #3888c0; } /* 表3背景色 */
-.bg-chart-4 { background-color: #68ACD5; } /* 表4背景色 */
+.bg-skeleton-3d { background-color: #3888c0; } /* 表4背景色 */
+.bg-text-panel { background: #3888c0; }/* 文字提示框背景色 */
+
+.bg-chart { background-color: #3888c0; } /* 图表区的背景色 */
+.bg-parallel {background-color: #6bb8ef; } /* 平行坐标系的背景色 */
+.bg-angle-chart { background-color: #6bb8ef; } /* Angle背景色 */
+.bg-collide-force { background-color: #6bb8ef; } /* 力模拟的背景色 */
+.bg-landmark-track { background-color: #6bb8ef; } /* 按压示意图背景色 */
+.bg-frequency { background-color: #6bb8ef; } /* 频率图背景色 */
+.bg-score { background-color: #6bb8ef; } /* 成绩图背景色 */
+
+
 
 .bg-bottom {background-color: #d2e3f3; }   /* 底部背景颜色 */
 .bg-chart-5 { background-color: #68acd5; } /* 表5背景色 */
@@ -22,26 +25,35 @@
     border-color: #535353 !important;
 }
 
-/* 调整导航栏高度 */
+/* 导航栏 */
 .navbar-custom {
     padding-left: 0.6rem;
     padding-top: 0.3rem; /* 增加上内边距 */
     padding-bottom: 0.3rem; /* 增加下内边距 */
-    background-color: #007bff; /* 自定义背景色 */
     color: white; /* 字体颜色 */
     font-size: 1rem; /* 自定义字体大小 */
 }
 
-/* 卡片 */
+/* 卡片样式 */
 .custom-header {
-    background-color: #007bff; /* 自定义背景色 */
     font-size: 1rem; /* 自定义字体大小 */
     padding: 0.2rem;/* 边界 */
+    margin: 0.2rem 0.2rem 0.2rem 0.2rem; /* 边距，使得背景颜色填充有间隔 */
     text-align: center;/*位置居中*/
     color: white; /* 字体颜色 */
+    border-radius: 0.2rem; /* 圆角边框 */
+}
+.custom-header-small{
+    font-size: 0.8rem; /* 自定义字体大小 */
+    padding: 0.05rem;/* 边界 */
+}
+.custom-card-shadow {
+    /* 添加边界线阴影 */
+    /* 格式: 水平偏移 垂直偏移 模糊半径 扩展半径 颜色 */
+    box-shadow: 0px 0px 4px 2px rgba(72, 72, 72, 0.5)
 }
 .custom-card {
-    border-color: #535353; /* 自定义边界线颜色 */
+    border-color: #a8a8a8; /* 自定义边界线颜色 */
     border-width: 1px; /* 自定义边界线宽度 */
 }
 .custom-card-body {
@@ -92,4 +104,37 @@ body {
 /* 如果使用Bootstrap Icons，确保图标与文字颜色一致 */
 .btn-custom-file-select .bi {
     color: white;
+}
+
+
+
+/* 定义滚动容器的样式 */
+.scroll-container {
+    height: 90vh; /* 设置容器高度为视口的100% */
+    overflow-x: hidden; /* 隐藏水平滚动条 */
+    overflow-y: auto; /* 必要时显示垂直滚动条 */
+}
+/* 自定义滚动条样式 */
+.scroll-container::-webkit-scrollbar {
+    width: 6px; /* 滚动条宽度 */
+}
+.scroll-container::-webkit-scrollbar-track {
+    background: #f1f1f1; /* 滚动条轨道颜色 */
+    border-radius: 5px; /* 轨道圆角 */
+}
+.scroll-container::-webkit-scrollbar-thumb {
+    background: #888; /* 滚动条颜色 */
+    border-radius: 5px;/* 滑块圆角 */
+    border:#888;
+}
+.scroll-container::-webkit-scrollbar-thumb:hover {
+    background: #555; /* 滚动条悬停颜色 */
+}
+
+
+/*进度条*/
+.my-progress-bar{
+    width: 0%;
+    transition: none;/* 无延迟 */
+    /* transition: width 0.5s ease; */
 }

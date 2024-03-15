@@ -9,6 +9,27 @@ function zColor(data) {
     return `rgba(0, ${255 * z}, ${255 * (1 - z)}, 1)`; // 返回根据z值变化的颜色
 }
 
+let srcXScale,srcYScale,srcWidthScale,srcHeightScale;
+function findScale(results){
+    // 计算X、Y值的最小和最大值
+    let minX = Infinity, maxX = -Infinity;
+    let minY = Infinity, maxY = -Infinity;
+
+    results.poseLandmarks.forEach(point => {
+        minX = Math.min(minX, point.x);
+        maxX = Math.max(maxX, point.x);
+        minY = Math.min(minY, point.y);
+        maxY = Math.max(maxY, point.y);
+    });
+
+    srcXScale = minX - 0.1;
+    srcYScale = minY - 0.1;
+    srcWidthScale = maxX-srcXScale+0.2;
+    srcHeightScale = maxY - srcYScale+0.05;
+
+    console.log(minX,minY,maxX,maxY)
+}
+
 // 更新画面内容
 function updateCanvasContext(results){
     outputCanvas.save(); // 保存当前画布状态
@@ -16,32 +37,28 @@ function updateCanvasContext(results){
     opCanvas.height = videoContainer.offsetWidth * inputVideo.videoHeight / inputVideo.videoWidth;
     outputCanvas.clearRect(0, 0, opCanvas.width, opCanvas.height); // 清除画布内容
 
-/*
-    // 指定源图像绘制的起始Y坐标和高度（10%到20%区域）
-    const sourceStartY = inputVideo.videoHeight * 0.3; // 源图像的起始Y坐标
-    const sourceHeight = inputVideo.videoHeight * 0.6; // 源图像的高度
+    // 计算截取的部分
+    const srcX = results.image.width * srcXScale; // 水平方向从20%宽的位置开始
+    const srcY = results.image.height * srcYScale; // 垂直方向从30%高的位置开始
+    const srcWidth = results.image.width * srcWidthScale; // 截取宽度为原图的20%
+    const srcHeight = results.image.height * srcHeightScale; // 截取高度为原图的20%
 
-    // 目标画布上的绘制位置和大小，这里我们将这部分绘制在画布的顶部，覆盖整个画布宽度
-    const destX = 0;
-    const destY = 0;
-    const destWidth = opCanvas.width;
-    const destHeight = opCanvas.height;
+    // 目标位置和尺寸（如果你想要将截取的图片绘制到整个canvas上，可以使用下面的代码）
+    const dstX = 0;
+    const dstY = 0;
+    const dstWidth = opCanvas.width; // 缩放后的宽度，这里是填满整个canvas
+    const dstHeight = opCanvas.height; // 缩放后的高度，这里是填满整个canvas
 
-    // 使用drawImage绘制指定区域
-    // 注意：drawImage的第二个和第三个参数分别是源图像的x和y坐标，第四和第五个参数分别是源图像的宽度和高度
-    // 第六到九个参数分别是目标画布上的x、y坐标和宽度、高度
-    outputCanvas.drawImage(results.image,
-        0, sourceStartY, inputVideo.videoWidth, sourceHeight,
-        destX, destY, destWidth, destHeight);
+    // 使用drawImage方法绘制截取的图片部分到canvas上
+    outputCanvas.drawImage(results.image, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight);
 
     outputCanvas.restore(); // 恢复画布状态
-*/
 
     // 在绘制之前应用水平翻转和平移变换
     //canvasCtx5.scale(-1, 1); // 水平翻转画布
     //canvasCtx5.translate(-outputCanvas.width, 0); // 平移画布
 
-    outputCanvas.drawImage(results.image, 0, 0, opCanvas.width, opCanvas.height); // 绘制摄像头图像
+    //outputCanvas.drawImage(results.image, 0, 0, opCanvas.width, opCanvas.height); // 绘制摄像头图像
 
 }
 // 绘制姿态连线

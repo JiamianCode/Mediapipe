@@ -42,7 +42,7 @@ function calculateAngle(results, LA, LB, LC) {
 }
 
 
-// 仪表盘角度样式
+// 获取仪表盘角度样式
 function setAngleSeries(min,max){
     return [
         {
@@ -114,7 +114,7 @@ function setAngleSeries(min,max){
     ]
 }
 
-// 仪表盘频率样式
+// 获取仪表盘频率样式
 const frequencySeries = [
     {
         // 第一个仪表盘配置
@@ -223,25 +223,11 @@ const frequencySeries = [
 ]
 
 
-let containerChart3 = document.getElementById('containerChart3');
-let containerChart4 = document.getElementById('containerChart4');
-let containerChart5 = document.getElementById('containerChart5');
 
-const firstChartContainer = document.getElementById('firstChartContainer');
-
-// 初始化仪表盘
-let gauge1 = initGauge(containerChart2,setAngleSeries(45/180,70/180)); // 调用 initGauge() 函数初始化仪表盘
-let gauge2 = initGauge(containerChart3,setAngleSeries(120/180,165/180));
-let gauge3 = initGauge(containerChart4,setAngleSeries(90/180,125/180));
-let gauge4 = initGauge(containerChart5,frequencySeries);
 
 function initGauge(targetContainer,series) {
     // 确保容器存在
     if (!targetContainer) return null;
-
-    // 设置容器的宽度和高度
-    targetContainer.style.width = firstChartContainer.offsetWidth + 'px';
-    targetContainer.style.height = firstChartContainer.offsetWidth + 'px';
 
     // 基于准备好的dom，初始化echarts实例
     let gauge = echarts.init(targetContainer);

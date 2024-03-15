@@ -20,9 +20,9 @@ function initAngleCount(chart,min,max) {
         // 直角坐标系内绘图网格
         grid: {
             left: '7%',
-            right: '24%',
+            right: '4%',
             bottom: '25%',
-            top: '5%',
+            top: '10%',
         },
         // x轴配置
         xAxis: {
@@ -40,8 +40,10 @@ function initAngleCount(chart,min,max) {
         },
         // 配置视觉映射组件，根据数据值映射颜色
         visualMap: {
-            top: 50,
-            right: 10,
+            orient: 'horizontal', // 设置水平排布
+            top: 0,
+            left: 'center',
+            right: 'auto',
             precision: 1,
             pieces: [
                 {gt: 0, lte: min, color: '#67e0e3'},
@@ -72,9 +74,11 @@ function initAngleCount(chart,min,max) {
             data: [], // 初始数据为空，稍后动态更新
             animation: false,
             markLine: {
-                silent: true,
+                silent: true, // 禁用鼠标交互事件
+                symbol: 'none', // 不显示标记（箭头）
                 lineStyle: {
-                    color: '#333'
+                    color: '#333', // 可调整为所需的颜色
+                    type: 'dashed' // 设置为虚线，可选值为 'dashed' 或 'dotted'
                 },
                 data: [
                     {yAxis: min, label: {show: false}},
@@ -88,23 +92,7 @@ function initAngleCount(chart,min,max) {
     return myChart; // 返回图表实例以便后续更新数据
 }
 
-let containerChart7 = document.getElementById('containerChart7');
-containerChart7.style.height = '200px';
-containerChart7.style.width = '450px';
-// 初始化图表
-let myChart7 = initAngleCount(containerChart7,minAngleRange1,maxAngleRange1);
 
-let containerChart9 = document.getElementById('containerChart9');
-containerChart9.style.height = '200px';
-containerChart9.style.width = '450px';
-// 初始化图表
-let myChart9 = initAngleCount(containerChart9,minAngleRange2,maxAngleRange2);
-
-let containerChart10 = document.getElementById('containerChart10');
-containerChart10.style.height = '200px';
-containerChart10.style.width = '450px';
-// 初始化图表
-let myChart10 = initAngleCount(containerChart10,minAngleRange3,maxAngleRange3);
 
 
 let updateTimeout; // 用于检测更新停止的计时器

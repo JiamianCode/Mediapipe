@@ -50,7 +50,14 @@ function updateKeypointPositions(results) {
 // 处理MediaPipe Pose结果的回调函数
 const skeletonCheckbox = document.getElementById('skeleton');
 const hullCheckbox = document.getElementById('hull');
+
+let find = false;
 function onResultsPose(results) {
+  if(!find){
+    findScale(results);
+    find = true;
+  }
+
   //更新模型识别结果
   var isCPR= updateModel(results).catch(console.error);
   if(!isCPR){

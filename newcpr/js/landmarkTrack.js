@@ -39,10 +39,10 @@ function initLandmarkTrackChart(chart) {
         },
         // 直角坐标系内绘图网格
         grid: {
-            left: '7%', // 网格左侧的距离
-            right: '24%', // 网格右侧的距离
+            left: '9%', // 网格左侧的距离
+            right: '3%', // 网格右侧的距离
             bottom: '25%', // 网格底部的距离
-            top:'5%',
+            top:'10%',
         },
         // x轴配置
         xAxis: {
@@ -61,6 +61,7 @@ function initLandmarkTrackChart(chart) {
             }
         },
         // 工具栏
+        /*
         toolbox: {
             right: 10, // 工具栏位置
             feature: { // 工具栏各工具配置
@@ -70,7 +71,7 @@ function initLandmarkTrackChart(chart) {
                 restore: {}, // 配置项还原
                 saveAsImage: {} // 保存为图片
             }
-        },
+        },*/
         // 数据区域缩放组件
         dataZoom: [
             {
@@ -86,8 +87,10 @@ function initLandmarkTrackChart(chart) {
         ],
         // 配置视觉映射组件，根据数据值映射颜色
         visualMap: {
-            top: 50,
-            right: 10,
+            orient: 'horizontal', // 设置水平排布
+            top: 0,
+            left: 'center',
+            right:'auto',
             precision: 1, // 设置精度为2，即小数点后两位
             pieces: [ // 定义不同数据范围的颜色
                 {gt: 0.6, lte: 0.7, color: '#FBDB0F'},
@@ -107,9 +110,11 @@ function initLandmarkTrackChart(chart) {
             animation: false, // 禁用动画效果
             showSymbol: false,  //不显示点
             markLine: {
-                silent: true,
+                silent: true, // 禁用鼠标交互事件
+                symbol: 'none', // 不显示标记（箭头）
                 lineStyle: {
-                    color: '#333'
+                    color: '#333', // 可调整为所需的颜色
+                    type: 'dashed' // 设置为虚线，可选值为 'dashed' 或 'dotted'
                 },
                 data: [
                     {
@@ -128,11 +133,6 @@ function initLandmarkTrackChart(chart) {
     myChart.setOption(option);
     return myChart; // 返回图表实例以便后续更新数据
 }
-
-containerChart1.style.height = '200px';
-containerChart1.style.width = '450px';
-// 初始化图表
-let myChart1 = initLandmarkTrackChart(containerChart1);
 
 //更新图表
 function updateLandmarkTrackChartData(myChart, targetIndex) {

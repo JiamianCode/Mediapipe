@@ -1,17 +1,10 @@
-const poseCanvasContainer = document.getElementById('poseCanvasContainer');
-const poseCanvas = document.getElementById('poseCanvas');
-const context = poseCanvas.getContext('2d');
+let poseCanvasContainer = document.getElementById('poseCanvasContainer');
+let poseCanvas = document.getElementById('poseCanvas');
+poseCanvas.width = poseCanvasContainer.offsetWidth;
+poseCanvas.height = poseCanvasContainer.offsetWidth;//正方形
+let poseCanvasContext = poseCanvas.getContext('2d');
 
-// 设置canvas的宽高为容器宽高
-const width = poseCanvasContainer.offsetWidth;
-const height = poseCanvasContainer.offsetWidth-40;
-
-// 注意修改的时候要对应修改生成的data
-
-let nodes = null;
-let color = null;
-
-// 预加载图片
+// 预加载图片并初始化
 let nodeImage = new Image();
 nodeImage.src = 'img/hand.png'; // 替换为你的图片路径
 nodeImage.onload = function() {
@@ -19,18 +12,19 @@ nodeImage.onload = function() {
     // 例如，你可能需要在这里调用 initSimulation() 函数
 
     // 后续添加控制逻辑来初始化
-    initSimulation();
+    initSimulation(poseCanvas);// 设置canvas的宽高为容器宽高
 };
 
+// 注意修改的时候要对应修改生成的data
+let nodes = null;
+let color = null;
 
-function initSimulation(){
-    poseCanvas.width = width;
-    poseCanvas.height = height;
 
+function initSimulation(poseCanvas){
     // 生成节点数据
     // 使用自执行函数立即生成数据
     const data = (() => {
-        const k = width / 200; // 定义节点大小的基础值
+        const k = poseCanvas.width / 200; // 定义节点大小的基础值
         const r = d3.randomUniform(k, k * 4); // 定义随机半径的范围
         const n = 4; // 分组数量
         // 生成200个节点数据，每个节点带有随机半径和分组信息
@@ -50,7 +44,7 @@ function initSimulation(){
         .force("y", d3.forceY().strength(0.01)) // y轴向中心的力
         .force("collide", d3.forceCollide().radius(d => d.r + 1).iterations(3)) // 碰撞力，避免节点重叠
         // 中心点对其他点的排斥力，减少-width * 2 / 3这个负值的绝对值
-        .force("charge", d3.forceManyBody().strength((d, i) => i ? 0 : -width / 4)) // 节点间的排斥或吸引力
+        .force("charge", d3.forceManyBody().strength((d, i) => i ? 0 : -poseCanvas.width / 4)) // 节点间的排斥或吸引力
         .on("tick", ticked); // 每个“tick”（时间间隔）时执行的函数
 }
 
@@ -69,7 +63,7 @@ function updateSimulationWithPose(results,index) {
         // 归一化坐标转换为canvas坐标
         // 绘图原点在画布中心
         const x = 0;
-        const y = (landmark.y-minPose)/(maxPose-minPose) * height - height / 2;   // 动态调整y的相对位置
+        const y = (landmark.y-minPose)/(maxPose-minPose) * poseCanvas.height - poseCanvas.height / 2;   // 动态调整y的相对位置
 
         // 假设我们更新的是仿真中的一个特定节点，例如nodes[0]
         nodes[0].fx = x;
@@ -81,9 +75,9 @@ function updateSimulationWithPose(results,index) {
 }
 
 function ticked() {
-    context.clearRect(0, 0, width, height); // 清除画布
-    context.save(); // 保存当前绘图状态
-    context.translate(width / 2, height / 2); // 将绘图原点移到画布中心
+    poseCanvasContext.clearRect(0, 0, poseCanvas.width, poseCanvas.height); // 清除画布
+    poseCanvasContext.save(); // 保存当前绘图状态
+    poseCanvasContext.translate(poseCanvas.width / 2, poseCanvas.height / 2); // 将绘图原点移到画布中心
 
     // 在nodes[0]的位置绘制方形
     // if(nodes && nodes.length > 0) {
@@ -108,18 +102,18 @@ function ticked() {
         const imgX = d.x - imgWidth / 2;
         const imgY = d.y - imgHeight / 2;
         // 绘制图片
-        context.drawImage(nodeImage, imgX, imgY, imgWidth, imgHeight);
+        poseCanvasContext.drawImage(nodeImage, imgX, imgY, imgWidth, imgHeight);
     }
 
     // 绘制其余节点
     for (let i = 1; i < nodes.length; ++i) {
         const d = nodes[i];
-        context.beginPath(); // 开始新路径
-        context.moveTo(d.x + d.r, d.y); // 移动到起始点
-        context.arc(d.x, d.y, d.r, 0, 2 * Math.PI); // 绘制圆形
-        context.fillStyle = color(d.group); // 设置填充颜色
-        context.fill(); // 填充路径
+        poseCanvasContext.beginPath(); // 开始新路径
+        poseCanvasContext.moveTo(d.x + d.r, d.y); // 移动到起始点
+        poseCanvasContext.arc(d.x, d.y, d.r, 0, 2 * Math.PI); // 绘制圆形
+        poseCanvasContext.fillStyle = color(d.group); // 设置填充颜色
+        poseCanvasContext.fill(); // 填充路径
     }
 
-    context.restore(); // 恢复之前保存的绘图状态
+    poseCanvasContext.restore(); // 恢复之前保存的绘图状态
 }

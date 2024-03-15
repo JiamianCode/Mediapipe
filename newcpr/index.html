@@ -35,18 +35,18 @@
     <div class="row g-2">
         <!-- 标题栏 -->
         <div class="col-md-12">
-            <div class="border rounded navbar-custom">
+            <div class="border rounded navbar-custom bg-navbar">
                 RescueRadar: Providing Real Time Interactive and Visualization Solution for CPR Training Process
             </div>
         </div>
 
         <!--左部:控制面板+主画面-->
-        <div class="col-md-6">
+        <div class="col-md-7">
             <div class="row g-2">
                 <!-- 控制面板 -->
                 <div class="col-md-3">
-                    <div class="card custom-card h-100">
-                        <div class="card-header custom-header">
+                    <div class="card custom-card h-100 custom-card-shadow">
+                        <div class="custom-header bg-control-panel">
                             控制面板
                         </div>
                         <div class="card-body custom-card-body">
@@ -162,45 +162,40 @@
                 <!-- 显示画面 -->
                 <div class="col-md-9">
                     <div class="row g-2">
-                        <!-- 第一行主画面、原画面和3D骨骼图 -->
-                        <div class="col-md-8">
+                        <!-- 第一行主画面和3D骨骼图 -->
+                        <div class="col-md-7">
                             <div class="card custom-card h-100">
-                                <div class="card-header custom-header">
+                                <div class="custom-header bg-output-canvas">
                                     输出画面
                                 </div>
                                 <div class="card-body custom-card-body">
+                                    <!-- 画面 -->
                                     <div class="video-container" id="videoContainer">
                                         <canvas id="outputCanvas"></canvas>
                                     </div>
+                                    <!-- 视频控件 -->
+                                    <div class="d-flex align-items-center mt-2">
+                                        <button id="playPauseBtn" class="btn btn-primary">
+                                            <i class="bi bi-play-fill"></i> <!-- 默认显示播放图标 -->
+                                        </button>
+                                        <div class="progress flex-grow-1 mx-2">
+                                            <div id="videoProgress" class="progress-bar my-progress-bar" role="progressbar"></div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="row g-2">
-                                <!-- 第一行：原画面 -->
-                                <div class="col-md-12">
-                                    <div class="card custom-card h-100">
-                                        <div class="card-header custom-header">
-                                            输入画面
-                                        </div>
-                                        <div class="card-body custom-card-body">
-                                            <div id="inputVideoContainer">
-                                                <video id="inputVideo" autoplay muted playsinline></video>
-                                            </div>
-                                        </div>
-                                    </div>
+
+                        <!-- 3D骨骼图 -->
+                        <div class="col-md-5">
+                            <div class="card custom-card h-100">
+                                <div class="custom-header bg-skeleton-3d">
+                                    3D 骨骼图
                                 </div>
-                                <!-- 第二行：骨骼动画 -->
-                                <div class="col-md-12">
-                                    <div class="card custom-card h-100">
-                                        <div class="card-header custom-header">
-                                            3D 骨骼图
-                                        </div>
-                                        <div class="card-body custom-card-body">
-                                            <div id="skeletonContainer">
-                                                <div id="skeleton3D"></div>
-                                            </div>
-                                        </div>
+                                <div class="card-body custom-card-body">
+                                    <div id="skeletonContainer">
+                                        <div id="skeleton3D"></div>
                                     </div>
                                 </div>
                             </div>
@@ -209,7 +204,7 @@
                         <!-- 第二行文字提示区 -->
                         <div class="col-md-12">
                             <div class="card custom-card h-100">
-                                <div class="card-header custom-header">
+                                <div class="custom-header bg-text-panel">
                                     文字提示区
                                 </div>
                                 <div class="card-body custom-card-body">
@@ -220,15 +215,160 @@
                             </div>
                         </div>
 
-                        <!-- 第三行平行坐标系 -->
-                        <div class="col-md-12">
-                            <div class="card custom-card h-100">
-                                <div class="card-header custom-header">
-                                    平行坐标系(单位：°)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--右部:图表-->
+        <div class="col-md-5">
+            <div class="row g-2">
+                <div class="col-md-12">
+                    <div class="card custom-card h-100 custom-card-shadow">
+                        <div class="custom-header bg-chart">
+                            图表区
+                        </div>
+                        <div class="card-body custom-card-body scroll-container">
+                            <div class="row g-2">
+                                <!-- 第一行:角度仪表 与 角度散点图 -->
+                                <div class="col-md-4" id="angle11">
+                                    <div class="card custom-card h-100">
+                                        <div class="custom-header bg-angle-chart custom-header-small">
+                                            Angle1
+                                        </div>
+                                        <div class="card-body custom-card-body">
+                                            <div id="containerChart2" class="chart-container">
+                                                <svg width="400" height="200" id="chart2"></svg>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="card-body custom-card-body">
-                                    <div id="containerChart8" class="chart-container">
-                                        <svg width="400" height="200" id="chart8"></svg>
+                                <div class="col-md-8" id="angle44">
+                                    <div class="card custom-card h-100">
+                                        <div class="custom-header bg-angle-chart custom-header-small">
+                                            Angle1分布散点图(单位：°)
+                                        </div>
+                                        <div class="card-body custom-card-body custom-header-small">
+                                            <div id="containerChart7" class="chart-container">
+                                                <svg width="400" height="200" id="chart7"></svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4" id="angle22">
+                                    <div class="card custom-card h-100">
+                                        <div class="custom-header bg-angle-chart custom-header-small">
+                                            Angle2
+                                        </div>
+                                        <div class="card-body custom-card-body">
+                                            <div id="containerChart3" class="chart-container">
+                                                <svg width="400" height="200" id="chart3"></svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8" id="angle55">
+                                    <div class="card custom-card h-100">
+                                        <div class="custom-header bg-angle-chart custom-header-small">
+                                            Angle2分布散点图(单位：°)
+                                        </div>
+                                        <div class="card-body custom-card-body">
+                                            <div id="containerChart9" class="chart-container">
+                                                <svg width="400" height="200" id="chart9"></svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4" id="angle33">
+                                    <div class="card custom-card h-100">
+                                        <div class="custom-header bg-angle-chart custom-header-small">
+                                            Angle3
+                                        </div>
+                                        <div class="card-body custom-card-body">
+                                            <div id="containerChart4" class="chart-container">
+                                                <svg width="400" height="200" id="chart4"></svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8" id="angle66">
+                                    <div class="card custom-card h-100">
+                                        <div class="custom-header bg-angle-chart custom-header-small">
+                                            Angle3分布散点图(单位：°)
+                                        </div>
+                                        <div class="card-body custom-card-body">
+                                            <div id="containerChart10" class="chart-container">
+                                                <svg width="400" height="200" id="chart10"></svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 第二行:力模拟图/3D骨骼 与 按压示意图 -->
+                                <div class="col-md-4">
+                                    <div class="card custom-card h-100">
+                                        <div class="custom-header bg-collide-force custom-header-small">
+                                            力模拟图
+                                        </div>
+                                        <div class="card-body custom-card-body">
+                                            <div id="poseCanvasContainer">
+                                                <canvas id="poseCanvas"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card custom-card h-100">
+                                        <div class="custom-header bg-landmark-track custom-header-small">
+                                            按压示意图
+                                        </div>
+                                        <div class="card-body custom-card-body">
+                                            <div id="containerChart1" class="chart-container">
+                                                <svg width="400" height="200" id="chart1"></svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 第三行平行坐标系 -->
+                                <div class="col-md-12">
+                                    <div class="card custom-card h-100">
+                                        <div class="custom-header bg-parallel custom-header-small">
+                                            平行坐标系(单位：°)
+                                        </div>
+                                        <div class="card-body custom-card-body">
+                                            <div id="containerChart8" class="chart-container">
+                                                <svg width="400" height="200" id="chart8"></svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 第三行:频率 与 成绩堆叠图 -->
+                                <div class="col-md-4">
+                                    <div class="card custom-card h-100">
+                                        <div class="custom-header bg-frequency custom-header-small">
+                                            频率
+                                        </div>
+                                        <div class="card-body custom-card-body">
+                                            <div id="containerChart5" class="chart-container">
+                                                <svg width="400" height="200" id="chart5"></svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card custom-card h-100">
+                                        <div class="custom-header bg-score custom-header-small">
+                                            成绩堆叠图
+                                        </div>
+                                        <div class="card-body custom-card-body">
+                                            <div id="containerChart6" class="chart-container">
+                                                <svg width="400" height="200" id="chart6"></svg>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -237,142 +377,13 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
-        <!--右部:图表-->
-        <div class="col-md-6">
-            <div class="row g-2">
-                <!-- 第一行:角度仪表 与 角度散点图 -->
-                <div class="col-md-4" id="angle11">
-                    <div class="card custom-card h-100">
-                        <div class="card-header custom-header">
-                            Angle1
-                        </div>
-                        <div class="card-body custom-card-body">
-                            <div id="firstChartContainer">
-                                <div id="containerChart2" class="chart-container">
-                                    <svg width="400" height="200" id="chart2"></svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4" id="angle22">
-                    <div class="card custom-card h-100">
-                        <div class="card-header custom-header">
-                            Angle2
-                        </div>
-                        <div class="card-body custom-card-body">
-                            <div id="containerChart3" class="chart-container">
-                                <svg width="400" height="200" id="chart3"></svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4" id="angle33">
-                    <div class="card custom-card h-100">
-                        <div class="card-header custom-header">
-                            Angle3
-                        </div>
-                        <div class="card-body custom-card-body">
-                            <div id="containerChart4" class="chart-container">
-                                <svg width="400" height="200" id="chart4"></svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-8" id="angle44">
-                    <div class="card custom-card h-100">
-                        <div class="card-header custom-header">
-                            Angle1分布散点图(单位：°)
-                        </div>
-                        <div class="card-body custom-card-body">
-                            <div id="containerChart7" class="chart-container">
-                                <svg width="400" height="200" id="chart7"></svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-8" id="angle55">
-                    <div class="card custom-card h-100">
-                        <div class="card-header custom-header">
-                            Angle2分布散点图(单位：°)
-                        </div>
-                        <div class="card-body custom-card-body">
-                            <div id="containerChart9" class="chart-container">
-                                <svg width="400" height="200" id="chart9"></svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-8" id="angle66">
-                    <div class="card custom-card h-100">
-                        <div class="card-header custom-header">
-                            Angle3分布散点图(单位：°)
-                        </div>
-                        <div class="card-body custom-card-body">
-                            <div id="containerChart10" class="chart-container">
-                                <svg width="400" height="200" id="chart10"></svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 第二行:力模拟图/3D骨骼 与 按压示意图 -->
-                <div class="col-md-4">
-                    <div class="card custom-card h-100">
-                        <div class="card-header custom-header">
-                            力模拟图
-                        </div>
-                        <div class="card-body custom-card-body">
-                            <div id="poseCanvasContainer">
-                                <canvas id="poseCanvas"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="card custom-card h-100">
-                        <div class="card-header custom-header">
-                            按压示意图
-                        </div>
-                        <div class="card-body custom-card-body">
-                            <div id="chartContainer" style="display: none;">
-                                <div id="containerChart1" class="chart-container">
-                                    <svg width="400" height="200" id="chart1"></svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 第三行:频率 与 成绩堆叠图 -->
-                <div class="col-md-4">
-                    <div class="card custom-card h-100">
-                        <div class="card-header custom-header">
-                            频率
-                        </div>
-                        <div class="card-body custom-card-body">
-                            <div id="containerChart5" class="chart-container">
-                                <svg width="400" height="200" id="chart5"></svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="card custom-card h-100">
-                        <div class="card-header custom-header">
-                            成绩堆叠图
-                        </div>
-                        <div class="card-body custom-card-body">
-                            <div id="containerChart6" class="chart-container">
-                                <svg width="400" height="200" id="chart6"></svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!-- 原画面（隐藏） -->
+<div class="col-md-12">
+    <div id="inputVideoContainer" style="display: none">
+        <video id="inputVideo" autoplay muted playsinline></video>
     </div>
 </div>
 
@@ -388,6 +399,40 @@
 <script type="text/javascript" src="js/parallel.js"></script>
 <script type="text/javascript" src="js/angleCount.js"></script>
 <script type="text/javascript" src="js/skeleton.js"></script>
+<script type="text/javascript" src="js/chart.js"></script>
 <script type="text/javascript" src="js/control.js"></script>
+<script>
+
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const progressContainer = document.querySelector('.progress');
+    const videoProgress = document.getElementById('videoProgress');
+
+    playPauseBtn.addEventListener('click', function() {
+        if (inputVideo.paused || inputVideo.ended) {
+            inputVideo.play();
+        } else {
+            inputVideo.pause();
+        }
+    });
+
+    inputVideo.addEventListener('play', function() {
+        playPauseBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
+    });
+
+    inputVideo.addEventListener('pause', function() {
+        playPauseBtn.innerHTML = '<i class="bi bi-play-fill"></i>';
+    });
+
+    inputVideo.addEventListener('timeupdate', function() {
+        let progress = (inputVideo.currentTime / inputVideo.duration) * 100;
+        videoProgress.style.width = `${progress}%`;
+    });
+
+    progressContainer.addEventListener('click', function(e) {
+        const clickPosition = (e.offsetX / this.offsetWidth) * inputVideo.duration;
+        inputVideo.currentTime = clickPosition;
+    });
+
+</script>
 </body>
 </html>
