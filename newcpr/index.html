@@ -150,6 +150,22 @@
                                     </div>
                                 </div>
                                 -->
+
+                                <!-- 角度范围选择 -->
+                                <div class="m-2" id="angle1range">
+                                    <div id="rangeValues">
+                                        <span id="angleName">Angle1</span> Range : <span id="minValue">20</span>° - <span id="maxValue">80</span>°
+                                    </div>
+                                    <div class="range-slider">
+                                        <label for="minRange" class="form-label">Min：</label>
+                                        <input type="range" class="form-range" id="minRange">
+                                    </div>
+                                    <div class="range-slider">
+                                        <label for="maxRange" class="form-label">Max：</label>
+                                        <input type="range" class="form-range" id="maxRange">
+                                    </div>
+                                </div>
+
                                 <!-- 录制按钮 -->
                                 <div class="m-2" id="RecordContainer">
                                     <button id="startButton" class="btn btn-primary" disabled>Record</button>
@@ -170,7 +186,7 @@
                                 </div>
                                 <div class="card-body custom-card-body">
                                     <!-- 画面 -->
-                                    <div class="video-container" id="videoContainer">
+                                    <div class="video-container ratio ratio-4x3" id="videoContainer">
                                         <canvas id="outputCanvas"></canvas>
                                     </div>
                                     <!-- 视频控件 -->
@@ -211,6 +227,42 @@
                                     <h3 class="text-center-label" id="teachText">
                                         请在左侧控制面板选择您的输入模式！
                                     </h3>
+
+                                    <!-- Alert 1 -->
+                                    <div class="alert-custom alert-danger">
+                                        <div class="row">
+                                            <div class="col-md-8 alert-heading">错误等级：高，分数：90</div>
+                                            <div class="col-md-4 error-range">范围：00:10至00:30</div>
+                                        </div>
+                                        <div class="error-detail">
+                                            - 原因一<br>
+                                            - 原因二
+                                        </div>
+                                    </div>
+
+                                    <!-- Alert 2 -->
+                                    <div class="alert-custom alert-warning">
+                                        <div class="row">
+                                            <div class="col-md-8 alert-heading">错误等级：中，分数：60</div>
+                                            <div class="col-md-4 error-range">范围：00:40至00:50</div>
+                                        </div>
+                                        <div class="error-detail">
+                                            - 原因一<br>
+                                            - 原因二
+                                        </div>
+                                    </div>
+
+                                    <!-- Alert 3 -->
+                                    <div class="alert-custom alert-info">
+                                        <div class="row">
+                                            <div class="col-md-8 alert-heading">错误等级：低，分数：30</div>
+                                            <div class="col-md-4 error-range">范围：01:00至01:10</div>
+                                        </div>
+                                        <div class="error-detail">
+                                            - 原因一<br>
+                                            - 原因二
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -325,7 +377,7 @@
                                             按压示意图
                                         </div>
                                         <div class="card-body custom-card-body">
-                                            <div id="containerChart1" class="chart-container">
+                                            <div id="containerChart1" class="chart-container h-100">
                                                 <svg width="400" height="200" id="chart1"></svg>
                                             </div>
                                         </div>
@@ -401,37 +453,10 @@
 <script type="text/javascript" src="js/skeleton.js"></script>
 <script type="text/javascript" src="js/chart.js"></script>
 <script type="text/javascript" src="js/control.js"></script>
+<script type="text/javascript" src="js/outputVideoControl.js"></script>
+<script type="text/javascript" src="js/angleRangeControl.js"></script>
 <script>
 
-    const playPauseBtn = document.getElementById('playPauseBtn');
-    const progressContainer = document.querySelector('.progress');
-    const videoProgress = document.getElementById('videoProgress');
-
-    playPauseBtn.addEventListener('click', function() {
-        if (inputVideo.paused || inputVideo.ended) {
-            inputVideo.play();
-        } else {
-            inputVideo.pause();
-        }
-    });
-
-    inputVideo.addEventListener('play', function() {
-        playPauseBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
-    });
-
-    inputVideo.addEventListener('pause', function() {
-        playPauseBtn.innerHTML = '<i class="bi bi-play-fill"></i>';
-    });
-
-    inputVideo.addEventListener('timeupdate', function() {
-        let progress = (inputVideo.currentTime / inputVideo.duration) * 100;
-        videoProgress.style.width = `${progress}%`;
-    });
-
-    progressContainer.addEventListener('click', function(e) {
-        const clickPosition = (e.offsetX / this.offsetWidth) * inputVideo.duration;
-        inputVideo.currentTime = clickPosition;
-    });
 
 </script>
 </body>

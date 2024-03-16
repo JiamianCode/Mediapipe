@@ -131,6 +131,8 @@ function onResultsPose(results) {
   //console.log(scores);
   updateChartData(stackedAreaChart,scores);
 
+  recordFrameScore(scores.reduce((accumulator, currentValue) => accumulator + Number(currentValue), 0));
+
   //更新平行坐标系
   var state = frequency < 1 ? 'Slow' : (frequency > 1.5 ? 'Fast' : 'Good')
   updateChart8([[angle1, angle2, angle3, state]]);

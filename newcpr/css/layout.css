@@ -106,7 +106,23 @@ body {
     color: white;
 }
 
-
+/* 范围选择样式 */
+.range-slider {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0px;
+}
+.range-slider .form-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 35%; /* 设置标签宽度 */
+    margin-bottom: 0; /* Bootstrap 默认的 margin-bottom 去除 */
+}
+.range-slider input {
+    width: 65%; /* 输入滑块占据剩余宽度 */
+    flex-shrink: 1; /* 允许滑块缩小以适应屏幕大小 */
+}
 
 /* 定义滚动容器的样式 */
 .scroll-container {
@@ -138,3 +154,24 @@ body {
     transition: none;/* 无延迟 */
     /* transition: width 0.5s ease; */
 }
+
+/* 文本提示区 */
+.alert-custom {
+    padding: 0.4rem;
+    border-radius: 4px;
+    margin-bottom: 0.5rem; /* 保持Alert之间有一定间距，但不使用横线 */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.alert-heading {
+    font-size: 1rem;
+    font-weight: bold;
+}
+.error-detail {
+    margin-top: 5px; /* 调整错误原因上方的间距 */
+}
+.error-range {
+    text-align: right;
+    font-weight: bold;
+}
+
+

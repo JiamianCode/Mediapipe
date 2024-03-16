@@ -2,6 +2,9 @@ let videoContainer = document.getElementById('videoContainer');
 let opCanvas = document.getElementById('outputCanvas'); // 处理后的图像输出画布
 let outputCanvas = opCanvas.getContext('2d'); // 获取画布的2D渲染上下文
 
+opCanvas.width = videoContainer.offsetWidth;
+opCanvas.height = videoContainer.offsetWidth;
+
 
 // 定义一个函数，根据z轴的深度值改变颜色
 function zColor(data) {

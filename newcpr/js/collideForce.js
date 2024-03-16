@@ -1,7 +1,7 @@
 let poseCanvasContainer = document.getElementById('poseCanvasContainer');
 let poseCanvas = document.getElementById('poseCanvas');
 poseCanvas.width = poseCanvasContainer.offsetWidth;
-poseCanvas.height = poseCanvasContainer.offsetWidth;//正方形
+poseCanvas.height = 200;//正方形
 let poseCanvasContext = poseCanvas.getContext('2d');
 
 // 预加载图片并初始化
