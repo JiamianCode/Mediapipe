@@ -125,8 +125,13 @@ body {
 }
 
 /* 定义滚动容器的样式 */
-.scroll-container {
+.scroll-container-chart{
     height: 90vh; /* 设置容器高度为视口的100% */
+}
+.scroll-container-text{
+    height: 42vh;
+}
+.scroll-container {
     overflow-x: hidden; /* 隐藏水平滚动条 */
     overflow-y: auto; /* 必要时显示垂直滚动条 */
 }

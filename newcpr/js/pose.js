@@ -53,6 +53,14 @@ const hullCheckbox = document.getElementById('hull');
 
 let find = false;
 function onResultsPose(results) {
+  if(typeof results.poseLandmarks === 'undefined') return;
+  // 直接在控制台打印关键点信息
+  //console.log('关键点信息：');
+  //console.log(results.poseLandmarks);
+
+  //document.body.classList.add('loaded'); // 标记页面已加载完成
+  //fpsControl.tick(); // 更新FPS控制
+
   if(!find){
     findScale(results);
     find = true;
@@ -67,12 +75,6 @@ function onResultsPose(results) {
   else{
     updateTeachText('CPR姿势已测到！请继续！');
   }
-  // 直接在控制台打印关键点信息
-  //console.log('关键点信息：');
-  //console.log(results.poseLandmarks);
-
-  //document.body.classList.add('loaded'); // 标记页面已加载完成
-  //fpsControl.tick(); // 更新FPS控制
 
   // 处理画面
   updateCanvasContext(results); // 更新画面内容
@@ -116,6 +118,7 @@ function onResultsPose(results) {
   const frequency = calculateFrequency(POSE_LANDMARKS.RIGHT_WRIST); // 计算频率
   //console.log("frequency:",frequency);
   updateGauge(gauge4,frequency);
+  frequencyArray.push(frequency);
 
   // 绘制3d骨骼
   if(results)
@@ -126,7 +129,7 @@ function onResultsPose(results) {
     calculateNormalDistributionY(angle1, minAngleRange1, maxAngleRange1, 25, 0),
     calculateNormalDistributionY(angle2, minAngleRange2, maxAngleRange2, 25, 0),
     calculateNormalDistributionY(angle3, minAngleRange3, maxAngleRange3, 25, 0),
-    calculateNormalDistributionY(frequency, 1, 1.5, 25, 0),
+    calculateNormalDistributionY(frequency, minFrequency, maxFrequency, 25, 0),
   ];
   //console.log(scores);
   updateChartData(stackedAreaChart,scores);

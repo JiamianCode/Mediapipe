@@ -32,6 +32,8 @@ let segmentAverages = [];
 // 每隔多少帧计算一次平均分
 const framesPerSegment =5; // 示例中每20帧为一个段落
 
+let tempCurrentTime = '00:00';  // 初始时间
+
 // 接收当前帧的分数，并在达到指定帧数时计算平均分，然后清空累积
 function recordFrameScore(score) {
     // 将当前帧的分数添加到临时数组中
@@ -60,7 +62,27 @@ function recordFrameScore(score) {
 
         // 更新一次进度条
         updateProgressSegments();
+
+        // 更新一次文字提示内容
+        const time = getVideoCurrentTime();
+        updateAlert(tempCurrentTime, time);
+        tempCurrentTime = time;
     }
+}
+
+
+function getVideoCurrentTime(){
+    const currentTimeInSeconds = inputVideo.currentTime; // 获取当前时间（秒）
+    const minutes = Math.floor((currentTimeInSeconds % 3600) / 60); // 计算分钟数
+    const seconds = Math.floor(currentTimeInSeconds % 60); // 计算秒数
+
+    // 将分钟、秒转换为两位数格式
+    const formattedTime = [
+        minutes.toString().padStart(2, '0'),
+        seconds.toString().padStart(2, '0')
+    ].join(':');
+
+    return formattedTime;
 }
 
 
@@ -84,9 +106,9 @@ function updateProgressSegments() {
 
     segmentAverages.forEach(segment => {
         // 计算当前分段的frames占总frames的百分比
-        const segmentPercentageOfTotal = (segment.frames / totalFrames) * 100;
+        const segmentPercentageOfTotal = (segment.frames / totalFrames);
         // 计算当前分段应占进度条的实际宽度百分比，基于当前播放进度
-        const segmentWidthPercentage = segmentPercentageOfTotal * (currentTime / totalDuration);
+        const segmentWidthPercentage = segmentPercentageOfTotal * currentProgressPercentage;
 
         appendSegment(segment.color, segmentWidthPercentage);
     });

@@ -228,41 +228,7 @@
                                         请在左侧控制面板选择您的输入模式！
                                     </h3>
 
-                                    <!-- Alert 1 -->
-                                    <div class="alert-custom alert-danger">
-                                        <div class="row">
-                                            <div class="col-md-8 alert-heading">错误等级：高，分数：90</div>
-                                            <div class="col-md-4 error-range">范围：00:10至00:30</div>
-                                        </div>
-                                        <div class="error-detail">
-                                            - 原因一<br>
-                                            - 原因二
-                                        </div>
-                                    </div>
-
-                                    <!-- Alert 2 -->
-                                    <div class="alert-custom alert-warning">
-                                        <div class="row">
-                                            <div class="col-md-8 alert-heading">错误等级：中，分数：60</div>
-                                            <div class="col-md-4 error-range">范围：00:40至00:50</div>
-                                        </div>
-                                        <div class="error-detail">
-                                            - 原因一<br>
-                                            - 原因二
-                                        </div>
-                                    </div>
-
-                                    <!-- Alert 3 -->
-                                    <div class="alert-custom alert-info">
-                                        <div class="row">
-                                            <div class="col-md-8 alert-heading">错误等级：低，分数：30</div>
-                                            <div class="col-md-4 error-range">范围：01:00至01:10</div>
-                                        </div>
-                                        <div class="error-detail">
-                                            - 原因一<br>
-                                            - 原因二
-                                        </div>
-                                    </div>
+                                    <div id="alertContainer" class="scroll-container scroll-container-text"></div>
                                 </div>
                             </div>
                         </div>
@@ -280,7 +246,7 @@
                         <div class="custom-header bg-chart">
                             图表区
                         </div>
-                        <div class="card-body custom-card-body scroll-container">
+                        <div class="card-body custom-card-body scroll-container scroll-container-chart">
                             <div class="row g-2">
                                 <!-- 第一行:角度仪表 与 角度散点图 -->
                                 <div class="col-md-4" id="angle11">
@@ -438,6 +404,13 @@
         <video id="inputVideo" autoplay muted playsinline></video>
     </div>
 </div>
+<!-- 热力图 -->
+<div class="col-md-12">
+    <div id="containerChart11" class="chart-container">
+        <svg width="400" height="200" id="chart11"></svg>
+    </div>
+</div>
+
 
 <script type="text/javascript" src="js/teachCPR.js"></script>
 <script type="text/javascript" src="js/model.js"></script>
@@ -446,11 +419,13 @@
 <script type="text/javascript" src="js/outputImage.js"></script>
 <script type="text/javascript" src="js/landmarkTrack.js"></script>
 <script type="text/javascript" src="js/landmarkAngle.js"></script>
+<script type="text/javascript" src="js/frequency.js"></script>
 <script type="text/javascript" src="js/collideForce.js"></script>
 <script type="text/javascript" src="js/scoreboard.js"></script>
 <script type="text/javascript" src="js/parallel.js"></script>
 <script type="text/javascript" src="js/angleCount.js"></script>
 <script type="text/javascript" src="js/skeleton.js"></script>
+<script type="text/javascript" src="js/heatmap.js"></script>
 <script type="text/javascript" src="js/chart.js"></script>
 <script type="text/javascript" src="js/control.js"></script>
 <script type="text/javascript" src="js/outputVideoControl.js"></script>

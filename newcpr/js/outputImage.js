@@ -39,7 +39,7 @@ function updateCanvasContext(results){
     opCanvas.width = videoContainer.offsetWidth;
     opCanvas.height = videoContainer.offsetWidth * inputVideo.videoHeight / inputVideo.videoWidth;
     outputCanvas.clearRect(0, 0, opCanvas.width, opCanvas.height); // 清除画布内容
-
+/*
     // 计算截取的部分
     const srcX = results.image.width * srcXScale; // 水平方向从20%宽的位置开始
     const srcY = results.image.height * srcYScale; // 垂直方向从30%高的位置开始
@@ -60,8 +60,8 @@ function updateCanvasContext(results){
     // 在绘制之前应用水平翻转和平移变换
     //canvasCtx5.scale(-1, 1); // 水平翻转画布
     //canvasCtx5.translate(-outputCanvas.width, 0); // 平移画布
-
-    //outputCanvas.drawImage(results.image, 0, 0, opCanvas.width, opCanvas.height); // 绘制摄像头图像
+*/
+    outputCanvas.drawImage(results.image, 0, 0, opCanvas.width, opCanvas.height); // 绘制摄像头图像
 
 }
 // 绘制姿态连线

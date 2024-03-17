@@ -133,6 +133,7 @@ function updateAngleCountChartData(chart, angleArray) {
         //switchToBarChart(chart);
         //switchToPieChart(chart);
         updateTeach();
+        updateHeatmap();
     }, 1000); // 延时1秒
 }
 
