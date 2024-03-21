@@ -26,9 +26,13 @@
 
     <!-- 引入 d3 文件 -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
+
     <!-- 引入 ECharts 文件和ECharts GL库 -->
     <script type="text/javascript" src="https://registry.npmmirror.com/echarts/5.4.3/files/dist/echarts.min.js"></script>
     <script type="text/javascript" src="https://registry.npmmirror.com/echarts-gl/2/files/dist/echarts-gl.min.js"></script>
+
+    <!-- 引入 html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
 </head>
 <body>
 <div class="container-fluid mb-2">
@@ -171,6 +175,11 @@
                                     <button id="startButton" class="btn btn-primary" disabled>Record</button>
                                     <button id="stopButton" class="btn btn-danger" disabled>Stop</button>
                                 </div>
+
+
+                                <div class="m-2">
+                                    <button type="button" class="btn btn-primary" onclick="showLargeModal()">总结报告</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -246,7 +255,7 @@
                         <div class="custom-header bg-chart">
                             图表区
                         </div>
-                        <div class="card-body custom-card-body scroll-container scroll-container-chart">
+                        <div class="card-body custom-card-body "> <!--scroll-container scroll-container-chart-->
                             <div class="row g-2">
                                 <!-- 第一行:角度仪表 与 角度散点图 -->
                                 <div class="col-md-4" id="angle11">
@@ -398,20 +407,70 @@
     </div>
 </div>
 
+<!-- 模态弹窗 -->
+<div class="modal fade" id="largeModal" tabindex="-1" aria-labelledby="largeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="largeModalLabel">
+                    总结报告
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body" id="report">
+                <div class="container-fluid mb-2">
+                    <div class="row g-2">
+                        <!-- 快照 -->
+                        <div class="col-md-6">
+                            <div class="card custom-card h-100">
+                                <div class="custom-header bg-text-panel">
+                                    GOOD
+                                </div>
+                                <div class="card-body custom-card-body">
+                                    <canvas id="wellOutputCanvas"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card custom-card h-100">
+                                <div class="custom-header bg-text-panel">
+                                    BAD
+                                </div>
+                                <div class="card-body custom-card-body">
+                                    <canvas id="badOutputCanvas"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- 热力图 -->
+                <div class="col-md-12">
+                    <div id="containerChart11" class="chart-container">
+                        <svg width="400" height="200" id="chart11"></svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="saveAsImage()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- 原画面（隐藏） -->
 <div class="col-md-12">
     <div id="inputVideoContainer" style="display: none">
         <video id="inputVideo" autoplay muted playsinline></video>
     </div>
 </div>
-<!-- 热力图 -->
-<div class="col-md-12">
-    <div id="containerChart11" class="chart-container">
-        <svg width="400" height="200" id="chart11"></svg>
-    </div>
-</div>
 
 
+<script type="text/javascript" src="js/finalReport.js"></script>
 <script type="text/javascript" src="js/teachCPR.js"></script>
 <script type="text/javascript" src="js/model.js"></script>
 <script type="text/javascript" src="js/pose.js"></script>

@@ -67,6 +67,11 @@ function recordFrameScore(score) {
         const time = getVideoCurrentTime();
         updateAlert(tempCurrentTime, time);
         tempCurrentTime = time;
+
+        return time;
+    }
+    else {
+        return "none";
     }
 }
 

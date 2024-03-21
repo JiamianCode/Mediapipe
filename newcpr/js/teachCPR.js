@@ -163,7 +163,14 @@ function updateAlert(beginTime, endTime){
     }
 
     // 如果没有具体原因，则说明所有测量值均在优秀范围内
-    if(level !== '优秀'){
+    if (level !== '优秀') {
         addAlert(level, score.toFixed(2), beginTime, endTime, reasons);
     }
+
+    // 记录alert
+    alertRecord.push({
+        score: score,
+        beginTime: beginTime,
+        endTime: endTime,
+    })
 }

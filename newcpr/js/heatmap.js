@@ -1,10 +1,11 @@
 let containerChart11 = document.getElementById('containerChart11');
-containerChart11.style.height = '300px';
-containerChart11.style.width = containerChart11.offsetWidth+'px';
 
 let hotData = [];
 
 function updateHeatmap(){
+    containerChart11.style.height = '300px';
+    containerChart11.style.width = containerChart11.offsetWidth+'px';
+
     // 初始化一个空数组来存放转换后的数据
     let transformedData = [];
 

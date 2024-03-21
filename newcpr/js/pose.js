@@ -47,13 +47,17 @@ function updateKeypointPositions(results) {
 }
 
 
-// 处理MediaPipe Pose结果的回调函数
-const skeletonCheckbox = document.getElementById('skeleton');
-const hullCheckbox = document.getElementById('hull');
-
+let resultRecord = [];
+let updateTimeout; // 用于检测更新停止的计时器
 let find = false;
 function onResultsPose(results) {
   if(typeof results.poseLandmarks === 'undefined') return;
+
+  // 如果已存在计时器，则清除（表示有新的数据更新）
+  if (updateTimeout) {
+    clearTimeout(updateTimeout);
+  }
+
   // 直接在控制台打印关键点信息
   //console.log('关键点信息：');
   //console.log(results.poseLandmarks);
@@ -134,11 +138,28 @@ function onResultsPose(results) {
   //console.log(scores);
   updateChartData(stackedAreaChart,scores);
 
-  recordFrameScore(scores.reduce((accumulator, currentValue) => accumulator + Number(currentValue), 0));
+  const time = recordFrameScore(scores.reduce((accumulator, currentValue) => accumulator + Number(currentValue), 0));
+
+  if(time !== "none"){
+    resultRecord.push({
+      time:time,
+      image:results.image
+    });
+  }
+
 
   //更新平行坐标系
   var state = frequency < 1 ? 'Slow' : (frequency > 1.5 ? 'Fast' : 'Good')
   updateChart8([[angle1, angle2, angle3, state]]);
+
+
+  // 设置延时，如果在1秒后没有新的更新，则执行函数
+  updateTimeout = setTimeout(function() {
+    //switchToBarChart(chart);
+    //switchToPieChart(chart);
+    updateTeach();
+    showLargeModal();
+  }, 1000); // 延时1秒
 }
 
 // 实例化Pose对象，并设置模型文件的路径

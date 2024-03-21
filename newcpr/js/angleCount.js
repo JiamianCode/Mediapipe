@@ -94,14 +94,8 @@ function initAngleCount(chart,min,max) {
 
 
 
-
-let updateTimeout; // 用于检测更新停止的计时器
 //更新图表
 function updateAngleCountChartData(chart, angleArray) {
-    // 如果已存在计时器，则清除（表示有新的数据更新）
-    if (updateTimeout) {
-        clearTimeout(updateTimeout);
-    }
 
     // 构建散点图数据，x轴坐标为索引，y轴坐标为角度值
     var data = angleArray.map(function (item, index) {
@@ -128,13 +122,7 @@ function updateAngleCountChartData(chart, angleArray) {
     chart.setOption(option);
 
 
-    // 设置延时，如果在1秒后没有新的更新，则执行函数
-    updateTimeout = setTimeout(function() {
-        //switchToBarChart(chart);
-        //switchToPieChart(chart);
-        updateTeach();
-        updateHeatmap();
-    }, 1000); // 延时1秒
+
 }
 
 // 转换散点图为条形图
