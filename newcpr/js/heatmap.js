@@ -3,7 +3,7 @@ let containerChart11 = document.getElementById('containerChart11');
 let hotData = [];
 
 function updateHeatmap(){
-    containerChart11.style.height = '300px';
+    containerChart11.style.height = '200px';
     containerChart11.style.width = containerChart11.offsetWidth+'px';
 
     // 初始化一个空数组来存放转换后的数据
@@ -31,6 +31,7 @@ function updateHeatmap(){
             top: '10%',
             left: '10%',
             right: '3%',
+            bottom: '5%'
         },
         xAxis: {
             type: 'category',
@@ -66,7 +67,7 @@ function updateHeatmap(){
             },
             orient: 'horizontal',
             left: 'center',
-            bottom: '15%'
+            bottom: '0%'
         },
         series: [{
             name: 'Punch Card',

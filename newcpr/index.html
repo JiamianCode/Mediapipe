@@ -7,32 +7,32 @@
     <title>index</title>
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="lib/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="lib/css/bootstrap-icons.css">
     <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/js/bootstrap.bundle.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="css/layout.css">
 
     <!-- Mediapipe Pose JS -->
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.1/camera_utils.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6/control_utils.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.2/drawing_utils.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.2/pose.js" crossorigin="anonymous"></script>
+    <script src="lib/js/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="lib/js/control_utils.js" crossorigin="anonymous"></script>
+    <script src="lib/js/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="lib/js/pose.js" crossorigin="anonymous"></script>
 
     <!-- 引入ONNX库 -->
-    <script src="https://cdn.jsdelivr.net/npm/onnxjs/dist/onnx.min.js"></script>
+    <script src="lib/js/onnx.min.js"></script>
 
     <!-- 引入 d3 文件 -->
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="lib/js/d3.v7.min.js"></script>
 
     <!-- 引入 ECharts 文件和ECharts GL库 -->
-    <script type="text/javascript" src="https://registry.npmmirror.com/echarts/5.4.3/files/dist/echarts.min.js"></script>
-    <script type="text/javascript" src="https://registry.npmmirror.com/echarts-gl/2/files/dist/echarts-gl.min.js"></script>
+    <script type="text/javascript" src="lib/js/echarts.min.js"></script>
+    <script type="text/javascript" src="lib/js/echarts-gl.min.js"></script>
 
     <!-- 引入 html2canvas -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+    <script src="lib/js/html2canvas.min.js"></script>
 </head>
 <body>
 <div class="container-fluid mb-2">
@@ -172,13 +172,13 @@
 
                                 <!-- 录制按钮 -->
                                 <div class="m-2" id="RecordContainer">
-                                    <button id="startButton" class="btn btn-primary" disabled>Record</button>
-                                    <button id="stopButton" class="btn btn-danger" disabled>Stop</button>
+                                    <button id="startButton" class="btn btn-start" disabled>Record</button>
+                                    <button id="stopButton" class="btn btn-stop" disabled>Stop</button>
                                 </div>
 
 
                                 <div class="m-2">
-                                    <button type="button" class="btn btn-primary" onclick="showLargeModal()">总结报告</button>
+                                    <button type="button" class="btn btn-start" onclick="showLargeModal()">总结报告</button>
                                 </div>
                             </div>
                         </div>
@@ -200,7 +200,7 @@
                                     </div>
                                     <!-- 视频控件 -->
                                     <div class="d-flex align-items-center mt-2">
-                                        <button id="playPauseBtn" class="btn btn-primary">
+                                        <button id="playPauseBtn" class="btn btn-video" disabled>
                                             <i class="bi bi-play-fill"></i> <!-- 默认显示播放图标 -->
                                         </button>
                                         <div class="progress flex-grow-1 mx-2">
@@ -222,6 +222,10 @@
                                     <div id="skeletonContainer">
                                         <div id="skeleton3D"></div>
                                     </div>
+                                </div>
+                                <div class="p-2">
+                                    <p id="angleSelect">当前展示的角度是：身体与手臂的夹角</p>
+                                    <p id="angleSize">角度大小为：-</p>
                                 </div>
                             </div>
                         </div>
@@ -273,7 +277,7 @@
                                 <div class="col-md-8" id="angle44">
                                     <div class="card custom-card h-100">
                                         <div class="custom-header bg-angle-chart custom-header-small">
-                                            Angle1分布散点图(单位：°)
+                                            Angle1历史分布(单位：°)
                                         </div>
                                         <div class="card-body custom-card-body custom-header-small">
                                             <div id="containerChart7" class="chart-container">
@@ -298,7 +302,7 @@
                                 <div class="col-md-8" id="angle55">
                                     <div class="card custom-card h-100">
                                         <div class="custom-header bg-angle-chart custom-header-small">
-                                            Angle2分布散点图(单位：°)
+                                            Angle2历史分布(单位：°)
                                         </div>
                                         <div class="card-body custom-card-body">
                                             <div id="containerChart9" class="chart-container">
@@ -323,7 +327,7 @@
                                 <div class="col-md-8" id="angle66">
                                     <div class="card custom-card h-100">
                                         <div class="custom-header bg-angle-chart custom-header-small">
-                                            Angle3分布散点图(单位：°)
+                                            Angle3历史分布(单位：°)
                                         </div>
                                         <div class="card-body custom-card-body">
                                             <div id="containerChart10" class="chart-container">
@@ -337,7 +341,7 @@
                                 <div class="col-md-4">
                                     <div class="card custom-card h-100">
                                         <div class="custom-header bg-collide-force custom-header-small">
-                                            力模拟图
+                                            当前按压情况
                                         </div>
                                         <div class="card-body custom-card-body">
                                             <div id="poseCanvasContainer">
@@ -349,7 +353,7 @@
                                 <div class="col-md-8">
                                     <div class="card custom-card h-100">
                                         <div class="custom-header bg-landmark-track custom-header-small">
-                                            按压示意图
+                                            按压情况历史分布
                                         </div>
                                         <div class="card-body custom-card-body">
                                             <div id="containerChart1" class="chart-container h-100">
@@ -360,10 +364,11 @@
                                 </div>
 
                                 <!-- 第三行平行坐标系 -->
+
                                 <div class="col-md-12">
                                     <div class="card custom-card h-100">
                                         <div class="custom-header bg-parallel custom-header-small">
-                                            平行坐标系(单位：°)
+                                            按压一致性(单位：°)
                                         </div>
                                         <div class="card-body custom-card-body">
                                             <div id="containerChart8" class="chart-container">
@@ -377,7 +382,7 @@
                                 <div class="col-md-4">
                                     <div class="card custom-card h-100">
                                         <div class="custom-header bg-frequency custom-header-small">
-                                            频率
+                                            当前频率
                                         </div>
                                         <div class="card-body custom-card-body">
                                             <div id="containerChart5" class="chart-container">
@@ -389,7 +394,7 @@
                                 <div class="col-md-8">
                                     <div class="card custom-card h-100">
                                         <div class="custom-header bg-score custom-header-small">
-                                            成绩堆叠图
+                                            综合表现
                                         </div>
                                         <div class="card-body custom-card-body">
                                             <div id="containerChart6" class="chart-container">
@@ -422,24 +427,39 @@
             <div class="modal-body" id="report">
                 <div class="container-fluid mb-2">
                     <div class="row g-2">
-                        <!-- 快照 -->
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="card custom-card h-100">
                                 <div class="custom-header bg-text-panel">
-                                    GOOD
+                                    Final Data
                                 </div>
                                 <div class="card-body custom-card-body">
-                                    <canvas id="wellOutputCanvas"></canvas>
+                                    <div id="finalWord" class="p-2"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+
+                        <!-- 快照 -->
+                        <div class="col-md-4">
                             <div class="card custom-card h-100">
-                                <div class="custom-header bg-text-panel">
+                                <div id="GOOD" class="custom-header bg-text-panel">
+                                    GOOD
+                                </div>
+                                <div class="card-body custom-card-body">
+                                    <div class="ratio ratio-4x3">
+                                        <canvas id="wellOutputCanvas"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card custom-card h-100">
+                                <div id="BAD" class="custom-header bg-text-panel">
                                     BAD
                                 </div>
                                 <div class="card-body custom-card-body">
-                                    <canvas id="badOutputCanvas"></canvas>
+                                    <div class="ratio ratio-4x3">
+                                        <canvas id="badOutputCanvas"></canvas>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -449,8 +469,15 @@
 
                 <!-- 热力图 -->
                 <div class="col-md-12">
-                    <div id="containerChart11" class="chart-container">
-                        <svg width="400" height="200" id="chart11"></svg>
+                    <div class="card custom-card h-100">
+                        <div class="custom-header bg-text-panel">
+                            HOT MAP
+                        </div>
+                        <div class="card-body custom-card-body">
+                            <div id="containerChart11" class="chart-container">
+                                <svg width="400" height="200" id="chart11"></svg>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -469,7 +496,27 @@
     </div>
 </div>
 
+<script>
+    const colorLow = '#fac87d';
+    const colorMid = '#9ED6F6';
+    const colorHigh = '#FFA8A3';
 
+    const colorFrequencyLow = '#73dccd';
+    const colorFrequencyHigh = '#45d0bd';
+
+    const colorAngleTitle = '#000000';
+
+    const colorPoseConnection = '#aacfe5';
+    const colorPosePosition = '#3888c07f';
+    const colorPoseAngelName = '#FFA8A3';
+    const colorPoseSelectConnection = '#FFA8A3';
+    const colorPoseSelectPosition = '#FFA8A3';
+
+    const colorScoreAngle1 = '#08336e';
+    const colorScoreAngle2 = '#3888c0';
+    const colorScoreAngle3 = '#aacfe5';
+    const colorScoreFrequency = '#d2e3f3';
+</script>
 <script type="text/javascript" src="js/finalReport.js"></script>
 <script type="text/javascript" src="js/teachCPR.js"></script>
 <script type="text/javascript" src="js/model.js"></script>

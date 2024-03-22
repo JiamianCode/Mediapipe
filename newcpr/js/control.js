@@ -19,6 +19,8 @@ fileInput.addEventListener('change', function(event) {
         // 初始化加载视频，并暂停播放
         inputVideo.onloadedmetadata = () => {
             inputVideo.pause();
+            // 视频加载完毕后，启用播放/暂停按钮
+            playPauseBtn.disabled = false;
         };
         // 绑定视频文件输入
         videoInput();
@@ -131,7 +133,7 @@ selectCamera.addEventListener('click', function() {
 
         //启用录制和暂停按钮
         document.getElementById('startButton').disabled = false;
-        document.getElementById('stopButton').disabled = false;
+        //document.getElementById('stopButton').disabled = false;
 
         checkCameraStatus(); // 更新状态
     }
@@ -177,6 +179,7 @@ document.getElementById('angle1').addEventListener('change', function() {
     angle44.style.display = 'block';
     angle55.style.display = 'none';
     angle66.style.display = 'none';
+    document.getElementById('angleSelect').textContent='当前展示的角度是：身体与手臂的夹角';
 });
 
 document.getElementById('angle2').addEventListener('change', function() {
@@ -186,6 +189,7 @@ document.getElementById('angle2').addEventListener('change', function() {
     angle44.style.display = 'none';
     angle55.style.display = 'block';
     angle66.style.display = 'none';
+    document.getElementById('angleSelect').textContent='当前展示的角度是：大臂和小臂的夹角';
 });
 
 document.getElementById('angle3').addEventListener('change', function() {
@@ -195,6 +199,7 @@ document.getElementById('angle3').addEventListener('change', function() {
     angle44.style.display = 'none';
     angle55.style.display = 'none';
     angle66.style.display = 'block';
+    document.getElementById('angleSelect').textContent='当前展示的角度是：身体与大腿的夹角';
 });
 
 

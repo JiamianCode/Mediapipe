@@ -12,7 +12,7 @@ const frequencySeries = [
         radius:'70%',
         splitNumber: 5, // 分割段数，即主刻度数量
         itemStyle: {
-            color: '#FFAB91' // 指针颜色
+            color: colorFrequencyLow // 指针颜色
         },
         progress: {
             show: true, // 是否显示进度条
@@ -64,7 +64,7 @@ const frequencySeries = [
             formatter: '{value}次/秒', // 格式化文本，显示值和单位
             color: 'inherit' // 颜色继承自全局或父级
         },
-        data: [{value: 1, name: '频率'}],
+        data: [{value: 1,name: '频率'}],
         animation: false, // 取消指针动画
     },
     {
@@ -77,7 +77,7 @@ const frequencySeries = [
         center: ['50%', '60%'], // 仪表盘的中心位置，相对于容器的百分比定位
         radius:'70%',
         itemStyle: {
-            color: '#FD7347' // 进度条颜色
+            color: colorFrequencyHigh // 进度条颜色
         },
         progress: {
             show: true, // 显示进度条
@@ -106,8 +106,8 @@ const frequencySeries = [
     }
 ]
 
-let maxFrequency = 1.5;
-let minFrequency = 1;
+let maxFrequency = 2;
+let minFrequency = 1.6;
 
 let frequencyArray = [];
 

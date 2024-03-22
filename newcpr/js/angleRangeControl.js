@@ -74,9 +74,9 @@ function updateValues(angle = 'angle1') {
                     axisLine: {
                         lineStyle: {
                             color: [
-                                [min/180, '#67e0e3'], // 0%到30%是#67e0e3颜色
-                                [max/180, '#37a2da'], // 30%到70%是#37a2da颜色
-                                [1, '#fd666d'] // 70%到100%是#fd666d颜色
+                                [min/180, colorLow], // 0%到30%是#67e0e3颜色
+                                [max/180, colorMid], // 30%到70%是#37a2da颜色
+                                [1, colorHigh] // 70%到100%是#fd666d颜色
                             ]
                         }
                     }
@@ -87,9 +87,9 @@ function updateValues(angle = 'angle1') {
                 // 配置视觉映射组件，根据数据值映射颜色
                 visualMap: {
                     pieces: [
-                        {gt: 0, lte: min, color: '#67e0e3'},
-                        {gt: min, lte: max, color: '#37a2da'},
-                        {gt: max, color: '#fd666d'},
+                        {gt: 0, lte: min, color: colorLow},
+                        {gt: min, lte: max, color: colorMid},
+                        {gt: max, color: colorHigh},
                     ],
                     outOfRange: {
                         color: '#999'
@@ -131,9 +131,9 @@ function updateValues(angle = 'angle1') {
                     axisLine: {
                         lineStyle: {
                             color: [
-                                [min/180, '#67e0e3'], // 0%到30%是#67e0e3颜色
-                                [max/180, '#37a2da'], // 30%到70%是#37a2da颜色
-                                [1, '#fd666d'] // 70%到100%是#fd666d颜色
+                                [min/180, colorLow], // 0%到30%是#67e0e3颜色
+                                [max/180, colorMid], // 30%到70%是#37a2da颜色
+                                [1, colorHigh] // 70%到100%是#fd666d颜色
                             ]
                         }
                     }
@@ -144,9 +144,9 @@ function updateValues(angle = 'angle1') {
                 // 配置视觉映射组件，根据数据值映射颜色
                 visualMap: {
                     pieces: [
-                        {gt: 0, lte: min, color: '#67e0e3'},
-                        {gt: min, lte: max, color: '#37a2da'},
-                        {gt: max, color: '#fd666d'},
+                        {gt: 0, lte: min, color: colorLow},
+                        {gt: min, lte: max, color: colorMid},
+                        {gt: max, color: colorHigh},
                     ],
                     outOfRange: {
                         color: '#999'
@@ -189,9 +189,9 @@ function updateValues(angle = 'angle1') {
                     axisLine: {
                         lineStyle: {
                             color: [
-                                [min/180, '#67e0e3'], // 0%到30%是#67e0e3颜色
-                                [max/180, '#37a2da'], // 30%到70%是#37a2da颜色
-                                [1, '#fd666d'] // 70%到100%是#fd666d颜色
+                                [min/180, colorLow], // 0%到30%是#67e0e3颜色
+                                [max/180, colorMid], // 30%到70%是#37a2da颜色
+                                [1, colorHigh] // 70%到100%是#fd666d颜色
                             ]
                         }
                     }
@@ -202,9 +202,9 @@ function updateValues(angle = 'angle1') {
                 // 配置视觉映射组件，根据数据值映射颜色
                 visualMap: {
                     pieces: [
-                        {gt: 0, lte: min, color: '#67e0e3'},
-                        {gt: min, lte: max, color: '#37a2da'},
-                        {gt: max, color: '#fd666d'},
+                        {gt: 0, lte: min, color: colorLow},
+                        {gt: min, lte: max, color: colorMid},
+                        {gt: max, color: colorHigh},
                     ],
                     outOfRange: {
                         color: '#999'

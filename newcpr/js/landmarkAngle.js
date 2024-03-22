@@ -52,7 +52,7 @@ function setAngleSeries(min,max){
                 show: true, // 确保标题显示
                 offsetCenter: [0, '70%'], // 调整名称位置，第一个值是水平偏移，第二个值是垂直偏移
                 textStyle: { // 文本样式
-                    color: '#e0d1cc', // 字体颜色
+                    color: colorAngleTitle, // 字体颜色
                     fontSize: 14, // 字体大小
                     fontWeight: 'bold', // 字体粗细
                     fontFamily: 'Arial' // 字体类型
@@ -69,9 +69,9 @@ function setAngleSeries(min,max){
                 lineStyle: {
                     width: 10, // 轴线的宽度
                     color: [ // 轴线的颜色分段，每个元素是一个二元组，第一项是分段的结束百分比，第二项是颜色
-                        [min, '#67e0e3'], // 0%到30%是#67e0e3颜色
-                        [max, '#37a2da'], // 30%到70%是#37a2da颜色
-                        [1, '#fd666d'] // 70%到100%是#fd666d颜色
+                        [min, colorLow], // 0%到30%是#67e0e3颜色
+                        [max, colorMid], // 30%到70%是#37a2da颜色
+                        [1, colorHigh] // 70%到100%是#fd666d颜色
                     ]
                 }
             },

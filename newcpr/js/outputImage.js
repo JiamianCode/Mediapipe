@@ -61,6 +61,10 @@ function updateCanvasContext(results){
     //canvasCtx5.scale(-1, 1); // 水平翻转画布
     //canvasCtx5.translate(-outputCanvas.width, 0); // 平移画布
 */
+    if(selectCamera.classList.contains('btn-custom-selected')){
+        outputCanvas.translate(opCanvas.width, 0); // 将画布原点移动到右边界
+        outputCanvas.scale(-1, 1); // 沿着Y轴翻转画布
+    }
     outputCanvas.drawImage(results.image, 0, 0, opCanvas.width, opCanvas.height); // 绘制摄像头图像
 
 }
@@ -84,7 +88,7 @@ function drawPoseConnections(results) {
             return gradient;
         }
         */
-        color: '#FF0000', // 统一使用红色绘制连线
+        color: colorPoseConnection, // 统一使用红色绘制连线
         lineWidth: 2
     });
 }
@@ -108,20 +112,20 @@ function drawLandmarksPositions(results) {
     // 绘制关键点
     //左侧关键点
     drawLandmarks(outputCanvas, Object.values(POSE_LANDMARKS_LEFT).map(index => results.poseLandmarks[index]), {
-        color: '#0000FF', // 统一使用蓝色绘制关键点边框
-        fillColor: '#0000FF', // 同样使用蓝色填充关键点
+        color: colorPosePosition, // 统一使用蓝色绘制关键点边框
+        fillColor: colorPosePosition, // 同样使用蓝色填充关键点
         radius: 2
     });
     //右侧关键点
     drawLandmarks(outputCanvas, Object.values(POSE_LANDMARKS_RIGHT).map(index => results.poseLandmarks[index]), {
-        color: '#0000FF', // 统一使用蓝色
-        fillColor: '#0000FF', // 同样使用蓝色
+        color: colorPosePosition, // 统一使用蓝色
+        fillColor: colorPosePosition, // 同样使用蓝色
         radius: 2
     });
     //中间关键点
     drawLandmarks(outputCanvas, Object.values(POSE_LANDMARKS_NEUTRAL).map(index => results.poseLandmarks[index]), {
-        color: '#0000FF', // 统一使用蓝色
-        fillColor: '#0000FF', // 同样使用蓝色
+        color: colorPosePosition, // 统一使用蓝色
+        fillColor: colorPosePosition, // 同样使用蓝色
         radius: 2
     });
     outputCanvas.restore(); // 恢复画布状态
@@ -152,9 +156,9 @@ function drawConvexHull(targetIndex) {
         outputCanvas.closePath();
 
         // 设置凸包的样式
-        outputCanvas.strokeStyle = '#FF0000'; // 设置描边颜色
+        outputCanvas.strokeStyle = '#ffd2ce'; // 设置描边颜色
         outputCanvas.stroke();
-        outputCanvas.fillStyle = 'rgba(255, 255, 0, 0.5)'; // 设置填充颜色，这里使用半透明的黄色
+        outputCanvas.fillStyle = 'rgba(254,229,188, 0.65)'; // 设置填充颜色，这里使用半透明的黄色
         outputCanvas.fill();
     }
 
@@ -165,7 +169,7 @@ function drawConvexHull(targetIndex) {
         const opacity = (index + 1) / filteredPositions.length; // 计算透明度，最旧的点（index=0）透明度最低，最新的点透明度最高
         outputCanvas.beginPath();
         outputCanvas.arc(x, y, 3, 0, 2 * Math.PI); // 绘制半径为3的圆点
-        outputCanvas.fillStyle = `rgba(255, 0, 0, ${opacity})`; // 设置填充颜色，透明度根据点的新旧程度变化
+        outputCanvas.fillStyle = `rgba(243,143,95, ${opacity})`; // 设置填充颜色，透明度根据点的新旧程度变化
         outputCanvas.fill();
     });
 }
@@ -213,40 +217,44 @@ function drawTextOnCanvas(canvasId, text, position, options = {}) {
 }
 
 // 绘制和标注目标angle
-function drawAngle(results){
+function drawAngle(results, angle1, angle2, angle3){
     var angleIndex = [];
     var connectionIndex = [];
+    var color = null;
     if(angle11.style.display === 'block'){
         angleIndex=[14,12,24];
         connectionIndex=[14,12,12,24];
+        color = angle1 > maxAngleRange1 ? colorHigh : (angle1 < minAngleRange1 ? colorLow : colorMid);
         // 标注角度名
         drawTextOnCanvas('outputCanvas', 'Angle1',
             {x: results.poseLandmarks[12].x*opCanvas.width+20, y: results.poseLandmarks[12].y*opCanvas.height+10},
             {
                 font: '20px Georgia',
-                color: 'blue'
+                color: color
             });
     }
     if(angle22.style.display === 'block'){
         angleIndex=[12,14,16];
         connectionIndex=[12,14,14,16];
+        color = angle2 > maxAngleRange2 ? colorHigh : (angle2 < minAngleRange2 ? colorLow : colorMid);
         // 标注角度名
         drawTextOnCanvas('outputCanvas', 'Angle2',
             {x: results.poseLandmarks[14].x*opCanvas.width+20, y: results.poseLandmarks[14].y*opCanvas.height-20},
             {
                 font: '20px Georgia',
-                color: 'blue'
+                color: color
             });
     }
     if(angle33.style.display === 'block'){
         angleIndex=[12,24,26];
         connectionIndex=[12,24,24,26];
+        color = angle3 > maxAngleRange3 ? colorHigh : (angle3 < minAngleRange3 ? colorLow : colorMid);
         // 标注角度名
         drawTextOnCanvas('outputCanvas', 'Angle3',
             {x: results.poseLandmarks[24].x*opCanvas.width-80, y: results.poseLandmarks[24].y*opCanvas.height+10},
             {
                 font: '20px Georgia',
-                color: 'blue'
+                color: color
             });
     }
 
@@ -254,8 +262,8 @@ function drawAngle(results){
         angleIndex, // 选中的关键点索引，例如选中头部和肩膀的关键点
         connectionIndex, // 选中的连线对应的关键点索引，例如连接头部和肩膀的连线
         {
-            landmarkColor: '#FF0000', // 关键点颜色
-            connectionColor: '#00FF00', // 连线颜色
+            landmarkColor: color, // 关键点颜色
+            connectionColor: color, // 连线颜色
             landmarkSize: 10, // 关键点大小
             connectionWidth: 4 // 连线宽度
         }

@@ -10,6 +10,7 @@ function showLargeModal() {
     // 为模态框的“shown”事件添加事件监听器
     document.getElementById('largeModal').addEventListener('shown.bs.modal', function () {
         // 模态框完全显示后执行这些函数
+        showWord();
         showShot();
         updateHeatmap();
     });
@@ -18,27 +19,72 @@ function showLargeModal() {
     myModal.show();
 }
 
+function showWord(){
+    // 计算平均值的函数
+    function calculateAverage(array) {
+        const sum = array.reduce((accumulator, currentValue) => accumulator + Number(currentValue), 0);
+        return sum / array.length;
+    }
+
+    // 使用calculateAverage函数计算每个数组的平均值
+    const averageAngle1 = calculateAverage(angle1Array);
+    const averageAngle2 = calculateAverage(angle2Array);
+    const averageAngle3 = calculateAverage(angle3Array);
+    const averageFrequency = calculateAverage(frequencyArray);
+    const averageScore = calculateAverage(alertRecord.map(record => record.score))
+
+    // 使用表格展示结果
+    document.getElementById('finalWord').innerHTML =
+        `<h5>The Average of Score is ${averageScore.toFixed(2)}</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Measurement</th>
+                    <th scope="col">Range</th>
+                    <th scope="col">Average</th>
+                </tr> 
+            </thead>
+
+            <tr>
+                <td>Angle 1</td>
+                <td>${minAngleRange1}°-${maxAngleRange1}°</td>
+                <td>${averageAngle1.toFixed(2)}°</td>
+            </tr>
+            <tr>
+                <td>Angle 2</td>
+                <td>${minAngleRange2}°-${maxAngleRange2}°</td>
+                <td>${averageAngle2.toFixed(2)}°</td>
+            </tr>
+            <tr>
+                <td>Angle 3</td>
+                <td>${minAngleRange3}°-${maxAngleRange3}°</td>
+                <td>${averageAngle3.toFixed(2)}°</td>
+            </tr>
+            <tr>
+                <td>Frequency</td>
+                <td>${minFrequency}-${maxFrequency}</td>
+                <td>${averageFrequency.toFixed(2)}</td>
+            </tr>
+        </table>`;
+}
+
+const badOutputCanvas = document.getElementById('badOutputCanvas');
+const wellOutputCanvas = document.getElementById('wellOutputCanvas');
+
 // 画快照
-function drawImageOnCanvas(image, canvasId) {
-    const canvas = document.getElementById(canvasId);
+function drawImageOnCanvas(url, canvas) {
     if (canvas) {
-        const outputCanvas = canvas.getContext('2d');
-        if (outputCanvas) {
-            // 保存当前画布状态
-            outputCanvas.save();
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetWidth * opCanvas.height / opCanvas.width ;
 
-            // 调整canvas大小以匹配图像比例
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetWidth * image.height / image.width;
-
-            // 清除画布内容
-            outputCanvas.clearRect(0, 0, canvas.width, canvas.height);
-
-            // 绘制图像
-            outputCanvas.drawImage(image, 0, 0, canvas.width, canvas.height);
-
-            // 恢复画布状态
-            outputCanvas.restore();
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+            var img = new Image();
+            img.onload = function() {
+                // 当图像加载完成后，在目标 canvas 上绘制图像
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            };
+            img.src = url;
         }
     }
 }
@@ -46,17 +92,17 @@ function drawImageOnCanvas(image, canvasId) {
 function showShot(){
 
     // 初始化最小和最大记录的变量
-    let minRecord = null;
-    let maxRecord = null;
+    let minRecord = alertRecord[0];
+    let maxRecord = alertRecord[0];
 
     // 遍历数组来找到最小和最大的记录
     alertRecord.forEach(record => {
         // 更新最小记录
-        if (minRecord === null || record.score < minRecord.score) {
+        if (record.score < minRecord.score) {
             minRecord = record;
         }
         // 更新最大记录
-        if (maxRecord === null || record.score > maxRecord.score) {
+        if (record.score > maxRecord.score) {
             maxRecord = record;
         }
     });
@@ -66,15 +112,20 @@ function showShot(){
     const wellTime = maxRecord.beginTime;
 
     // 从resultRecord中找到对应时间的图像
-    const badImageRecord = resultRecord.find(record => record.time === badTime);
-    const wellImageRecord = resultRecord.find(record => record.time === wellTime);
+    let badImageRecord = resultRecord.find(record => record.time === badTime);
+    let wellImageRecord = resultRecord.find(record => record.time === wellTime);
+
+    if(minRecord === alertRecord[0])    badImageRecord = resultRecord[0];
+    if(maxRecord === alertRecord[0])    wellImageRecord = resultRecord[0];
 
     // 在Canvas上绘制图像
     if (badImageRecord) {
-        drawImageOnCanvas(badImageRecord.image, 'badOutputCanvas');
+        drawImageOnCanvas(badImageRecord.canvasURL, badOutputCanvas);
+        document.getElementById('BAD').textContent = `BAD Time at ${badTime},Score is${minRecord.score}`;
     }
     if (wellImageRecord) {
-        drawImageOnCanvas(wellImageRecord.image, 'wellOutputCanvas');
+        drawImageOnCanvas(wellImageRecord.canvasURL, wellOutputCanvas);
+        document.getElementById('GOOD').textContent = `GOOD Time at ${wellTime},Score is${maxRecord.score}`;
     }
 }
 
