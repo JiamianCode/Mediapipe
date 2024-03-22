@@ -1,7 +1,7 @@
 var containerChart8 = document.getElementById('containerChart8');
 
 containerChart8.style.width = '550px'
-containerChart8.style.height = '250px'
+containerChart8.style.height = '220px'
 // 初始化echarts实例
 var myChart8 = echarts.init(containerChart8);
 
@@ -51,7 +51,7 @@ var option8 = {
                 margin: 20, // 刻度标签与轴线之间的距离
                 textStyle: {
                     color: function (value) {
-                        return value > maxAngleRange1 ? '#6699cc' : (value < minAngleRange1 ? '#ff6666' : '#99cc66');
+                        return value > maxAngleRange1 ? colorLow : (value < minAngleRange1 ? colorHigh : colorMid);
                     }, // 文本的颜色
                     fontSize: 12 // 文本的字体大小
                 },
@@ -87,7 +87,7 @@ var option8 = {
                 margin: 20, // 刻度标签与轴线之间的距离
                 textStyle: {
                     color: function (value) {
-                        return value < minAngleRange2 ? '#6699cc' : (value > maxAngleRange2 ? '#ff6666' : '#99cc66');
+                        return value < minAngleRange2 ? colorLow : (value > maxAngleRange2 ? colorHigh : colorMid);
                     }, // 文本的颜色
                     fontSize: 12 // 文本的字体大小
                 },
@@ -123,7 +123,7 @@ var option8 = {
                 margin: 20, // 刻度标签与轴线之间的距离
                 textStyle: {
                     color: function (value) {
-                        return value < minAngleRange3 ? '#6699cc' : (value > maxAngleRange3 ? '#ff6666' : '#99cc66');
+                        return value < minAngleRange3 ? colorLow : (value > maxAngleRange3 ? colorHigh : colorMid);
                     }, // 文本的颜色
                     fontSize: 12 // 文本的字体大小
                 },
@@ -159,7 +159,7 @@ var option8 = {
                 margin: 20, // 刻度标签与轴线之间的距离
                 textStyle: {
                     color: function (value) {
-                        return value === 'Slow' ? '#6699cc' : (value === 'Fast' ? '#ff6666' : '#99cc66');
+                        return value === 'Slow' ? colorLow : (value === 'Fast' ? colorHigh : colorMid);
                     }, // 文本的颜色
                     fontSize: 12 // 文本的字体大小
                 },
@@ -214,7 +214,7 @@ var option8 = {
                 show: false, // 去除柱子中数值的显示
             },
             itemStyle: {
-                color: '#ff6666' // 段1的颜色
+                color: colorHigh // 段1的颜色
             },
             data: [0.34, 0.34, 0.34, 0.34] // 示例数据
         },
@@ -224,7 +224,7 @@ var option8 = {
             stack: 'total',
             barWidth: '20%',
             itemStyle: {
-                color: '#99cc66' // 段2的颜色
+                color: colorMid // 段2的颜色
             },
             data: [0.33, 0.33, 0.33, 0.33] // 示例数据
         },
@@ -234,7 +234,7 @@ var option8 = {
             stack: 'total',
             barWidth: '20%',
             itemStyle: {
-                color: '#6699cc' // 段3的颜色
+                color: colorLow // 段3的颜色
             },
             data: [0.33, 0.33, 0.33, 0.33] // 示例数据
         }

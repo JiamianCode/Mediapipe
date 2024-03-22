@@ -31,7 +31,7 @@ const containerChart6option = {
     },
     legend: {
         data: ['Angle1', 'Angle2', 'Angle3', 'frequency'], // 图例组件，展示图表的不同系列的标记，颜色和名字
-        left: '5%', // 将图例向右调整，距左侧80%
+        left: 'center', // 将图例向右调整，距左侧80%
         top: '0%', // 将图例向下调整，距顶部10%
         textStyle: {
             fontSize: 12
@@ -84,39 +84,43 @@ const containerChart6option = {
     series: [ // 系列列表。每个系列通过 type 决定自己的图表类型
         {
             name: 'Angle1', // 系列名称，用于tooltip的显示
+            color: colorScoreAngle1,
             type: 'line', // 系列类型：线图
             stack: 'Total', // 数据堆叠，同个类目轴上系列配置相同的stack值可以堆叠放置
             areaStyle: {}, // 区域填充样式
             emphasis: {
                 focus: 'series' // 高亮时聚焦的系列
             },
-            data: [0,0,0,0,0,0], // 初始数据
+            data: [0,0,0,0,0,0,0,0,0,0], // 初始数据
             animation: false, // 禁用动画效果
         },
         {
             name: 'Angle2',
+            color: colorScoreAngle2,
             type: 'line',
             stack: 'Total',
             areaStyle: {},
             emphasis: {
                 focus: 'series'
             },
-            data: [0,0,0,0,0,0],
+            data: [0,0,0,0,0,0,0,0,0,0],
             animation: false, // 禁用动画效果
         },
         {
             name: 'Angle3',
+            color: colorScoreAngle3,
             type: 'line',
             stack: 'Total',
             areaStyle: {},
             emphasis: {
                 focus: 'series'
             },
-            data: [0,0,0,0,0,0],
+            data: [0,0,0,0,0,0,0,0,0,0],
             animation: false, // 禁用动画效果
         },
         {
             name: 'frequency',
+            color: colorScoreFrequency,
             type: 'line',
             stack: 'Total',
             label: {
@@ -127,7 +131,7 @@ const containerChart6option = {
             emphasis: {
                 focus: 'series'
             },
-            data: [0,0,0,0,0,0],
+            data: [0,0,0,0,0,0,0,0,0,0],
             animation: false, // 禁用动画效果
             // 显示平均线
             markLine: {

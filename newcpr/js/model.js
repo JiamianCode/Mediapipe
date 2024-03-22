@@ -36,9 +36,9 @@ async function updateModel(results) {
 
     // 更新页面显示
     // 在控制台输出mse的值和模型的输出结果
-    //console.log(`MSE: ${mse}`);
+    console.log(`MSE: ${mse}`);
     //console.log(`Model Output: ${mse <= 0.026 ? `CPR` : `Non-CPR`}`);
-    return mse <= 0.026 ? `CPR` : `Non-CPR`;
+    return mse <= 0.1 ? `CPR` : `Non-CPR`;
 }
 
 initModel().then(() => {

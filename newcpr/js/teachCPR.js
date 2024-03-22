@@ -110,9 +110,6 @@ function calculateRelativeDifferences(
     let angle3DiffRatio = (angle3Avg - (angle3Min + angle3Max) / 2) / ((angle3Max - angle3Min) / 2);
     let frequencyDiffRatio = (frequencyAvg - (frequencyMin + frequencyMax) / 2) / ((frequencyMax - frequencyMin) / 2);
 
-    // 计算均值之和
-    let totalAverage = (angle1Avg + angle2Avg + angle3Avg + frequencyAvg) / validFrames;
-
     // 记录热力图
     hotData.push([angle1DiffRatio,angle2DiffRatio,angle3DiffRatio,frequencyDiffRatio]);
 
@@ -121,11 +118,10 @@ function calculateRelativeDifferences(
         angle2DiffRatio: angle2DiffRatio.toFixed(2),
         angle3DiffRatio: angle3DiffRatio.toFixed(2),
         frequencyDiffRatio: frequencyDiffRatio.toFixed(2),
-        totalAverage: totalAverage.toFixed(2) // 将均值之和四舍五入到两位小数
     };
 }
 
-function updateAlert(beginTime, endTime){
+function updateAlert(beginTime, endTime, averageScore){
     let result = calculateRelativeDifferences(framesPerSegment,
         minAngleRange1, maxAngleRange1, // Angle 1 Min, Max
         minAngleRange2, maxAngleRange2, // Angle 2 Min, Max
@@ -135,7 +131,7 @@ function updateAlert(beginTime, endTime){
 
     let reasons = [];
     let level;
-    let score = parseFloat(result.totalAverage); // 直接从totalAverage获取score
+    let score = parseFloat(averageScore); // 直接从totalAverage获取score
 
     // 根据差异比的绝对值和符号判断原因
     Object.keys(result).forEach(key => {

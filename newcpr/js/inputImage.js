@@ -15,8 +15,8 @@ function startCamera() {
                 onFrame: async () => {
                     await pose.send({image: inputVideo}); // 将摄像头图像发送给Pose处理
                 },
-                width: inputVideoContainer.offsetWidth, // 根据实际需要调整摄像头分辨率
-                height: inputVideoContainer.offsetHeight
+                // width: inputVideoContainer.offsetWidth, // 根据实际需要调整摄像头分辨率
+                // height: inputVideoContainer.offsetHeight
             });
             camera.start(); // 启动摄像头
             console.log("Camera started successfully");
@@ -33,6 +33,16 @@ let recordedChunks = [];
 document.getElementById('startButton').addEventListener('click', startRecording);
 document.getElementById('stopButton').addEventListener('click', stopRecording);
 function startRecording() {
+    document.getElementById('startButton').disabled = true;
+    document.getElementById('stopButton').disabled = false;
+
+    zeroRecord();
+    analysis = true;
+    //modelLoad = true;   //手动开始是直接默认已经识别到cpr
+
+    //设置定时器最多录制30s就暂停
+    setTimeout(stopRecording, 30000);
+
     recordedChunks = [];
     let stream = inputVideo.srcObject; // 获取当前video标签的媒体流
     mediaRecorder = new MediaRecorder(stream, {mimeType: 'video/webm'});
@@ -50,8 +60,17 @@ function startRecording() {
 }
 
 function stopRecording() {
+    document.getElementById('startButton').disabled = false;
+    document.getElementById('stopButton').disabled = true;
+
     mediaRecorder.stop();
     console.log("Recording stopped");
+
+    analysis = false;
+    // modelLoad = false;  //结束则置为false
+
+    updateTeach();
+    showLargeModal();
 }
 
 function saveVideo() {
@@ -71,7 +90,7 @@ function saveVideo() {
 
 // 检测摄像头的控制选择状态
 function checkCameraStatus() {
-    // 假设originalImage是一个已经定义好的变量，这里没有提供其定义
+    // 假设originalImage是一个已经定义好的变量
     const isCameraSelected = selectCamera.classList.contains('btn-custom-selected');
     const isOriginalImageChecked = originalImage.checked; // 确保originalImage是你的一个有效元素
 
@@ -122,6 +141,13 @@ function videoInput(){
         if (originalImage.checked) {
             onFrame();
         }
+
+        //清理记录的数据
+        zeroRecord();
+        //禁用开始/暂停
+        playPauseBtn.disabled = true;
+
+        analysis = true;
     };
 
     // 监听窗口大小变化，更新视频尺寸
@@ -130,5 +156,28 @@ function videoInput(){
     // 清理暂停或结束时的帧请求
     inputVideo.onpause = inputVideo.onended = () => {
         cancelAnimationFrame(frameRequest);
+
+        //启用开始/暂停
+        playPauseBtn.disabled = false;
     };
+}
+
+function zeroRecord(){
+    //清理记录的数据
+    keypointPositions = [];
+    resultRecord = [];
+    angle1Array = [];
+    angle2Array = [];
+    angle3Array = [];
+    frequencyArray = [];
+    newData = [];
+    hotData = [];
+
+    // 定义一个临时数组来累积分数
+    tempScores = [];
+    segmentAverages = [];
+    tempCurrentTime = '00:00';  // 初始时间
+    // 教学记录
+    alertContainer.innerHTML = '';
+    progressContainer.innerHTML = '';
 }

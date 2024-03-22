@@ -93,10 +93,9 @@ function initLandmarkTrackChart(chart) {
             right:'auto',
             precision: 1, // 设置精度为2，即小数点后两位
             pieces: [ // 定义不同数据范围的颜色
-                {gt: 0.6, lte: 0.7, color: '#FBDB0F'},
-                {gt: 0.7, lte: 0.8, color: '#93CE07'},
-                {gt: 0.8, lte: 0.9, color: '#FD0100'},
-                {gt: 0.9, color: '#AC3B2A'}
+                {gt: 0.6, lte: 0.7, color: colorLow},
+                {gt: 0.7, lte: 0.8, color: colorMid},
+                {gt: 0.8, color: colorHigh},
             ],
             outOfRange: { // 数据值超出范围时的颜色
                 color: '#999'

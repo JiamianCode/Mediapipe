@@ -7,6 +7,16 @@ function addAngles(angle1, angle2, angle3) {
     angle1Array.push(angle1);
     angle2Array.push(angle2);
     angle3Array.push(angle3);
+
+    if(angle11.style.display === 'block'){
+        document.getElementById('angleSize').textContent=`角度大小为：${angle1}`;
+    }
+    if(angle22.style.display === 'block'){
+        document.getElementById('angleSize').textContent=`角度大小为：${angle2}`;
+    }
+    if(angle33.style.display === 'block'){
+        document.getElementById('angleSize').textContent=`角度大小为：${angle3}`;
+    }
 }
 
 function initAngleCount(chart,min,max) {
@@ -46,9 +56,9 @@ function initAngleCount(chart,min,max) {
             right: 'auto',
             precision: 1,
             pieces: [
-                {gt: 0, lte: min, color: '#67e0e3'},
-                {gt: min, lte: max, color: '#37a2da'},
-                {gt: max, color: '#fd666d'},
+                {gt: 0, lte: min, color: colorLow},
+                {gt: min, lte: max, color: colorMid},
+                {gt: max, color: colorHigh},
             ],
             outOfRange: {
                 color: '#999'

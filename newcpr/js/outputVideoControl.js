@@ -30,7 +30,7 @@ let tempScores = [];
 let segmentAverages = [];
 
 // 每隔多少帧计算一次平均分
-const framesPerSegment =5; // 示例中每20帧为一个段落
+const framesPerSegment =10; // 示例中每20帧为一个段落
 
 let tempCurrentTime = '00:00';  // 初始时间
 
@@ -44,7 +44,7 @@ function recordFrameScore(score) {
         // 计算这批帧的平均分数
         const averageScore = tempScores.reduce((acc, val) => acc + val, 0) / framesPerSegment;
         const color = scoreToColor(averageScore);
-
+        //console.log(averageScore,color)
         // 检查最后一个评分段是否存在且颜色相同
         if (segmentAverages.length > 0 && segmentAverages[segmentAverages.length - 1].color === color) {
             // 相同颜色的情况下直接增加frames
@@ -65,7 +65,7 @@ function recordFrameScore(score) {
 
         // 更新一次文字提示内容
         const time = getVideoCurrentTime();
-        updateAlert(tempCurrentTime, time);
+        updateAlert(tempCurrentTime, time, averageScore);
         tempCurrentTime = time;
 
         return time;
@@ -93,9 +93,9 @@ function getVideoCurrentTime(){
 
 // 定义分数到颜色的映射逻辑
 function scoreToColor(score) {
-    if (score < 35) return 'red'; // 低分
-    if (score >= 35 && score < 70) return 'yellow'; // 中等
-    return 'green'; // 高分
+    if (score < 60) return colorHigh; // 低分
+    if (score >= 60 && score < 70) return colorMid; // 中等
+    return colorLow; // 高分
 }
 
 function updateProgressSegments() {

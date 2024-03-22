@@ -1,28 +1,24 @@
 /* 背景色 */
-.bg-navbar { background-color: #3888c0; } /* 导航栏的背景色 */
-.bg-control-panel { background-color: #3888c0; } /* 控制面板的背景色 */
-.bg-output-canvas { background-color: #3888c0; } /* 输出画面的背景色 */
-.bg-skeleton-3d { background-color: #3888c0; } /* 表4背景色 */
-.bg-text-panel { background: #3888c0; }/* 文字提示框背景色 */
+.bg-navbar { background-color: #d7d7d7; } /* 导航栏的背景色 */
+.bg-control-panel { background-color: #f4f4f4; } /* 控制面板的背景色 */
+.bg-output-canvas { background-color: #f4f4f4; } /* 输出画面的背景色 */
+.bg-skeleton-3d { background-color: #f4f4f4; } /* 表4背景色 */
+.bg-text-panel { background: #f4f4f4; }/* 文字提示框背景色 */
 
-.bg-chart { background-color: #3888c0; } /* 图表区的背景色 */
-.bg-parallel {background-color: #6bb8ef; } /* 平行坐标系的背景色 */
-.bg-angle-chart { background-color: #6bb8ef; } /* Angle背景色 */
-.bg-collide-force { background-color: #6bb8ef; } /* 力模拟的背景色 */
-.bg-landmark-track { background-color: #6bb8ef; } /* 按压示意图背景色 */
-.bg-frequency { background-color: #6bb8ef; } /* 频率图背景色 */
-.bg-score { background-color: #6bb8ef; } /* 成绩图背景色 */
+.bg-chart { background-color: #f4f4f4; } /* 图表区的背景色 */
+.bg-parallel {background-color: #f4f4f4; } /* 平行坐标系的背景色 */
+.bg-angle-chart { background-color: #f4f4f4; } /* Angle背景色 */
+.bg-collide-force { background-color: #f4f4f4; } /* 力模拟的背景色 */
+.bg-landmark-track { background-color: #f4f4f4; } /* 按压示意图背景色 */
+.bg-frequency { background-color: #f4f4f4; } /* 频率图背景色 */
+.bg-score { background-color: #f4f4f4; } /* 成绩图背景色 */
 
 
-
-.bg-bottom {background-color: #d2e3f3; }   /* 底部背景颜色 */
-.bg-chart-5 { background-color: #68acd5; } /* 表5背景色 */
-.bg-text { background-color: #aacfe5; } /* 文字提示部分背景色 */
 
 /* 设置边框宽度和颜色 */
 .border {
     border-width: 1px !important;
-    border-color: #535353 !important;
+    border-color: #d6d8d9 !important;
 }
 
 /* 导航栏 */
@@ -30,7 +26,7 @@
     padding-left: 0.6rem;
     padding-top: 0.3rem; /* 增加上内边距 */
     padding-bottom: 0.3rem; /* 增加下内边距 */
-    color: white; /* 字体颜色 */
+    color: black; /* 字体颜色 */
     font-size: 1rem; /* 自定义字体大小 */
 }
 
@@ -39,8 +35,8 @@
     font-size: 1rem; /* 自定义字体大小 */
     padding: 0.2rem;/* 边界 */
     margin: 0.2rem 0.2rem 0.2rem 0.2rem; /* 边距，使得背景颜色填充有间隔 */
-    text-align: center;/*位置居中*/
-    color: white; /* 字体颜色 */
+    text-align: left;/*位置居中*/
+    color: black; /* 字体颜色 */
     border-radius: 0.2rem; /* 圆角边框 */
 }
 .custom-header-small{
@@ -70,7 +66,7 @@ body {
     box-shadow: none !important; /* 去除阴影 */
 }
 .btn-custom-selected {
-    background-color: #4CAF50; /* 亮绿色 */
+    background-color: #a5a5a5; /* 亮绿色 */
     color: white;
 }
 .btn-custom-unselected {
@@ -91,12 +87,12 @@ body {
 
 /*文件选择按钮*/
 .btn-custom-file-select {
-    background-color: #4CAF50; /* 深蓝色背景 */
+    background-color: #a5a5a5; /* 深蓝色背景 */
     color: white; /* 白色文字 */
     border: none; /* 无边框 */
 }
 .btn-custom-file-select:hover {
-    background-color: #4CAF50; /* 鼠标悬停时的颜色 */
+    background-color: #535353; /* 鼠标悬停时的颜色 */
 }
 .btn-custom-file-select:active {
     box-shadow: none !important; /* 取消点击时的阴影 */
@@ -124,12 +120,22 @@ body {
     flex-shrink: 1; /* 允许滑块缩小以适应屏幕大小 */
 }
 
+/* 录制按钮 */
+.btn-start{
+    background-color:#4484ce ;
+    color: #f4f9fe;
+}
+.btn-stop{
+    background-color:#DC143C9F ;
+    color: #f4f9fe;
+}
+
 /* 定义滚动容器的样式 */
 .scroll-container-chart{
     height: 90vh; /* 设置容器高度为视口的100% */
 }
 .scroll-container-text{
-    height: 48vh;
+    height: 66vh;
 }
 .scroll-container {
     overflow-x: hidden; /* 隐藏水平滚动条 */
@@ -152,7 +158,12 @@ body {
     background: #555; /* 滚动条悬停颜色 */
 }
 
-
+/*视频播放控件*/
+.btn-video{
+    background-color: #4484ce;
+    border-color: #4484ce;
+    color: #f4f9fe;
+}
 /*进度条*/
 .my-progress-bar{
     width: 0%;
@@ -179,4 +190,8 @@ body {
     font-weight: bold;
 }
 
-
+/* 输入选中的装饰色 */
+.form-check-input:checked {
+    background-color: #535353;
+    border-color:#535353;
+}

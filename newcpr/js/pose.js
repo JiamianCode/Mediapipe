@@ -50,6 +50,8 @@ function updateKeypointPositions(results) {
 let resultRecord = [];
 let updateTimeout; // 用于检测更新停止的计时器
 let find = false;
+let analysis = false; //是否允许开始分析
+// let modelLoad = false;
 function onResultsPose(results) {
   if(typeof results.poseLandmarks === 'undefined') return;
 
@@ -70,24 +72,44 @@ function onResultsPose(results) {
     find = true;
   }
 
-  //更新模型识别结果
-  var isCPR= updateModel(results).catch(console.error);
-  if(!isCPR){
-    updateTeachText('正在检测CPR姿势！');
-    return;
+  // 更新模型识别结果
+  /*
+  if(!modelLoad){
+    updateModel(results).then(isCPR => {
+      if (isCPR !== 'CPR') {
+        // 如果返回值不是'CPR'，执行相应操作
+        updateTeachText('正在检测CPR姿势！');
+        updateCanvasContext(results); // 更新画面内容
+      } else {
+        // 如果返回值是'CPR'，执行其他操作
+        updateTeachText('CPR姿势已测到！请继续！');
+        if(selectCamera.classList.contains('btn-custom-selected')){
+          document.getElementById('startButton').disabled = false;
+          document.getElementById('stopButton').disabled = true;
+        }
+        else
+          modelLoad = true;  //结束则置为false
+      }
+    }).catch(error => {
+      // 错误处理
+      console.error(error);
+      // 可以选择在这里更新教学文本为错误信息
+      updateTeachText('模型处理发生错误，请检查控制台日志。');
+    });
+    if(!modelLoad)
+      return;
   }
-  else{
-    updateTeachText('CPR姿势已测到！请继续！');
-  }
+  */
 
   // 处理画面
   updateCanvasContext(results); // 更新画面内容
+
+  if(!analysis)
+    return;
+
   if(visualizationModes.skeleton){
     drawPoseConnections(results);// 绘制姿态连线
     drawLandmarksPositions(results);// 绘制关键点
-
-    // 画目标角，使用特殊的颜色和粗细
-    drawAngle(results);
   }
 
   updateKeypointPositions(results);//更新关键点
@@ -116,6 +138,11 @@ function onResultsPose(results) {
   updateAngleCountChartData(myChart9,angle2Array);
   updateAngleCountChartData(myChart10,angle3Array);
 
+  if(visualizationModes.skeleton) {
+    // 画目标角，使用特殊的颜色和粗细
+    drawAngle(results, angle1, angle2, angle3);
+  }
+
   // 使用Pose结果更新仿真
   updateSimulationWithPose(results, POSE_LANDMARKS.RIGHT_SHOULDER);
 
@@ -143,7 +170,7 @@ function onResultsPose(results) {
   if(time !== "none"){
     resultRecord.push({
       time:time,
-      image:results.image
+      canvasURL:opCanvas.toDataURL()
     });
   }
 
@@ -159,6 +186,8 @@ function onResultsPose(results) {
     //switchToPieChart(chart);
     updateTeach();
     showLargeModal();
+
+    analysis = false;
   }, 1000); // 延时1秒
 }
 
