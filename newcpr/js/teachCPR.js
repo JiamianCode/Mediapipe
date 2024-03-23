@@ -139,6 +139,13 @@ function updateAlert(beginTime, endTime, averageScore){
             let diffRatio = parseFloat(result[key]);
             if (Math.abs(diffRatio) >= 1.5) {
                 reasons.push(`${key}的偏差严重，${diffRatio > 0 ? '偏大' : '偏小'}`);
+
+                // 偏差严重的时候播报
+                if(key.includes('frequencyDiffRatio')){
+                    Speaking([`${key}${diffRatio > 0 ? '偏大' : '偏小'}`]);
+                }else{
+                    Speaking([`${key}`]);
+                }
             } else if (Math.abs(diffRatio) >= 1.0) {
                 reasons.push(`${key}存在较大偏差，${diffRatio > 0 ? '偏大' : '偏小'}`);
             } else if (Math.abs(diffRatio) >= 0.5) {
@@ -169,4 +176,50 @@ function updateAlert(beginTime, endTime, averageScore){
         beginTime: beginTime,
         endTime: endTime,
     })
+}
+
+// 播报文字
+function speakText(text) {
+    if (window.speechSynthesis.speaking) {
+        //window.speechSynthesis.cancel(); // 停止当前播报
+        return;
+    }
+
+    // 创建一个SpeechSynthesisUtterance实例
+    let speech = new SpeechSynthesisUtterance(text);
+
+    // 设置语言
+    speech.lang = 'zh-CN';
+
+    // 可以设置其他属性，如声音的速度和音调
+    speech.rate = 1.2; // 速度，1是默认速度
+    speech.pitch = 1; // 音调，1是默认音调
+
+    // 使用浏览器的语音合成功能读出文本
+    window.speechSynthesis.speak(speech);
+}
+
+// 定义替换规则
+const replacementRules = {
+    "angle1DiffRatio": "请将身体前倾",
+    "angle2DiffRatio": "请将手臂伸直",
+    "angle3DiffRatio": "",
+    "frequencyDiffRatio": "按压频率"
+};
+
+// 应用所有替换规则
+function applyReplacementRules(text) {
+    Object.keys(replacementRules).forEach(rule => {
+        const replacement = replacementRules[rule];
+        text = text.replace(new RegExp(rule, "g"), replacement);
+    });
+    return text;
+}
+
+// 播报
+function Speaking(texts){
+    texts.map(applyReplacementRules).forEach(text => {
+        speakText(text);
+        console.log(text);
+    });
 }

@@ -4,7 +4,7 @@ let camera = null; // 用于持有Camera实例的全局变量
 let originalImage = document.getElementById('originalImage');
 
 const inputVideoContainer = document.getElementById('inputVideoContainer');
-
+const audioPlayer = document.getElementById('audioPlayer');
 
 /******* 摄像头输入 ******/
 // 启动摄像头
@@ -57,6 +57,8 @@ function startRecording() {
 
     mediaRecorder.start();
     console.log("Recording started");
+
+    audioPlayer.play(); // 播放音频
 }
 
 function stopRecording() {
@@ -71,6 +73,8 @@ function stopRecording() {
 
     updateTeach();
     showLargeModal();
+
+    audioPlayer.pause(); // 暂停音频
 }
 
 function saveVideo() {

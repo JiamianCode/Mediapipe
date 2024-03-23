@@ -66,7 +66,7 @@ function updateHeatmap(){
               ]
             },
             orient: 'horizontal',
-            left: 'center',
+            right: '5%',
             bottom: '0%'
         },
         series: [{
@@ -82,10 +82,65 @@ function updateHeatmap(){
                     shadowColor: 'rgba(0, 0, 0, 0.5)'
                 }
             }
-        }]
+        }],
+        graphic: [
+            {
+                type: 'text',
+                left: '2%', // 可以是百分比或像素值
+                bottom: '4%', // 可以是百分比或像素值
+                style: {
+                    text: ShowFinalAdvice(),
+                    textAlign: 'center',
+                    fill: '#000', // 文本颜色
+                    fontSize: 16
+                }
+            }
+        ],
     };
 
     // 初始化图表
     var myChart = echarts.init(containerChart11);
     myChart.setOption(option);
+}
+
+function ShowFinalAdvice(){
+    // 初始化累加器数组，长度与子数组相同，初始值为0
+    let sums = new Array(hotData[0].length).fill(0);
+
+    // 遍历hotData数组，累加每个元素中的对应位置的绝对值
+    hotData.forEach(item => {
+        item.forEach((value, index) => {
+            sums[index] += Math.abs(value);
+        });
+    });
+
+    let itemCount = hotData.length; // 根据之前数组的长度来计算均值
+    let text = []; // 初始化一个空数组来存储文本
+    // 遍历 sums 数组，计算均值，如果均值超过 1，则按索引顺序输出对应的文本
+    sums.forEach((sum, index) => {
+        let average = sum / itemCount; // 计算均值
+        if (average > 0.8) {
+            switch (index) {
+                case 0:
+                    text.push("Angle1-身体与手臂的夹角偏差较大");
+                    break;
+                case 1:
+                    text.push("Angle2-大臂与小臂的夹角偏差较大");
+                    break;
+                case 2:
+                    text.push("Angle3-身体与大腿的夹角偏差较大");
+                    break;
+                case 3:
+                    text.push("Frequency-频率的偏差较大");
+                    break;
+            }
+        }
+    });
+    // 输出结果
+    console.log(text);
+
+    if(text.length > 3)
+        return '全部指标均偏差较大，请注意调整！';
+    else
+        return text.join(',');
 }
