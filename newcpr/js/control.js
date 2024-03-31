@@ -179,7 +179,9 @@ document.getElementById('angle1').addEventListener('change', function() {
     angle44.style.display = 'block';
     angle55.style.display = 'none';
     angle66.style.display = 'none';
-    document.getElementById('angleSelect').textContent='当前展示的角度是：身体与手臂的夹角';
+    document.getElementById('angleSelect').textContent='Now: Between the body and big arm';
+    if(angle1Array.length > 0)
+        document.getElementById('angleSize').textContent=`Current Angle Size：${angle1Array[angle1Array.length-1]}°`;
 });
 
 document.getElementById('angle2').addEventListener('change', function() {
@@ -189,7 +191,9 @@ document.getElementById('angle2').addEventListener('change', function() {
     angle44.style.display = 'none';
     angle55.style.display = 'block';
     angle66.style.display = 'none';
-    document.getElementById('angleSelect').textContent='当前展示的角度是：大臂和小臂的夹角';
+    document.getElementById('angleSelect').textContent='Now: Between the big arm and small arm';
+    if(angle2Array.length > 0)
+        document.getElementById('angleSize').textContent=`Current Angle Size：${angle2Array[angle2Array.length-1]}°`;
 });
 
 document.getElementById('angle3').addEventListener('change', function() {
@@ -199,7 +203,9 @@ document.getElementById('angle3').addEventListener('change', function() {
     angle44.style.display = 'none';
     angle55.style.display = 'none';
     angle66.style.display = 'block';
-    document.getElementById('angleSelect').textContent='当前展示的角度是：身体与大腿的夹角';
+    document.getElementById('angleSelect').textContent='Now: Between the body and thigh';
+    if(angle3Array.length > 0)
+        document.getElementById('angleSize').textContent=`Current Angle Size：${angle3Array[angle3Array.length-1]}°`;
 });
 
 

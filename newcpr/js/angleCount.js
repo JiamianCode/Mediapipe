@@ -9,13 +9,13 @@ function addAngles(angle1, angle2, angle3) {
     angle3Array.push(angle3);
 
     if(angle11.style.display === 'block'){
-        document.getElementById('angleSize').textContent=`角度大小为：${angle1}`;
+        document.getElementById('angleSize').textContent=`Current Angle Size：${angle1}°`;
     }
     if(angle22.style.display === 'block'){
-        document.getElementById('angleSize').textContent=`角度大小为：${angle2}`;
+        document.getElementById('angleSize').textContent=`Current Angle Size：${angle2}°`;
     }
     if(angle33.style.display === 'block'){
-        document.getElementById('angleSize').textContent=`角度大小为：${angle3}`;
+        document.getElementById('angleSize').textContent=`Current Angle Size：${angle3}°`;
     }
 }
 

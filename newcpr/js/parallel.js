@@ -1,24 +1,17 @@
 var containerChart8 = document.getElementById('containerChart8');
 
-containerChart8.style.width = '550px'
-containerChart8.style.height = '220px'
+containerChart8.style.width = '750px'
+containerChart8.style.height = '210px'
 // 初始化echarts实例
 var myChart8 = echarts.init(containerChart8);
 
-// 角度范围
-let minAngleRange1 = 45;
-let minAngleRange2 = 130;
-let minAngleRange3 = 90;
-let maxAngleRange1 = 70;
-let maxAngleRange2 = 170;
-let maxAngleRange3 = 125;
 
 // 指定图表的配置项和数据
 var option8 = {
     parallel:{
         left: '10%',
         right: '12%',
-        top: '12%',
+        top: '14%',
         bottom: '3%',
     },
     parallelAxis: [
@@ -132,7 +125,7 @@ var option8 = {
         },
         {
             dim: 3,
-            name: '频率',
+            name: 'Frequency',
             type: 'category',
             data: ['Fast', 'Good', 'Slow'],
             inverse: false, // 保持默认增长方向
@@ -183,7 +176,7 @@ var option8 = {
     },
     xAxis: {
         type: 'category',
-        data: ['Mon', 'Tue', 'Wed', 'Thu'],
+        data: ['', '', '', ''],
         show: false // 隐藏x轴
     },
     series: [

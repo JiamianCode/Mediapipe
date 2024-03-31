@@ -46,7 +46,7 @@ function calculateAngle(results, LA, LB, LC) {
 function setAngleSeries(min,max){
     return [
         {
-            name: '角度',
+            name: 'Angle',
             title: { // 控制仪表盘名称显示的样式
                 // 显示的文本内容，这里作为示例
                 show: true, // 确保标题显示
@@ -108,7 +108,7 @@ function setAngleSeries(min,max){
                 color: 'inherit', // 文本颜色，'inherit'表示继承轴线的颜色
                 fontSize: 15  // 调整字体大小
             },
-            data: [{value: 90, name: '角度'}],
+            data: [{value: 90, name: 'Angle'}],
             animation: false, // 取消指针动画
         }
     ]
@@ -144,7 +144,7 @@ function initGauge(targetContainer,series) {
 // let frameCount = 0;
 // let frameGap = 15;
 //取消指针动画之后可以解决这个问题
-function updateGauge(gauge, value) {
+function updateAngleGauge(gauge, value) {
     // 检查echarts实例和角度值是否为null，若为null则不更新
     if (!gauge || value === null) return;
 
@@ -154,8 +154,7 @@ function updateGauge(gauge, value) {
     // 更新图表数据
     gauge.setOption({
         series: [
-            {data: [{value: value}]},
-            {data: [{value: value}]},// 采用双仪表盘的都要更新
+            {data: [{value: value,name: 'Angle'}]},
         ]
     });
 }

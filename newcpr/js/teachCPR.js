@@ -28,10 +28,10 @@ function updateTeach(){
     averageScores.forEach((score, index) =>{
         if(score === minScore){
             switch (index) {
-                case 0:updateTeachText('请适当调整身体与双臂的夹角！');break;
-                case 1:updateTeachText('请在操作过程中将双臂伸直！');break;
-                case 2:updateTeachText('请适当调整身体与大腿的夹角！');break;
-                case 3:updateTeachText('请适当调整操作过程中的频率！');break;
+                case 0:updateTeachText('Please lean forward and press vertically.');break;
+                case 1:updateTeachText('Please rotate your arms inward and straighten your arms.');break;
+                case 2:updateTeachText('Please lean forward and press vertically.');break;
+                case 3:updateTeachText('Please adjust your frequency.');break;
             }
         }
     })
@@ -45,13 +45,13 @@ function addAlert(level, score, rangeStart, rangeEnd, reasons) {
     // 根据错误等级选择相应的Bootstrap alert类
     let alertClass;
     switch (level) {
-        case '高':
+        case 'High':
             alertClass = 'alert-danger';
             break;
-        case '中':
+        case 'Medium':
             alertClass = 'alert-warning';
             break;
-        case '低':
+        case 'Low':
             alertClass = 'alert-info';
             break;
         default:
@@ -61,8 +61,8 @@ function addAlert(level, score, rangeStart, rangeEnd, reasons) {
     // 创建alert HTML结构
     let alertHTML = `<div class="alert-custom ${alertClass}">
                             <div class="row">
-                                <div class="col-md-8 alert-heading">错误等级：${level}，分数：${score}</div>
-                                <div class="col-md-4 error-range">范围：${rangeStart}-${rangeEnd}</div>
+                                <div class="col-md-8 alert-heading">Error Level : ${level} ,Score : ${score}</div>
+                                <div class="col-md-4 error-range">Range：${rangeStart}-${rangeEnd}</div>
                             </div>
                             <div class="error-detail">`;
     reasons.forEach(reason => {
@@ -138,35 +138,36 @@ function updateAlert(beginTime, endTime, averageScore){
         if (key.includes("DiffRatio")) { // 只处理差异比
             let diffRatio = parseFloat(result[key]);
             if (Math.abs(diffRatio) >= 1.5) {
-                reasons.push(`${key}的偏差严重，${diffRatio > 0 ? '偏大' : '偏小'}`);
+                reasons.push(`${key} has a serious deviation and is too ${diffRatio > 0 ? 'large' : 'small'}`);
 
                 // 偏差严重的时候播报
-                if(key.includes('frequencyDiffRatio')){
-                    Speaking([`${key}${diffRatio > 0 ? '偏大' : '偏小'}`]);
-                }else{
-                    Speaking([`${key}`]);
-                }
+                // if(key.includes('frequencyDiffRatio')){
+                //     Speaking([`${key}${diffRatio > 0 ? '偏大' : '偏小'}`]);
+                // }else{
+                //     Speaking([`${key}`]);
+                // }
+                Speaking([`${key}`]);
             } else if (Math.abs(diffRatio) >= 1.0) {
-                reasons.push(`${key}存在较大偏差，${diffRatio > 0 ? '偏大' : '偏小'}`);
+                reasons.push(`${key} has a large deviation and is ${diffRatio > 0 ? 'large' : 'small'}`);
             } else if (Math.abs(diffRatio) >= 0.5) {
-                reasons.push(`${key}略有偏差，${diffRatio > 0 ? '略微偏大' : '略微偏小'}`);
+                reasons.push(`${key} is slightly biased,${diffRatio > 0 ? 'slightly larger' : 'slightly smaller'}`);
             }
         }
     });
 
     // 根据totalAverage确定等级
     if (score <= 50) {
-        level = '高';
+        level = 'High';
     } else if (score <= 60) {
-        level = '中';
+        level = 'Medium';
     } else if (score <= 70) {
-        level = '低';
+        level = 'Low';
     } else {
-        level = '优秀';
+        level = 'Well';
     }
 
     // 如果没有具体原因，则说明所有测量值均在优秀范围内
-    if (level !== '优秀') {
+    if (level !== 'Well') {
         addAlert(level, score.toFixed(2), beginTime, endTime, reasons);
     }
 
@@ -200,11 +201,17 @@ function speakText(text) {
 }
 
 // 定义替换规则
+// const replacementRules = {
+//     "angle1DiffRatio": "请将身体前倾",
+//     "angle2DiffRatio": "请将手臂伸直",
+//     "angle3DiffRatio": "",
+//     "frequencyDiffRatio": "按压频率"
+// };
 const replacementRules = {
-    "angle1DiffRatio": "请将身体前倾",
-    "angle2DiffRatio": "请将手臂伸直",
-    "angle3DiffRatio": "",
-    "frequencyDiffRatio": "按压频率"
+    "angle1DiffRatio": 'Please lean forward and press vertically.',
+    "angle2DiffRatio": 'Please rotate your arms inward and straighten your arms.',
+    "angle3DiffRatio": 'Please lean forward and press vertically.',
+    "frequencyDiffRatio": 'Please adjust your frequency.'
 };
 
 // 应用所有替换规则
@@ -219,7 +226,12 @@ function applyReplacementRules(text) {
 // 播报
 function Speaking(texts){
     texts.map(applyReplacementRules).forEach(text => {
+        //播报
         speakText(text);
+
+        //更新文字
+        //updateTeachText(text)
+
         console.log(text);
     });
 }

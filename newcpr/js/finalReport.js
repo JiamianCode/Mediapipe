@@ -33,9 +33,16 @@ function showWord(){
     const averageFrequency = calculateAverage(frequencyArray);
     const averageScore = calculateAverage(alertRecord.map(record => record.score))
 
+    let level;
+
+    if(averageScore >= 70) level = 'A';
+    else if(averageScore >= 60 && averageScore < 70) level = 'B';
+    else if(averageScore >= 50 && averageScore < 60) level = 'C';
+    else level = 'D';
+
     // 使用表格展示结果
     document.getElementById('finalWord').innerHTML =
-        `<h5>The Average of Score is ${averageScore.toFixed(2)}</h5>
+        `<h5>The performance level is:${level}(${averageScore.toFixed(2)})</h5>
         <table class="table">
             <thead>
                 <tr>

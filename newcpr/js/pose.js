@@ -129,9 +129,9 @@ function onResultsPose(results) {
   angle2 = calculateAngle(results,12,14,16);
   angle3 = calculateAngle(results,12,24,26);
   // 更新仪表盘
-  updateGauge(gauge1,angle1);
-  updateGauge(gauge2,angle2);
-  updateGauge(gauge3,angle3);
+  updateAngleGauge(gauge1,angle1);
+  updateAngleGauge(gauge2,angle2);
+  updateAngleGauge(gauge3,angle3);
 
   addAngles(angle1,angle2,angle3);
   updateAngleCountChartData(myChart7,angle1Array);
@@ -148,7 +148,7 @@ function onResultsPose(results) {
 
   const frequency = calculateFrequency(POSE_LANDMARKS.RIGHT_WRIST); // 计算频率
   //console.log("frequency:",frequency);
-  updateGauge(gauge4,frequency);
+  updateFrequencyGauge(gauge4,frequency);
   frequencyArray.push(frequency);
 
   // 绘制3d骨骼
@@ -157,10 +157,10 @@ function onResultsPose(results) {
 
   // 绘制堆叠图
   const scores = [
-    calculateNormalDistributionY(angle1, minAngleRange1, maxAngleRange1, 25, 0),
-    calculateNormalDistributionY(angle2, minAngleRange2, maxAngleRange2, 25, 0),
-    calculateNormalDistributionY(angle3, minAngleRange3, maxAngleRange3, 25, 0),
-    calculateNormalDistributionY(frequency, minFrequency, maxFrequency, 25, 0),
+    calculateNormalDistributionY(angle1, minAngleRange1, maxAngleRange1, 15, 0),
+    calculateNormalDistributionY(angle2, minAngleRange2, maxAngleRange2, 30, 0),
+    calculateNormalDistributionY(angle3, minAngleRange3, maxAngleRange3, 15, 0),
+    calculateNormalDistributionY(frequency, minFrequency, maxFrequency, 40, 0),
   ];
   //console.log(scores);
   updateChartData(stackedAreaChart,scores);

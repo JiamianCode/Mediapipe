@@ -122,16 +122,16 @@ function ShowFinalAdvice(){
         if (average > 0.8) {
             switch (index) {
                 case 0:
-                    text.push("Angle1-身体与手臂的夹角偏差较大");
+                    text.push("Lean forward");
                     break;
                 case 1:
-                    text.push("Angle2-大臂与小臂的夹角偏差较大");
+                    text.push("Straighten your arms");
                     break;
                 case 2:
-                    text.push("Angle3-身体与大腿的夹角偏差较大");
+                    //text.push("Angle3-身体与大腿的夹角偏差较大");
                     break;
                 case 3:
-                    text.push("Frequency-频率的偏差较大");
+                    text.push("Adjust frequency");
                     break;
             }
         }

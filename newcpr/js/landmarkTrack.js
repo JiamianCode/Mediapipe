@@ -140,6 +140,7 @@ function updateLandmarkTrackChartData(myChart, targetIndex) {
         // .slice(-50); // 保留最后50个元素
 
     const yValues = filteredPositions.map(pos => pos.y);
+    //const smoothedYValues = yValues;
     const smoothedYValues = gaussianSmooth(yValues);
     const dataSeries = smoothedYValues.map((y, i) => [i, y]);
 

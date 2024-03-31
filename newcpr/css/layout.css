@@ -135,7 +135,7 @@ body {
     height: 90vh; /* 设置容器高度为视口的100% */
 }
 .scroll-container-text{
-    height: 66vh;
+    height: 44vh;
 }
 .scroll-container {
     overflow-x: hidden; /* 隐藏水平滚动条 */

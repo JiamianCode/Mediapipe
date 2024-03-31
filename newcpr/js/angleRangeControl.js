@@ -14,12 +14,12 @@ angle1.addEventListener('change', function() {
         // 更新显示的角度范围值
         angleNameDisplay.textContent = 'Angle1';
 
-        minRange.min = `25`;
-        minRange.max = `65`;
+        minRange.min = `30`;
+        minRange.max = `50`;
         minRange.value = `${minAngleRange1}`;
 
-        maxRange.min = `50`;
-        maxRange.max = `90`;
+        maxRange.min = `60`;
+        maxRange.max = `80`;
         maxRange.value = `${maxAngleRange1}`;
 
         // 调用 updateValues 函数来更新滑块和图表
@@ -30,11 +30,11 @@ angle2.addEventListener('change', function() {
     if(this.checked) {
         angleNameDisplay.textContent = 'Angle2';
 
-        minRange.min = `110`;
+        minRange.min = `130`;
         minRange.max = `150`;
         minRange.value = `${minAngleRange2}`;
 
-        maxRange.min = `150`;
+        maxRange.min = `160`;
         maxRange.max = `180`;
         maxRange.value = `${maxAngleRange2}`;
 
@@ -46,11 +46,11 @@ angle3.addEventListener('change', function() {
         angleNameDisplay.textContent = 'Angle3';
 
         minRange.min = `70`;
-        minRange.max = `110`;
+        minRange.max = `90`;
         minRange.value = `${minAngleRange3}`;
 
-        maxRange.min = `105`;
-        maxRange.max = `145`;
+        maxRange.min = `120`;
+        maxRange.max = `140`;
         maxRange.value = `${maxAngleRange3}`;
 
         updateValues('angle3');
@@ -259,12 +259,12 @@ maxRange.addEventListener('input', function() {
 });
 
 // 初始更新显示的值
-minRange.min = `${minAngleRange1-20}`;
-minRange.max = `${minAngleRange1+20}`;
+minRange.min = `${minAngleRange1-10}`;
+minRange.max = `${minAngleRange1+10}`;
 minRange.value = `${minAngleRange1}`;
 
-maxRange.min = `${maxAngleRange1-20}`;
-maxRange.max = `${maxAngleRange1+20}`;
+maxRange.min = `${maxAngleRange1-10}`;
+maxRange.max = `${maxAngleRange1+10}`;
 maxRange.value = `${maxAngleRange1}`;
 
 updateValues('angle1');

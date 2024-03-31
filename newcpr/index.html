@@ -45,7 +45,7 @@
         <!-- 标题栏 -->
         <div class="col-md-12">
             <div class="border rounded navbar-custom bg-navbar">
-                RescueRadar: Providing Real Time Interactive and Visualization Solution for CPR Training Process
+                RescueRadar: Interactive Real-Time Instruction and Visualization for CPR Training
             </div>
         </div>
 
@@ -56,7 +56,7 @@
                 <div class="col-md-3">
                     <div class="card custom-card h-100 custom-card-shadow">
                         <div class="custom-header bg-control-panel">
-                            控制面板
+                            Control Panel
                         </div>
                         <div class="card-body custom-card-body">
                             <div class="d-flex justify-content-center flex-wrap">
@@ -161,7 +161,7 @@
                                 -->
 
                                 <!-- 角度范围选择 -->
-                                <div class="m-2" id="angle1range">
+                                <div class="m-2" id="angle1range" style="display: none;">
                                     <div id="rangeValues">
                                         <span id="angleName">Angle1</span> Range : <span id="minValue">20</span>° - <span id="maxValue">80</span>°
                                     </div>
@@ -183,7 +183,7 @@
 
 
                                 <div class="m-2">
-                                    <button type="button" class="btn btn-start" onclick="showLargeModal()">总结报告</button>
+                                    <button type="button" class="btn btn-start" onclick="showLargeModal()">Summary report</button>
                                 </div>
                             </div>
                         </div>
@@ -194,9 +194,9 @@
                     <div class="row g-2">
                         <!-- 第一行主画面和3D骨骼图 -->
                         <div class="col-md-7">
-                            <div class="card custom-card h-100">
+                            <div class="card custom-card h-100 custom-card-shadow">
                                 <div class="custom-header bg-output-canvas">
-                                    输出画面
+                                    Output Image
                                 </div>
                                 <div class="card-body custom-card-body">
                                     <!-- 画面 -->
@@ -219,9 +219,9 @@
 
                         <!-- 3D骨骼图 -->
                         <div class="col-md-5">
-                            <div class="card custom-card h-100">
+                            <div class="card custom-card h-100 custom-card-shadow">
                                 <div class="custom-header bg-skeleton-3d">
-                                    3D 骨骼图
+                                    3D Skeleton
                                 </div>
                                 <div class="card-body custom-card-body">
                                     <div id="skeletonContainer">
@@ -229,22 +229,25 @@
                                     </div>
                                 </div>
                                 <div class="p-2">
-                                    <p id="angleSelect">当前展示的角度是：身体与手臂的夹角</p>
-                                    <p id="angleSize">角度大小为：-</p>
+                                    <p id="angleSelect">Now: Between the body and big arm</p>
+                                    <p id="angleSize">Current Angle Size：-</p>
                                 </div>
                             </div>
                         </div>
 
                         <!-- 第二行文字提示区 -->
                         <div class="col-md-12">
-                            <div class="card custom-card h-100">
+                            <div class="card custom-card h-100 custom-card-shadow">
                                 <div class="custom-header bg-text-panel">
-                                    文字提示区
+                                    Evaluation Panel
                                 </div>
                                 <div class="card-body custom-card-body">
-                                    <h3 class="text-center-label" id="teachText">
-                                        请在左侧控制面板选择您的输入模式！
-                                    </h3>
+<!--                                    <h5 class="text-center-label" id="teachText" style="font-weight: bold; color: #FFA8A3;">-->
+<!--                                        Please raise your five fingers and press down on the roots of your palms.-->
+<!--                                    </h5>-->
+                                    <h5 class="text-center-label" id="teachText">
+                                        Please <span style="font-weight: bold;color: #FFA8A3;">rotate your arms inward</span> and straighten your arms.
+                                    </h5>
 
                                     <div id="alertContainer" class="scroll-container scroll-container-text"></div>
                                 </div>
@@ -262,7 +265,7 @@
                 <div class="col-md-12">
                     <div class="card custom-card h-100 custom-card-shadow">
                         <div class="custom-header bg-chart">
-                            图表区
+                            Chart Panel
                         </div>
                         <div class="card-body custom-card-body "> <!--scroll-container scroll-container-chart-->
                             <div class="row g-2">
@@ -282,7 +285,7 @@
                                 <div class="col-md-8" id="angle44">
                                     <div class="card custom-card h-100">
                                         <div class="custom-header bg-angle-chart custom-header-small">
-                                            Angle1历史分布(单位：°)
+                                            Historical distribution of Angle1 (in degrees)
                                         </div>
                                         <div class="card-body custom-card-body custom-header-small">
                                             <div id="containerChart7" class="chart-container">
@@ -307,7 +310,7 @@
                                 <div class="col-md-8" id="angle55">
                                     <div class="card custom-card h-100">
                                         <div class="custom-header bg-angle-chart custom-header-small">
-                                            Angle2历史分布(单位：°)
+                                            Historical distribution of Angle2 (in degrees)
                                         </div>
                                         <div class="card-body custom-card-body">
                                             <div id="containerChart9" class="chart-container">
@@ -332,7 +335,7 @@
                                 <div class="col-md-8" id="angle66">
                                     <div class="card custom-card h-100">
                                         <div class="custom-header bg-angle-chart custom-header-small">
-                                            Angle3历史分布(单位：°)
+                                            Historical distribution of Angle3 (in degrees)
                                         </div>
                                         <div class="card-body custom-card-body">
                                             <div id="containerChart10" class="chart-container">
@@ -346,7 +349,7 @@
                                 <div class="col-md-4">
                                     <div class="card custom-card h-100">
                                         <div class="custom-header bg-collide-force custom-header-small">
-                                            当前按压情况
+                                            Current Press Status
                                         </div>
                                         <div class="card-body custom-card-body">
                                             <div id="poseCanvasContainer">
@@ -358,7 +361,7 @@
                                 <div class="col-md-8">
                                     <div class="card custom-card h-100">
                                         <div class="custom-header bg-landmark-track custom-header-small">
-                                            按压情况历史分布
+                                            Historical distribution of presses
                                         </div>
                                         <div class="card-body custom-card-body">
                                             <div id="containerChart1" class="chart-container h-100">
@@ -373,7 +376,7 @@
                                 <div class="col-md-12">
                                     <div class="card custom-card h-100">
                                         <div class="custom-header bg-parallel custom-header-small">
-                                            按压一致性(单位：°)
+                                            Consistency of press (in degrees)
                                         </div>
                                         <div class="card-body custom-card-body">
                                             <div id="containerChart8" class="chart-container">
@@ -387,7 +390,7 @@
                                 <div class="col-md-4">
                                     <div class="card custom-card h-100">
                                         <div class="custom-header bg-frequency custom-header-small">
-                                            当前频率
+                                            Current Frequency
                                         </div>
                                         <div class="card-body custom-card-body">
                                             <div id="containerChart5" class="chart-container">
@@ -399,7 +402,7 @@
                                 <div class="col-md-8">
                                     <div class="card custom-card h-100">
                                         <div class="custom-header bg-score custom-header-small">
-                                            综合表现
+                                            Overall Performance
                                         </div>
                                         <div class="card-body custom-card-body">
                                             <div id="containerChart6" class="chart-container">
@@ -424,7 +427,7 @@
 
             <div class="modal-header">
                 <h5 class="modal-title" id="largeModalLabel">
-                    总结报告
+                    Summary report
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -488,7 +491,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="saveAsImage()">保存</button>
+                <button type="button" class="btn btn-start" onclick="saveAsImage()">Save Report</button>
             </div>
         </div>
     </div>
@@ -503,12 +506,27 @@
 <audio id="audioPlayer" src="media/bg.mp3"></audio>
 
 <script>
+    // 角度范围
+    let minAngleRange1 = 40;
+    let minAngleRange2 = 140;
+    let minAngleRange3 = 80;
+    let maxAngleRange1 = 70;
+    let maxAngleRange2 = 180;
+    let maxAngleRange3 = 130;
+
     const colorLow = '#fac87d';
     const colorMid = '#9ED6F6';
     const colorHigh = '#FFA8A3';
+    const colorNo = 'rgba(130,232,127,0.8)';
 
     const colorFrequencyLow = '#73dccd';
     const colorFrequencyHigh = '#45d0bd';
+    const colorFrequencyLow_low = '#fcd49e';
+    const colorFrequencyHigh_low = '#fac87d';
+    const colorFrequencyLow_mid = '#add9f3';
+    const colorFrequencyHigh_mid = '#9ED6F6';
+    const colorFrequencyLow_high = '#ffbcb8';
+    const colorFrequencyHigh_high = '#FFA8A3';
 
     const colorAngleTitle = '#000000';
 

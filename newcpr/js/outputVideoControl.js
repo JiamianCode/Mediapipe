@@ -93,9 +93,10 @@ function getVideoCurrentTime(){
 
 // 定义分数到颜色的映射逻辑
 function scoreToColor(score) {
-    if (score < 60) return colorHigh; // 低分
+    if (score < 50) return colorHigh; // 低分
+    if (score >= 50 && score < 60) return colorLow; // 中等
     if (score >= 60 && score < 70) return colorMid; // 中等
-    return colorLow; // 高分
+    return colorNo; // 高分
 }
 
 function updateProgressSegments() {
